@@ -6,9 +6,10 @@ import axios from "axios";
 import { COLORS, FONTS } from '@/constants';
 import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
+import OTPInputView from '@twotalltotems/react-native-otp-input';
 
 
-const ForgotPassword = () => {
+const EnterOtp = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,45 +37,36 @@ const ForgotPassword = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
 
         <View style={{ padding: 20 }}>
-          <Pressable onPress={() => this.props.navigation.goBack(null)}>
+          <Pressable >
             <SvgIcon icon={'back'} width={30} height={30} />
           </Pressable>
         </View>
         <View style={{ position: 'relative', bottom: 30 }}>
           <View style={styles.loginIcon}>
-            <SvgIcon icon={'forgot'} width={320} height={320} />
+            <SvgIcon icon={'enterOtp'} width={280} height={280} />
           </View>
           <View style={styles.container}>
             <View style={styles.loginLblCon}>
-              <Text style={styles.loginLbl}>Forgot Password?</Text>
+              <Text style={styles.loginLbl}>Enter OTP?</Text>
             </View>
             <View style={styles.forgotDes}>
               <Text style={styles.forgotDesLbl}>
-                Don't worry! It happens, please enter the phone number associated
-                with your account
+                An 4 digit code has been sent to +234 ----
               </Text>
             </View>
             <View style={styles.formCon}>
-              <View style={styles.textBoxCon}>
-                <View style={styles.at}>
-                  <SvgIcon icon={'phone'} width={20} height={20} />
-                </View>
-                <View style={styles.textCon}>
-                  <TextInput
-                    style={styles.textInput}
-                    placeholder={'Phone number: +243 ...'}
-                    placeholderTextColor={'#aaa'}
-                    keyboardType="phone-pad"
-                  />
-                </View>
-              </View>
-            </View>
-
-            <View style={[styles.loginCon, { marginTop: 40 }]}>
-              <Pressable
-                style={styles.LoginBtn}
-                onPress={() => this.props.navigation.navigate('EnterOTP')}>
-                <Text style={styles.loginBtnLbl}>Submit</Text>
+              <OTPInputView
+                pinCount={4}
+                autoFocusOnLoad
+                style={{width: '80%', height: 70}}
+                codeInputFieldStyle={{color: COLORS.black}}
+                // onCodeFilled={
+                //   // code =>
+                //   //this.props.navigation.navigate('ResetPassword')
+                // }
+              /> 
+              <Pressable>
+                <Text style={styles.registerLbl}>Resend OTP</Text>
               </Pressable>
             </View>
           </View>
@@ -92,73 +84,40 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 24,
   },
   mainCon: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
   loginIcon: {
     alignSelf: 'center',
   },
   formCon: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   container: {
     paddingHorizontal: 20,
+    marginTop: 50,
   },
   loginLblCon: {
     position: 'relative',
     bottom: 40,
   },
   loginLbl: {
-    color: '#000',
+    color: COLORS.black,
     fontSize: 40,
     // fontFamily: Fonts.type.NotoSansExtraBold,
   },
-  at: {
-    alignSelf: 'center',
-    width: '10%',
-  },
-
-  textBoxCon: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  textCon: {
-    width: '90%',
-  },
-
-  textInput: {
-    borderBottomColor: '#aaa',
-    borderWidth: 1,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    color: '#000',
-    fontSize: 16,
-    // fontFamily: Fonts.type.NotoSansMedium,
-    height: 40,
-  },
-
-  LoginBtn: {
-    backgroundColor: '#0057ff',
-    borderRadius: 20,
-  },
-  loginBtnLbl: {
-    textAlign: 'center',
-    fontSize: 16,
-    // fontFamily: Fonts.type.NotoSansBlack,
-    color: '#fff',
-    paddingVertical: 10,
-  },
-
   forgotDes: {
     position: 'relative',
     bottom: 35,
   },
   forgotDesLbl: {
-    color: '#000',
+    color: COLORS.black,
     // fontFamily: Fonts.type.NotoSansRegular,
+  },
+  registerLbl: {
+    color: '#0057ff',
+    // fontFamily: Fonts.type.NotoSansSemiBold
   },
 });
 
-export default ForgotPassword;
+export default EnterOtp;
