@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer,  DefaultTheme } from '@react-navigation/native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import InitialLoader from '../screens/InitialLoader';
 import Onboard from '../navigations/Onboard';
-import AsyncStorage from  "@react-native-community/async-storage";
+import AsyncStorage from  "@react-native-async-storage/async-storage";
+import MainScreen from "../screens/Main/MainScreen"
 
+import { loginSuccess } from '../redux/authReducer';
 
 import { setInstalled, setUnInstalled } from '../redux/appReducer';
 import { StatusBar } from 'react-native';
-
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {EnterOtp, ForgotPassword, Login, ResetPassword, SignUp} from "../screens/Auth"
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -23,12 +26,15 @@ const App = () => {
   const dispatch = useDispatch();
 
   const isInstalled = useSelector((state) => state.app.isInstalled);
-  // const u = useSelector((state) => state?.user);
+  const isSignedIn = useSelector((state) => state?.user);
+  console.log("Is signed", isSignedIn);
+  const Stack = createNativeStackNavigator();
 
 
   useEffect(() => {
     checkLoginStatus();
     setTimeout(() => setLoading(false), 2000);
+    
     // AsyncStorage.clear();
     checkInstallationStatus();
 
@@ -73,20 +79,22 @@ const App = () => {
   if (isInstalled) {
     return (
       <NavigationContainer  independent={true} theme={theme}>
-        <StatusBar style="auto" />
-
-        {/* <Stack.Navigator initialRouteName={'MyDrawer'}>
-          <Stack.Screen
-            name="Main"
-            component={MyDrawer}
-            options={{
-              headerShown: false,
-              initialParams: { guy: "l" }, // Pass the value as initialParams
-            }}
-          />
-          
-
-        </Stack.Navigator>*/}
+        <StatusBar barStyle="dark-content" />
+        <Stack.Navigator>
+        {isSignedIn ? (
+          <>
+            <Stack.Screen name="MainScreen" component={MainScreen} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="EnterOtp" component={EnterOtp} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+          </>
+        )}
+      </Stack.Navigator>
       </NavigationContainer>
     );
   } else if (!isInstalled) {
