@@ -1,12 +1,15 @@
 import React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
+
 import { IntroScreen } from '../screens/IntroScreen/IntroScreen';
 import { StatusBar } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MainScreen from "../screens/Main/MainScreen";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {MainScreen, ProfileScreen} from "../screens/Main/";
 import { Login, EnterOtp, ForgotPassword, ResetPassword, SignUp } from "../screens/Auth";
 
+const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 
@@ -24,9 +27,10 @@ const Onboard = () => {
 };
 
 const MainStackNavigator = () => (
-  <MainStack.Navigator screenOptions={{ headerShown: false }}>
-    <MainStack.Screen name="MainScreen" component={MainScreen} />
-  </MainStack.Navigator>
+  <Tab.Navigator>
+  <Tab.Screen name="Main" component={MainScreen} />
+  <Tab.Screen name="Profile" component={ProfileScreen} />
+</Tab.Navigator>
 );
 
 const AuthStackNavigator = () => (
