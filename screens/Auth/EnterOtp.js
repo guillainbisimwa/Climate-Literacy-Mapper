@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, Pressable, TouchableOpacity, ScrollViewBase } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from '@react-navigation/native';
 import axios from "axios";
 import { COLORS, FONTS } from '@/constants';
 import { Block, Input, Text } from "@/components"
@@ -9,12 +8,10 @@ import SvgIcon from '../../assets/icons/SvgIcon';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 
 
-const EnterOtp = () => {
-  const navigation = useNavigation();
+const EnterOtp = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-
 
   const getData = async () => {
     const value = await AsyncStorage.getItem('userToken')
@@ -37,7 +34,7 @@ const EnterOtp = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
 
         <View style={{ padding: 20 }}>
-          <Pressable >
+          <Pressable onPress={() => navigation.goBack(null)}>
             <SvgIcon icon={'back'} width={30} height={30} />
           </Pressable>
         </View>
@@ -58,13 +55,17 @@ const EnterOtp = () => {
               <OTPInputView
                 pinCount={4}
                 autoFocusOnLoad
-                style={{width: '80%', height: 70}}
-                codeInputFieldStyle={{color: COLORS.black}}
-                // onCodeFilled={
-                //   // code =>
-                //   //this.props.navigation.navigate('ResetPassword')
-                // }
-              /> 
+                style={{ width: '80%', height: 70 }}
+                codeInputFieldStyle={{ color: COLORS.black }}
+                onCodeFilled={
+                  code => {navigation.navigate('ResetPassword')}
+                }
+                // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                // onCodeChanged = {code => { this.setState({code})}}
+                
+                codeInputHighlightStyle={{ borderColor: "#03DAC6" }}
+               
+              />
               <Pressable>
                 <Text style={styles.registerLbl}>Resend OTP</Text>
               </Pressable>

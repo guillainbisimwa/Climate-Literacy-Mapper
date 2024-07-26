@@ -2,15 +2,13 @@
 import React, { useEffect, useState } from 'react'
 import { View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, Pressable, TouchableOpacity, ScrollViewBase } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from '@react-navigation/native';
 import axios from "axios";
 import { COLORS, FONTS } from '@/constants';
 import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
 
 
-const ResetPassword = () => {
-  const navigation = useNavigation();
+const ResetPassword = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -37,7 +35,7 @@ const ResetPassword = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
 
         <View style={{ padding: 20 }}>
-          <Pressable onPress={() => this.props.navigation.goBack(null)}>
+          <Pressable onPress={() => navigation.goBack(null)}>
             <SvgIcon icon={'back'} width={30} height={30} />
           </Pressable>
         </View>

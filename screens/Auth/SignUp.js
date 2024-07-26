@@ -8,12 +8,10 @@ import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
 
 
-const SignUp = () => {
-    const navigation = useNavigation();
+const SignUp = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userLoggedIn, setUserLoggedIn] = useState(false);
-
 
     const getData = async () => {
         const value = await AsyncStorage.getItem('userToken')
@@ -126,14 +124,15 @@ const SignUp = () => {
                     </View>
 
                     <View style={styles.loginCon}>
-                        <Pressable style={styles.LoginBtn}>
+                        <Pressable style={styles.LoginBtn} 
+                        onPress={() => navigation.navigate("EnterOtp")} >
                             <Text style={styles.loginBtnLbl}>Create your account</Text>
                         </Pressable>
                     </View>
 
                     <View style={styles.registerCon}>
                         <Text style={styles.registerNew}>Joined us before? </Text>
-                        <Pressable
+                        <Pressable onPress={() => navigation.navigate("Login")}
                         >
                             <Text style={styles.registerLbl}>Login</Text>
                         </Pressable>

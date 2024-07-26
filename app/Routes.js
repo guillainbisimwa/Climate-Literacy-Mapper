@@ -3,7 +3,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'react-native';
 import InitialLoader from '../screens/InitialLoader';
-import {Onboard, MainStackNavigator, AuthStackNavigator} from '../navigations';
+import { Onboard, MainStackNavigator, AuthStackNavigator } from '../navigations';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loginSuccess } from '../redux/authReducer';
 import { setInstalled, setUnInstalled } from '../redux/appReducer';
@@ -43,7 +43,7 @@ const App = () => {
 
   const checkLoginStatus = async () => {
     try {
-      AsyncStorage.clear();
+      // AsyncStorage.clear();
       const value = await AsyncStorage.getItem('user');
       if (value !== null) {
         dispatch(loginSuccess(value));

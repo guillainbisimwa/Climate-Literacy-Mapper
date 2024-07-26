@@ -8,8 +8,8 @@ import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
 
 
-const ForgotPassword = () => {
-  const navigation = useNavigation();
+const ForgotPassword = ({navigation}) => {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -36,7 +36,7 @@ const ForgotPassword = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
 
         <View style={{ padding: 20 }}>
-          <Pressable onPress={() => this.props.navigation.goBack(null)}>
+          <Pressable onPress={() => navigation.goBack(null)}>
             <SvgIcon icon={'back'} width={30} height={30} />
           </Pressable>
         </View>

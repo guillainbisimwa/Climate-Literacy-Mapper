@@ -24,13 +24,13 @@ const Onboard = () => {
 };
 
 const MainStackNavigator = () => (
-  <MainStack.Navigator>
+  <MainStack.Navigator screenOptions={{ headerShown: false }}>
     <MainStack.Screen name="MainScreen" component={MainScreen} />
   </MainStack.Navigator>
 );
 
 const AuthStackNavigator = () => (
-  <AuthStack.Navigator>
+  <AuthStack.Navigator screenOptions={{ headerShown: false }}>
     <AuthStack.Screen name="Login" component={Login} />
     <AuthStack.Screen name="EnterOtp" component={EnterOtp} />
     <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />
@@ -39,4 +39,4 @@ const AuthStackNavigator = () => (
   </AuthStack.Navigator>
 );
 
-export {Onboard, MainStackNavigator, AuthStackNavigator};
+export { Onboard, MainStackNavigator, AuthStackNavigator };

@@ -8,8 +8,8 @@ import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
 
 
-const Login = () => {
-    const navigation = useNavigation();
+const Login = ({navigation}) => {
+    // const navigation = useNavigation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -78,7 +78,7 @@ const Login = () => {
                         </View>
                         
                         <View style={styles.forgotAction}>
-                            <Pressable>
+                            <Pressable onPress={() => navigation.navigate("ForgotPassword")}>
                                 <Text style={styles.forgotLbl}>Forgot Password?</Text>
                             </Pressable>
                         </View>
@@ -105,7 +105,7 @@ const Login = () => {
                     </View>
                     <View style={styles.registerCon}>
                         <Text style={styles.registerNew}>New User? </Text>
-                        <Pressable>
+                        <Pressable onPress={() => navigation.navigate("SignUp")}>
                             <Text style={styles.registerLbl}>Register</Text>
                         </Pressable>
                     </View>
