@@ -1,38 +1,128 @@
 import React, { useEffect, useState } from 'react'
-import { View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, Pressable, TouchableOpacity, ScrollViewBase } from 'react-native'
+import {
+    View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet,
+    TextInput, Pressable, TouchableOpacity, ScrollViewBase, Keyboard,
+    Alert
+} from 'react-native'
+import { Button, } from 'react-native-paper';
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from '@react-navigation/native';
 import axios from "axios";
+import Container, { Toast } from 'toastify-react-native';
 import { COLORS, FONTS } from '@/constants';
 import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
+import NetInfo from "@react-native-community/netinfo";
+import { useDispatch, useSelector } from 'react-redux';
 
+const Login = ({ navigation }) => {
+    const dispatch = useDispatch()
+    const { error, isLoading, success, user } = useSelector((state) => state.user);
 
-const Login = ({navigation}) => {
-    // const navigation = useNavigation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
 
 
-    const getData = async () => {
-        const value = await AsyncStorage.getItem('userToken')
-        if (value !== null) {
-            // navigation.navigate("homeScreen")
+    // Use useEffect or any other method to handle the success state and display the alert
+    useEffect(() => {
+        checkLoginStatus();
+        if (error && !success && listenerError) {
+            console.log("====>", error);
+            // Toast.warn("Verifier votre internet!", 'top');
+
+            Toast.error("An error has occurred", 'top');
+            setValid(false);
+            setPasswordError(true)
+
         }
+    }, [success, error]);
+
+    const hasErrorKey = (obj) => {
+        return obj && typeof obj === 'object' && 'error' in obj;
     }
 
 
-    useEffect(() => {
-        getData();
-    }, [])
+    const checkLoginStatus = async () => {
+        try {
+            const value = await AsyncStorage.getItem('user');
 
-    const handleSubmit = () => {
+            //console.log('value-user', value);
+            if (value !== null) {
+                navigation.navigate('MainScreen');
+            } else {
+                //Toast.error("An error has occurred!!1", 'top')
+                //console.log("error", error);
+                //console.log("success", success);
+            }
+        } catch (error) {
+            console.log('Error retrieving installation status:', error);
+            Toast.error("An error has occurred!!", 'top');
+        }
+    };
 
+    const handleSubmit = async () => {
+        console.log("ok");
+        // Alert.alert("No Internet connection", "Please check your Internet connection and try again.");
+
+        try {
+            // Check internet connections
+            // Keyboard.dismiss();
+            const netInfo = await NetInfo.fetch();
+            // console.log("netInfo.isConnected", netInfo.isConnected);
+            if (!netInfo.isConnected) {
+                Alert.alert("No Internet connection", "Please check your Internet connection and try again.");
+                return;
+            }
+
+            if (!password || !formattedValue) {
+                // Alert.alert("Attention", "Veuillez completer tous les champs et réessayer.");
+                // Toast.error('Veuillez completer tous les champs', 'top');
+                // setValid(false);
+                setPasswordError(true);
+            } else {
+                if (!valid) {
+                    //setValid(false);
+                    Toast.error('Incorrect phone number', 'top')
+                    return
+                } else {
+                    //setValid(false);
+                    Toast.error('Incorrect phone number', 'top')
+                }
+
+                if (password.length < 3 || password.length > 20) {
+                    setPasswordError(true);
+                    Toast.error('Invalid password', 'top')
+                    return
+                } else {
+                    setPasswordError(false);
+                }
+
+                // Handle login functionality
+                dispatch(loginUser({ mobile: formattedValue, password })).then((data) => {
+                    console.log('data', data);
+                    if (hasErrorKey(data)) {
+                        Toast.error("An error has occurred!!2", 'top');
+                    }
+
+                }).catch((err) => {
+                    // Toast.error("Une erreur s'est produite!", 'top');
+                    console.log('err', err);
+                })
+
+            }
+
+        } catch (error) {
+            // Alert.alert("Attention", "Error occurred during login.");
+            console.error("Error occurred during login:", error);
+        }
     }
 
     return (
         <KeyboardAvoidingView behavior="position" style={styles.mainCon}>
+            <Container position="top" style={{ width: '100%' }} duration={6000} />
+
             <ScrollView contentContainerStyle={styles.scrollContainer}>
 
                 <View style={styles.loginIcon}>
@@ -76,7 +166,7 @@ const Login = ({navigation}) => {
                                 </View>
                             </View>
                         </View>
-                        
+
                         <View style={styles.forgotAction}>
                             <Pressable onPress={() => navigation.navigate("ForgotPassword")}>
                                 <Text style={styles.forgotLbl}>Forgot Password?</Text>
@@ -85,9 +175,10 @@ const Login = ({navigation}) => {
                     </View>
 
                     <View style={styles.loginCon}>
-                        <Pressable style={styles.LoginBtn}>
+                        <Button style={styles.LoginBtn} disabled={isLoading} mode="contained" loading={isLoading}
+                            onPress={()=> handleSubmit()}>
                             <Text style={styles.loginBtnLbl}>Login</Text>
-                        </Pressable>
+                        </Button>
                     </View>
                     <View style={styles.deviderCon}>
                         <View style={styles.devider} />
@@ -195,7 +286,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         //fontFamily: Fonts.type.NotoSansSemiBold,
     },
-    registerLbl:{
+    registerLbl: {
         color: '#0057ff',
         textAlign: 'right',
     },
