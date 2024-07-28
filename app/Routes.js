@@ -61,7 +61,7 @@ const App = () => {
     <NavigationContainer independent={true} theme={theme}>
       <StatusBar barStyle="dark-content" />
       {isInstalled ? (
-        isSignedIn ? <MainStackNavigator /> : <AuthStackNavigator />
+        !isSignedIn ? <MainStackNavigator /> : <AuthStackNavigator />
       ) : (
         <Onboard />
       )}

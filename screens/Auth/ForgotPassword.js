@@ -73,7 +73,7 @@ const ForgotPassword = ({navigation}) => {
             <View style={[styles.loginCon, { marginTop: 40 }]}>
               <Pressable
                 style={styles.LoginBtn}
-                onPress={() => this.props.navigation.navigate('EnterOTP')}>
+                onPress={() => navigation.navigate('EnterOTP')}>
                 <Text style={styles.loginBtnLbl}>Submit</Text>
               </Pressable>
             </View>
