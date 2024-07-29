@@ -8,7 +8,6 @@ import { Button, } from 'react-native-paper';
 import PhoneInput from 'react-native-phone-number-input';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import Container, { Toast } from 'toastify-react-native';
 import { COLORS, FONTS } from '@/constants';
 import { Block, Input, Text } from "@/components"
@@ -29,6 +28,8 @@ const Login = ({ navigation }) => {
     const [formattedValue, setFormattedValue] = useState("");
     const [value, setValue] = useState("");
     const [valid, setValid] = useState(false);
+    const [listenerError, setListenerError] = useState(false);
+
 
     // Use useEffect or any other method to handle the success state and display the alert
     useEffect(() => {
@@ -53,9 +54,7 @@ const Login = ({ navigation }) => {
         try {
             const value = await AsyncStorage.getItem('user');
 
-            console.log('----------------value-user', value);
-            if (value !== null) {
-                // navigation.navigate('Main');
+            if (value !== null) {               
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'MainStack' }],
@@ -322,7 +321,7 @@ const styles = StyleSheet.create({
     },
 
     LoginBtn: {
-        backgroundColor: '#0057ff',
+        // backgroundColor: '#0057ff',
         borderRadius: 20,
     },
     loginBtnLbl: {

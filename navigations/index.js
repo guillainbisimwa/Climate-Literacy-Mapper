@@ -1,7 +1,4 @@
 import React from 'react';
-
-import { NavigationContainer } from '@react-navigation/native';
-
 import { IntroScreen } from '../screens/IntroScreen/IntroScreen';
 import { StatusBar } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -10,21 +7,14 @@ import { MainScreen, ProfileScreen } from "../screens/Main/";
 import { Login, EnterOtp, ForgotPassword, ResetPassword, SignUp } from "../screens/Auth";
 
 const Tab = createBottomTabNavigator();
-const MainStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
+const OnboardStack = createNativeStackNavigator();
 
-const MyStack = createNativeStackNavigator();
-
-const Onboard = () => {
-  return (
-    <NavigationContainer independent={true}>
-      <StatusBar barStyle="dark-content" />
-      <MyStack.Navigator initialRouteName="IntroScreen" screenOptions={{ headerShown: false }}>
-        <MyStack.Screen name="IntroScreen" component={IntroScreen} />
-      </MyStack.Navigator>
-    </NavigationContainer>
-  );
-};
+const Onboard = () => (
+  <OnboardStack.Navigator initialRouteName="IntroScreen" screenOptions={{ headerShown: false }}>
+    <OnboardStack.Screen name="IntroScreen" component={IntroScreen} />
+  </OnboardStack.Navigator>
+);
 
 const MainStackNavigator = () => (
   <Tab.Navigator>
@@ -35,6 +25,7 @@ const MainStackNavigator = () => (
 
 const AuthStackNavigator = () => (
   <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+    <AuthStack.Screen name="MainStack" component={MainStackNavigator} />
     <AuthStack.Screen name="Login" component={Login} />
     <AuthStack.Screen name="EnterOtp" component={EnterOtp} />
     <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />
