@@ -25,12 +25,12 @@ const MainStackNavigator = () => (
 
 const AuthStackNavigator = () => (
   <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-    <AuthStack.Screen name="MainStack" component={MainStackNavigator} />
     <AuthStack.Screen name="Login" component={Login} />
     <AuthStack.Screen name="EnterOtp" component={EnterOtp} />
     <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />
     <AuthStack.Screen name="ResetPassword" component={ResetPassword} />
     <AuthStack.Screen name="SignUp" component={SignUp} />
+    <AuthStack.Screen name="MainStack" component={MainStackNavigator} />
   </AuthStack.Navigator>
 );
 

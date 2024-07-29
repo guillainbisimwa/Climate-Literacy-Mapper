@@ -2,23 +2,38 @@ import React, { useEffect, useRef, useState } from 'react'
 import { View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, Pressable, TouchableOpacity, ScrollViewBase } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from '@react-navigation/native';
-import axios from "axios";
+import Container, { Toast } from 'toastify-react-native';
 import { COLORS, FONTS } from '@/constants';
 import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
 import PhoneInput from 'react-native-phone-number-input';
 import { useDispatch, useSelector } from 'react-redux';
+import NetInfo from "@react-native-community/netinfo";
+import { Button } from 'react-native-paper';
+import { loginUser, signUpUser } from '@/redux/userSlice';
+
+
+const hasErrorKey = (obj) => {
+    return obj && typeof obj === 'object' && 'error' in obj;
+}
 
 
 
-const SignUp = ({navigation}) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [userLoggedIn, setUserLoggedIn] = useState(false);
+const SignUp = ({ navigation }) => {
+    const [fullName, setFullName] = useState("");
     const dispatch = useDispatch();
     const phoneInput = useRef(null);
 
-    const { error, isLoading, success, user } = useSelector((state) => state.user);
+    const { user, errorSignUp, isLoadingSignUp, successSignUp, error, isLoading } = useSelector((state) => state.user);
+
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [passwordError, setPasswordError] = useState(false);
+    const [formattedValue, setFormattedValue] = useState("");
+    const [value, setValue] = useState("");
+    const [valid, setValid] = useState(false);
+    const [role, setRole] = useState('user');
+
 
     const getData = async () => {
         const value = await AsyncStorage.getItem('userToken');
@@ -37,12 +52,71 @@ const SignUp = ({navigation}) => {
         getData();
     }, [])
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        try {
+            // Check internet connections
+            // Keyboard.dismiss();
+            const netInfo = await NetInfo.fetch();
+            console.log("netInfo.isConnected", netInfo.isConnected);
+            if (!netInfo.isConnected) {
+                Alert.alert("No Internet connection", "Please check your Internet connection and try again.");
+                return;
+            }
+            if (!password || !formattedValue || !fullName ) {
+                // Alert.alert("Attention", "Veuillez completer tous les champs et réessayer.");
+                Toast.error('Complete all fields, please', 'top');
+                setPasswordError(true);
+            } else {
+                if (!valid) {
+                    //setValid(false);
+                    Toast.error('Incorrect phone number', 'top')
+                    return
+                }
+                if (password != confirmPassword) {
+                    setPasswordError(true);
+                    Toast.error("Password doesn't match", 'top')
+                    return
+                }
 
+                if (password.length < 3 || password.length > 20) {
+                    setPasswordError(true);
+                    Toast.error('Invalid password', 'top')
+                    return
+                } else {
+                    setPasswordError(false);
+                }
+
+                await dispatch(
+                    signUpUser({
+                        name: fullName,
+                        email:"",
+                        password,
+                        mobile: formattedValue,
+                        role,
+                        cover_url: '',
+                        profile_pic: '',
+                    })
+                );
+
+                // Handle login functionality
+                if(successSignUp){
+                    console.log("--------", successSignUp);
+                    // dispatch(loginUser({ mobile: formattedValue, password }))
+                }
+                // 
+
+            }
+
+        } catch (error) {
+            // Alert.alert("Attention", "Error occurred during login.");
+            console.error("Error occurred during login:", error);
+        }
     }
 
     return (
         <KeyboardAvoidingView behavior="position" style={styles.mainCon}>
+            <Container position="top" style={{ width: '100%' }} duration={6000} />
+
             <ScrollView contentContainerStyle={styles.scrollContainer}>
 
                 <View style={styles.loginIcon}>
@@ -58,10 +132,36 @@ const SignUp = ({navigation}) => {
                                 <SvgIcon icon={'phone'} width={20} height={20} />
                             </View>
                             <View style={styles.textCon}>
-                                <TextInput
-                                    style={styles.textInput}
-                                    placeholder={'Phone number : +243 ...'}
-                                    placeholderTextColor={'#aaa'}
+                                <PhoneInput
+                                    ref={phoneInput}
+                                    // defaultValue={value}
+                                    defaultCode="KE"
+                                    layout="first"
+                                    onChangeText={(text) => {
+                                        const checkValid = phoneInput.current?.isValidNumber(text);
+                                        setValid(checkValid ? checkValid : false);
+                                        setValue(text);
+                                        // setLoad(false)
+                                    }}
+                                    onChangeFormattedText={(text) => {
+                                        setFormattedValue(text);
+                                    }}
+                                    textContainerStyle={{
+                                        backgroundColor: COLORS.white
+                                    }}
+                                    containerStyle={{
+                                        // borderColor: valid ? COLORS.darkgreen : "transparent",
+                                        // borderWidth: 2,
+                                        width: '100%',
+                                        borderBottomColor: COLORS.darkgray,
+                                        borderWidth: 1,
+                                        borderTopWidth: 0,
+                                        borderLeftWidth: 0,
+                                        borderRightWidth: 0,
+                                        color: COLORS.black,
+                                        fontSize: 16,
+                                    }}
+
                                 />
                             </View>
                         </View>
@@ -75,6 +175,7 @@ const SignUp = ({navigation}) => {
                                     style={styles.textInput}
                                     placeholder={'Full Name'}
                                     placeholderTextColor={'#aaa'}
+                                    onChangeText={setFullName}
                                 />
                             </View>
                         </View>
@@ -90,6 +191,7 @@ const SignUp = ({navigation}) => {
                                         placeholder={'Password'}
                                         placeholderTextColor={COLORS.darkgray}
                                         secureTextEntry={true}
+                                        onChangeText={setPassword}
                                     />
                                 </View>
                                 <View style={styles.show}>
@@ -110,6 +212,7 @@ const SignUp = ({navigation}) => {
                                         placeholder={'Confirm password'}
                                         placeholderTextColor={COLORS.darkgray}
                                         secureTextEntry={true}
+                                        onChangeText={setConfirmPassword}
                                     />
                                 </View>
                                 <View style={styles.show}>
@@ -136,10 +239,11 @@ const SignUp = ({navigation}) => {
                     </View>
 
                     <View style={styles.loginCon}>
-                        <Pressable style={styles.LoginBtn} 
-                        onPress={() => navigation.navigate("EnterOtp")} >
+                        <Button style={styles.LoginBtn} disabled={isLoadingSignUp} mode="contained" loading={isLoadingSignUp}
+                            onPress={() => handleSubmit()}>
                             <Text style={styles.loginBtnLbl}>Create your account</Text>
-                        </Pressable>
+                        </Button>
+
                     </View>
 
                     <View style={styles.registerCon}>
@@ -236,7 +340,6 @@ const styles = StyleSheet.create({
         // fontFamily: Fonts.type.NotoSansSemiBold,
     },
     LoginBtn: {
-        backgroundColor: '#0057ff',
         borderRadius: 20,
     },
     loginBtnLbl: {

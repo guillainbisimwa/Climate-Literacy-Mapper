@@ -28,17 +28,29 @@ export const signUpUser = createAsyncThunk(
     name,
     email,
     mobile,
-    username,
     password,
     cover_url, 
     profile_pic,
     role
   }) => {
+    console.log();
+    //  LOG  {"cover_url": "", "email": undefined, "mobile": "+243891979018", 
+    // "name": "Test 2", "password": "123456", 
+    // "profile_pic": "", "role": "user", "username": undefined}
+    console.log({  
+      name,
+      email,
+      mobile,
+      password,
+      cover_url, 
+      profile_pic,
+      role
+    });
+    console.log();
     const response = await axios.post( BASE_URL +'auth/signup', {
       name,
       email,
       mobile,
-      username,
       password,
       cover_url, 
       profile_pic,
@@ -185,8 +197,8 @@ const userSlice = createSlice({
       })
       .addCase(signUpUser.rejected, (state, action) => {
         console.log("bree *************** ",action.error);
-        console.log("bree ***************");
-        console.log("bree ***************");
+        console.log("bree ***************", action.error.message);
+        console.log("bree ***************",action);
         state.isLoadingSignUp = false;
         state.errorSignUp = action.error.message;
         state.successSignUp = false
