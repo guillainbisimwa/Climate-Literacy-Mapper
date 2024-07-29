@@ -48,3 +48,43 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+## Build
+
+Now that we have set up our build profile and app signing, running a build for internal distribution is just like any other build.
+
+`eas build --profile preview --platform all`
+
+## Publish an update
+
+Once the update is built and uploaded to EAS and the command completes, force close and reopen your app up to two times to download and view the update.
+
+`eas update --branch production --message "Updating the app"`
+
+## Author
+
+👤 **Guillain Bisimwa**
+
+- Github : [@guillainbisimwa](https://github.com/guillainbisimwa)
+- Twitter : [@gullain_bisimwa](https://twitter.com/gullain_bisimwa)
+- Linkedin : [guillain-bisimwa](https://www.linkedin.com/in/guillain-bisimwa-8a8b7a7b/)
+
+<!-- 
+Did you know there are over 3,000 distinct ethnic groups in Africa? So far, we've mapped 13 tribes - just 0.4% of the total. Our upcoming app will help us scale up through collaborations.
+Want to get involved?  🚀Sign up here to help us on this exciting journey: -->
+<!-- 
+
+70% of the world’s food 🌍 comes from small-scale farmers 👨‍🌾👩‍🌾, using less than 30% of resources 🌱💦! The unsung heroes of our plates? Peasant farmers! These incredible communities are feeding the majority of the world with a fraction of the resources used by large-scale agriculture. ⚖️
+Let's support a more sustainable and equitable food system! Here's how:
+  • Shop local: Support your local farmers 🥕🌽 and small farms!
+  • Learn more: Check out the ETC Group's report on the Peasant  -->
+
+  <!-- In our journey towards regenerative communities, we must demand accountability and justice for our land and people. The fight for equitable access to resources is not just a struggle; it is our duty. Join us as we raise our voices for change. Together, we can cultivate a future where every community thrives. 🌱 
+Sign up for the rooted connections course:  -->
+
+
+<!-- 
+watchman watch-del-all && rm -f podfile.lock && rm -rf node_modules && yarn && yarn start --reset-cache 
+-->
+
