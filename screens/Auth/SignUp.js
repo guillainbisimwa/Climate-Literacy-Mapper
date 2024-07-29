@@ -62,7 +62,7 @@ const SignUp = ({ navigation }) => {
                 Alert.alert("No Internet connection", "Please check your Internet connection and try again.");
                 return;
             }
-            if (!password || !formattedValue || !fullName ) {
+            if (!password || !formattedValue || !fullName) {
                 // Alert.alert("Attention", "Veuillez completer tous les champs et réessayer.");
                 Toast.error('Complete all fields, please', 'top');
                 setPasswordError(true);
@@ -86,24 +86,37 @@ const SignUp = ({ navigation }) => {
                     setPasswordError(false);
                 }
 
-                await dispatch(
+                // Handle login functionality
+                dispatch(
                     signUpUser({
                         name: fullName,
-                        email:"",
+                        email: "",
                         password,
                         mobile: formattedValue,
                         role,
                         cover_url: '',
                         profile_pic: '',
                     })
-                );
+                )
+                    .then((result) => {
+                        if (signUpUser.fulfilled.match(result)) {
+                            // Handle successful sign up
+                            console.log('Sign up Successful:', result.payload);
+                            dispatch(loginUser({ mobile: formattedValue, password }))
 
-                // Handle login functionality
-                if(successSignUp){
-                    console.log("--------", successSignUp);
-                    // dispatch(loginUser({ mobile: formattedValue, password }))
-                }
-                // 
+                        } else if (signUpUser.rejected.match(result)) {
+                            // Handle rejected sign up
+                            Toast.error(`Error: ${result.payload?.error}`, 'top');
+                        }
+                    })
+                    .catch((error) => {
+                        // Handle any additional errors
+                        console.error('Error during sign up:', error);
+                        Toast.error(`Error during signing up:, ${error}`, 'top');
+                    });
+
+
+
 
             }
 
