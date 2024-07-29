@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-// import CustomText from '../../../components/UI/CustomText';
 import { COLORS } from '../../../constants';
 
 export const SubSlide = ({ subtitle, des, last, NextSlide, EnterApp }) => {

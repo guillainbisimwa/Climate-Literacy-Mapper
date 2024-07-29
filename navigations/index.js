@@ -6,7 +6,7 @@ import { IntroScreen } from '../screens/IntroScreen/IntroScreen';
 import { StatusBar } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {MainScreen, ProfileScreen} from "../screens/Main/";
+import { MainScreen, ProfileScreen } from "../screens/Main/";
 import { Login, EnterOtp, ForgotPassword, ResetPassword, SignUp } from "../screens/Auth";
 
 const Tab = createBottomTabNavigator();
@@ -28,9 +28,9 @@ const Onboard = () => {
 
 const MainStackNavigator = () => (
   <Tab.Navigator>
-  <Tab.Screen name="Main" component={MainScreen} />
-  <Tab.Screen name="Profile" component={ProfileScreen} />
-</Tab.Navigator>
+    <Tab.Screen name="Main" component={MainScreen} />
+    <Tab.Screen name="Profile" component={ProfileScreen} />
+  </Tab.Navigator>
 );
 
 const AuthStackNavigator = () => (

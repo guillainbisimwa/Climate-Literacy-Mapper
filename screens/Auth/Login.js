@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet,
     TextInput, Pressable, TouchableOpacity, ScrollViewBase, Keyboard,
     Alert
 } from 'react-native'
 import { Button, } from 'react-native-paper';
+import PhoneInput from 'react-native-phone-number-input';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -14,16 +15,20 @@ import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
 import NetInfo from "@react-native-community/netinfo";
 import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '@/redux/userSlice';
+
 
 const Login = ({ navigation }) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const phoneInput = useRef(null);
+
     const { error, isLoading, success, user } = useSelector((state) => state.user);
 
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
-
+    const [formattedValue, setFormattedValue] = useState("");
+    const [value, setValue] = useState("");
+    const [valid, setValid] = useState(false);
 
     // Use useEffect or any other method to handle the success state and display the alert
     useEffect(() => {
@@ -48,9 +53,13 @@ const Login = ({ navigation }) => {
         try {
             const value = await AsyncStorage.getItem('user');
 
-            //console.log('value-user', value);
+            console.log('----------------value-user', value);
             if (value !== null) {
-                navigation.navigate('MainScreen');
+                // navigation.navigate('Main');
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'MainStack' }],
+                  });
             } else {
                 //Toast.error("An error has occurred!!1", 'top')
                 //console.log("error", error);
@@ -63,33 +72,27 @@ const Login = ({ navigation }) => {
     };
 
     const handleSubmit = async () => {
-        console.log("ok");
         // Alert.alert("No Internet connection", "Please check your Internet connection and try again.");
 
         try {
             // Check internet connections
             // Keyboard.dismiss();
             const netInfo = await NetInfo.fetch();
-            // console.log("netInfo.isConnected", netInfo.isConnected);
+            console.log("netInfo.isConnected", netInfo.isConnected);
             if (!netInfo.isConnected) {
                 Alert.alert("No Internet connection", "Please check your Internet connection and try again.");
                 return;
             }
-
             if (!password || !formattedValue) {
                 // Alert.alert("Attention", "Veuillez completer tous les champs et réessayer.");
-                // Toast.error('Veuillez completer tous les champs', 'top');
-                // setValid(false);
+                Toast.error('Complete all fields, please', 'top');
                 setPasswordError(true);
             } else {
                 if (!valid) {
                     //setValid(false);
                     Toast.error('Incorrect phone number', 'top')
                     return
-                } else {
-                    //setValid(false);
-                    Toast.error('Incorrect phone number', 'top')
-                }
+                } 
 
                 if (password.length < 3 || password.length > 20) {
                     setPasswordError(true);
@@ -139,12 +142,38 @@ const Login = ({ navigation }) => {
                                 <SvgIcon icon={'phone'} width={20} height={20} />
                             </View>
                             <View style={styles.textCon}>
-                                <TextInput
-                                    style={styles.textInput}
-                                    keyboardType="phone-pad"
-                                    placeholder={'Phone number: +350 ...'}
-                                    placeholderTextColor={COLORS.darkgray}
+                                <PhoneInput
+                                    ref={phoneInput}
+                                    // defaultValue={value}
+                                    defaultCode="KE"
+                                    layout="first"
+                                    onChangeText={(text) => {
+                                        const checkValid = phoneInput.current?.isValidNumber(text);
+                                        setValid(checkValid ? checkValid : false);
+                                        setValue(text);
+                                        // setLoad(false)
+                                    }}
+                                    onChangeFormattedText={(text) => {
+                                        setFormattedValue(text);
+                                    }}
+                                    textContainerStyle={{
+                                        backgroundColor: COLORS.white
+                                    }}
+                                    containerStyle={{
+                                        // borderColor: valid ? COLORS.darkgreen : "transparent",
+                                        // borderWidth: 2,
+                                        width: '100%',
+                                        borderBottomColor: COLORS.darkgray,
+                                        borderWidth: 1,
+                                        borderTopWidth: 0,
+                                        borderLeftWidth: 0,
+                                        borderRightWidth: 0,
+                                        color: COLORS.black,
+                                        fontSize: 16,
+                                    }}
+
                                 />
+                               
                             </View>
                         </View>
 
@@ -159,6 +188,7 @@ const Login = ({ navigation }) => {
                                         placeholder={'Password'}
                                         placeholderTextColor={COLORS.darkgray}
                                         secureTextEntry={true}
+                                        onChangeText={setPassword}
                                     />
                                 </View>
                                 <View style={styles.show}>
@@ -176,7 +206,7 @@ const Login = ({ navigation }) => {
 
                     <View style={styles.loginCon}>
                         <Button style={styles.LoginBtn} disabled={isLoading} mode="contained" loading={isLoading}
-                            onPress={()=> handleSubmit()}>
+                            onPress={() => handleSubmit()}>
                             <Text style={styles.loginBtnLbl}>Login</Text>
                         </Button>
                     </View>
