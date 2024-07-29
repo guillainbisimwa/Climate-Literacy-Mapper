@@ -21,12 +21,12 @@ const MainScreen = ({ navigation }) => {
             setPasswordError(true)
 
         }
-    }, [success, error]);
+    }, []);
 
     const checkLoginStatus = async () => {
         try {
             const value = await AsyncStorage.getItem('user');
-
+            console.log("value main", value)
             if (value == null) {
                 console.log(navigation);
 
@@ -34,10 +34,6 @@ const MainScreen = ({ navigation }) => {
                     index: 0,
                     routes: [{ name: 'Login' }],
                 });
-            } else {
-                //Toast.error("An error has occurred!!1", 'top')
-                //console.log("error", error);
-                //console.log("success", success);
             }
         } catch (error) {
             console.log('Error retrieving installation status:', error);

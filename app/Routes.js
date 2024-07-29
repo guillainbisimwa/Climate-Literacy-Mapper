@@ -9,6 +9,7 @@ import { setInstalled, setUnInstalled } from '../redux/appReducer';
 import { StatusBar } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Onboard, MainStackNavigator, AuthStackNavigator } from '../navigations';
+import { logoutUser } from '@/redux/userSlice';
 
 const theme = {
   ...DefaultTheme,
@@ -86,6 +87,8 @@ const App = () => {
       console.log("--------value", value);
       if (value !== null) {
         dispatch(loginSuccess(value));
+      }else{
+        dispatch(logoutUser())
       }
     } catch (error) {
       console.log('Error retrieving login status:', error);

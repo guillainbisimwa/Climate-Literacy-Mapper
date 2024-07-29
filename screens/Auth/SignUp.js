@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, Pressable, TouchableOpacity, ScrollViewBase } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from '@react-navigation/native';
@@ -6,17 +6,29 @@ import axios from "axios";
 import { COLORS, FONTS } from '@/constants';
 import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
+import PhoneInput from 'react-native-phone-number-input';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 
 const SignUp = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const dispatch = useDispatch();
+    const phoneInput = useRef(null);
+
+    const { error, isLoading, success, user } = useSelector((state) => state.user);
 
     const getData = async () => {
-        const value = await AsyncStorage.getItem('userToken')
-        if (value !== null) {
-            // navigation.navigate("homeScreen")
+        const value = await AsyncStorage.getItem('userToken');
+        console.log(value, "VALUE SIGNUP", user);
+        if (value != null) {
+            navigation.navigate("MainStack")
+            // navigation.reset({
+            //     index: 0,
+            //     routes: [{ name: 'MainStack' }],
+            //   });
         }
     }
 

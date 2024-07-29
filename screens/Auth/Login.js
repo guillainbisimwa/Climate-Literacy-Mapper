@@ -53,6 +53,7 @@ const Login = ({ navigation }) => {
     const checkLoginStatus = async () => {
         try {
             const value = await AsyncStorage.getItem('user');
+            console.log("value login", value);
 
             if (value !== null) {               
                 navigation.reset({
