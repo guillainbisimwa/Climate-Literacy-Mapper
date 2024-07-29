@@ -1,10 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 import { COLORS, SIZES } from '../constants';
 
-export default class Block extends Component {
-  handleMargins() {
-    const { margin } = this.props;
+const Block = ({
+  flex,
+  row,
+  column,
+  center,
+  middle,
+  left,
+  right,
+  top,
+  bottom,
+  card,
+  shadow,
+  color,
+  space,
+  padding,
+  margin,
+  animated,
+  wrap,
+  style,
+  children,
+  ...props
+}) => {
+
+  const handleMargins = () => {
     if (typeof margin === 'number') {
       return {
         marginTop: margin,
@@ -47,10 +68,9 @@ export default class Block extends Component {
           };
       }
     }
-  }
+  };
 
-  handlePaddings() {
-    const { padding } = this.props;
+  const handlePaddings = () => {
     if (typeof padding === 'number') {
       return {
         paddingTop: padding,
@@ -93,73 +113,48 @@ export default class Block extends Component {
           };
       }
     }
-  }
+  };
 
-  render() {
-    const {
-      flex,
-      row,
-      column,
-      center,
-      middle,
-      left,
-      right,
-      top,
-      bottom,
-      card,
-      shadow,
-      color,
-      space,
-      padding,
-      margin,
-      animated,
-      wrap,
-      style,
-      children,
-      ...props
-    } = this.props;
+  const blockStyles = [
+    styles.block,
+    flex && { flex },
+    flex === false && { flex: 0 }, // reset / disable flex
+    row && styles.row,
+    column && styles.column,
+    center && styles.center,
+    middle && styles.middle,
+    left && styles.left,
+    right && styles.right,
+    top && styles.top,
+    bottom && styles.bottom,
+    margin && { ...handleMargins() },
+    padding && { ...handlePaddings() },
+    card && styles.card,
+    shadow && styles.shadow,
+    space && { justifyContent: `space-${space}` },
+    wrap && { flexWrap: 'wrap' },
+    color && styles[color], // predefined styles colors for backgroundColor
+    color && !styles[color] && { backgroundColor: color }, // custom backgroundColor
+    style, // rewrite predefined styles
+  ];
 
-    const blockStyles = [
-      styles.block,
-      flex && { flex },
-      flex === false && { flex: 0 }, // reset / disable flex
-      row && styles.row,
-      column && styles.column,
-      center && styles.center,
-      middle && styles.middle,
-      left && styles.left,
-      right && styles.right,
-      top && styles.top,
-      bottom && styles.bottom,
-      margin && { ...this.handleMargins() },
-      padding && { ...this.handlePaddings() },
-      card && styles.card,
-      shadow && styles.shadow,
-      space && { justifyContent: `space-${space}` },
-      wrap && { flexWrap: 'wrap' },
-      color && styles[color], // predefined styles colors for backgroundColor
-      color && !styles[color] && { backgroundColor: color }, // custom backgroundColor
-      style, // rewrite predefined styles
-    ];
-
-    if (animated) {
-      return (
-        <Animated.View style={blockStyles} {...props}>
-          {children}
-        </Animated.View>
-      );
-    }
-
+  if (animated) {
     return (
-      <View style={blockStyles} {...props}>
+      <Animated.View style={blockStyles} {...props}>
         {children}
-      </View>
+      </Animated.View>
     );
   }
-}
+
+  return (
+    <View style={blockStyles} {...props}>
+      {children}
+    </View>
+  );
+};
 
 export const styles = StyleSheet.create({
-  block: {
+  flex: {
     flex: 1,
   },
   row: {
@@ -205,3 +200,5 @@ export const styles = StyleSheet.create({
   gray: { backgroundColor: COLORS.gray },
   lightGray: { backgroundColor: COLORS.lightGray },
 });
+
+export default Block;
