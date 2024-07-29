@@ -9,56 +9,69 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",
-  async ( {mobile, password}) => {
-    console.log({mobile, password});
-    console.log(BASE_URL +'auth/login-phone');
-    const response = await axios.post( BASE_URL +'auth/login-phone', {
-      mobile,
-      password,
-    });
-    console.log("loginnnnnnn---?????? ", await response.data);
-    
-    return response.data?.user;
+  async ({ mobile, password }, { rejectWithValue }) => {
+    try {
+      console.log({ mobile, password });
+      console.log(BASE_URL + 'auth/login-phone');
+      const response = await axios.post(BASE_URL + 'auth/login-phone', {
+        mobile,
+        password,
+      });
+      console.log("loginnnnnnn---?????? ", await response.data);
+
+      return response.data?.user;
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        console.log('Error Response Data:', error.response.data);
+        console.log('Error Response Status:', error.response.status);
+        console.log('Error Response Headers:', error.response.headers);
+        return rejectWithValue(error.response.data);
+      } else if (error.request) {
+        // Request was made but no response was received
+        console.log('Error Request:', error.request);
+        return rejectWithValue('No response received from server');
+      } else {
+        // Something happened in setting up the request
+        console.log('Error Message:', error.message);
+        return rejectWithValue(error.message);
+      }
+    }
   }
 );
 
 export const signUpUser = createAsyncThunk(
-  "user/signUpUser",
-  async ({  
-    name,
-    email,
-    mobile,
-    password,
-    cover_url, 
-    profile_pic,
-    role
-  }) => {
-    console.log();
-    //  LOG  {"cover_url": "", "email": undefined, "mobile": "+243891979018", 
-    // "name": "Test 2", "password": "123456", 
-    // "profile_pic": "", "role": "user", "username": undefined}
-    console.log({  
-      name,
-      email,
-      mobile,
-      password,
-      cover_url, 
-      profile_pic,
-      role
-    });
-    console.log();
-    const response = await axios.post( BASE_URL +'auth/signup', {
-      name,
-      email,
-      mobile,
-      password,
-      cover_url, 
-      profile_pic,
-      role
-    });
-    console.log("Signup---?????? ",response.data);
-    
-    return response.data;
+  'user/signUpUser',
+  async ({ name, email, mobile, password, cover_url, profile_pic, role }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${BASE_URL}auth/signup`, {
+        name,
+        email,
+        mobile,
+        password,
+        cover_url,
+        profile_pic,
+        role,
+      });
+      console.log('Signup Response:', response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        console.log('Error Response Data:', error.response.data);
+        console.log('Error Response Status:', error.response.status);
+        console.log('Error Response Headers:', error.response.headers);
+        return rejectWithValue(error.response.data);
+      } else if (error.request) {
+        // Request was made but no response was received
+        console.log('Error Request:', error.request);
+        return rejectWithValue('No response received from server');
+      } else {
+        // Something happened in setting up the request
+        console.log('Error Message:', error.message);
+        return rejectWithValue(error.message);
+      }
+    }
   }
 );
 
@@ -71,7 +84,7 @@ export const editUser = createAsyncThunk(
     email,
     mobile,
     username,
-    cover_url, 
+    cover_url,
     profile_pic,
     role
   }) => {
@@ -81,12 +94,12 @@ export const editUser = createAsyncThunk(
       email,
       mobile,
       username,
-      cover_url, 
+      cover_url,
       profile_pic,
       role
     });
-    console.log("Edit---?????? ",response.data);
-    
+    console.log("Edit---?????? ", response.data);
+
     return response.data;
   }
 );
@@ -102,8 +115,8 @@ export const resetPassword = createAsyncThunk(
     const response = await axios.put(url, { // Use PUT request for updating
       password,
     });
-    console.log("Reset---?????? ",response.data);
-    
+    console.log("Reset---?????? ", response.data);
+
     return response.data;
   }
 );
@@ -174,10 +187,10 @@ const userSlice = createSlice({
         AsyncStorage.setItem('user', JSON.stringify({ user: action.payload }));
       })
       .addCase(loginUser.rejected, (state, action) => {
-        console.log('loginUser.rejected')
+        console.log('loginUser.rejected',action.payload )
 
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
         state.success = false
       })
       .addCase(signUpUser.pending, (state) => {
@@ -187,7 +200,7 @@ const userSlice = createSlice({
 
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
-        state.isLoadingSignUp= false;
+        state.isLoadingSignUp = false;
         state.userSignUp = action.payload;
         state.errorSignUp = null;
         state.successSignUp = true
@@ -196,11 +209,10 @@ const userSlice = createSlice({
         //AsyncStorage.setItem('user', JSON.stringify({ user: action.payload }));
       })
       .addCase(signUpUser.rejected, (state, action) => {
-        console.log("bree *************** ",action.error);
-        console.log("bree ***************", action.error.message);
-        console.log("bree ***************",action);
+        console.log("bree *************** ", action.payload);
+        
         state.isLoadingSignUp = false;
-        state.errorSignUp = action.error.message;
+        state.errorSignUp = action.payload;
         state.successSignUp = false
       })
       .addCase(editUser.pending, (state) => {
@@ -210,7 +222,7 @@ const userSlice = createSlice({
 
       })
       .addCase(editUser.fulfilled, (state, action) => {
-        state.isLoadingSignUp= false;
+        state.isLoadingSignUp = false;
         state.userSignUp = action.payload;
         state.errorSignUp = null;
         state.successSignUp = true
@@ -219,9 +231,9 @@ const userSlice = createSlice({
         //AsyncStorage.setItem('user', JSON.stringify({ user: action.payload }));
       })
       .addCase(resetPassword.rejected, (state, action) => {
-        console.log("bree *************** ",action.error.message);
+        console.log("bree *************** ", action.payload);
         state.isLoadingSignUp = false;
-        state.errorSignUp = action.error.message;
+        state.errorSignUp = action.payload;
         state.successSignUp = false
       })
       .addCase(resetPassword.pending, (state) => {
@@ -231,7 +243,7 @@ const userSlice = createSlice({
 
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
-        state.isLoadingSignUp= false;
+        state.isLoadingSignUp = false;
         state.userSignUp = action.payload;
         state.errorSignUp = null;
         state.successSignUp = true
@@ -240,7 +252,7 @@ const userSlice = createSlice({
         //AsyncStorage.setItem('user', JSON.stringify({ user: action.payload }));
       })
       .addCase(editUser.rejected, (state, action) => {
-        console.log("bree *************** ",action.error.message);
+        console.log("bree *************** ", action.error.message);
         state.isLoadingSignUp = false;
         state.errorSignUp = action.error.message;
         state.successSignUp = false

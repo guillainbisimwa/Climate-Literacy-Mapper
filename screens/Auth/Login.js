@@ -55,11 +55,11 @@ const Login = ({ navigation }) => {
             const value = await AsyncStorage.getItem('user');
             console.log("value login", value);
 
-            if (value !== null) {               
+            if (value !== null) {
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'MainStack' }],
-                  });
+                });
             } else {
                 //Toast.error("An error has occurred!!1", 'top')
                 //console.log("error", error);
@@ -92,7 +92,7 @@ const Login = ({ navigation }) => {
                     //setValid(false);
                     Toast.error('Incorrect phone number', 'top')
                     return
-                } 
+                }
 
                 if (password.length < 3 || password.length > 20) {
                     setPasswordError(true);
@@ -103,17 +103,21 @@ const Login = ({ navigation }) => {
                 }
 
                 // Handle login functionality
-                dispatch(loginUser({ mobile: formattedValue, password })).then((data) => {
-                    console.log('data', data);
-                    if (hasErrorKey(data)) {
-                        Toast.error("An error has occurred!!2", 'top');
-                    }
-
-                }).catch((err) => {
-                    // Toast.error("Une erreur s'est produite!", 'top');
-                    console.log('err', err);
-                })
-
+                dispatch(loginUser({ mobile: formattedValue, password }))
+                    .then((result) => {
+                        if (loginUser.fulfilled.match(result)) {
+                            // Handle successful login
+                            console.log('Login Successful:', result.payload);
+                        } else if (loginUser.rejected.match(result)) {
+                            // Handle rejected login
+                            Toast.error(`Error: ${result.payload?.msg}`, 'top');
+                        }
+                    })
+                    .catch((error) => {
+                        // Handle any additional errors
+                        console.error('Error during login:', error);
+                        Toast.error(`Error during login:, ${error}`, 'top');
+                    });
             }
 
         } catch (error) {
@@ -145,7 +149,7 @@ const Login = ({ navigation }) => {
                                 <PhoneInput
                                     ref={phoneInput}
                                     // defaultValue={value}
-                                    defaultCode="KE"
+                                    defaultCode="CD"
                                     layout="first"
                                     onChangeText={(text) => {
                                         const checkValid = phoneInput.current?.isValidNumber(text);
@@ -173,7 +177,7 @@ const Login = ({ navigation }) => {
                                     }}
 
                                 />
-                               
+
                             </View>
                         </View>
 
