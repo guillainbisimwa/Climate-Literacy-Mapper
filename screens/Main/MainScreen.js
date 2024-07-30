@@ -189,7 +189,7 @@ const MainScreen = ({ navigation }) => {
                     description="2/3 questions"
                     left={props => <List.Icon {...props}
                         icon="plus"
-                        color="cyan"
+                        color="red"
                     />}
                     right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
                 />
