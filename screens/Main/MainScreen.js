@@ -25,7 +25,7 @@ const MainScreen = ({ navigation }) => {
                     "eng": "Climate change",
                     "local": "Mabadiliko ya hali ya hewa",
                     "_id": "66a90b3f2ca5a67f23e2044f",
-                    "icon":"folder"
+                    "icon": "folder"
                 }
             ],
             "localChallenges": [
@@ -34,7 +34,7 @@ const MainScreen = ({ navigation }) => {
                     "eng": "Local challenges",
                     "local": "Changamoto za ndani",
                     "_id": "66a90b3f2ca5a67f23e20450",
-                    "icon":"folder"
+                    "icon": "folder"
                 }
             ],
             "mindfullExercises": [
@@ -43,17 +43,17 @@ const MainScreen = ({ navigation }) => {
                     "eng": "Mindfulness exercises",
                     "local": "Mazoezi ya akili",
                     "_id": "66a90b3f2ca5a67f23e20451",
-                    "icon":"folder"
+                    "icon": "folder"
                 }
             ],
 
-            "rle":[
+            "rle": [
                 {
                     "fr": "Exercices de pleine conscience",
                     "eng": "Mindfulness exercises",
                     "local": "Mazoezi ya akili",
                     "_id": "66a90b3f2ca5a67f23e20451",
-                    "icon":"folder"
+                    "icon": "folder"
                 }
             ],
             "tribe": {
@@ -144,7 +144,7 @@ const MainScreen = ({ navigation }) => {
         >
             <Block>
                 <Text gray>
-                Please the form here!
+                    Please the form here!
                 </Text>
                 <Text bold h3>Climate Literacy Mapper</Text>
             </Block>
@@ -181,48 +181,60 @@ const MainScreen = ({ navigation }) => {
                 <Text accent>MBURA</Text>
             </Block>
             <Block>
+                <List.Item
+                    title="Start here"
+                    titleStyle={{
+                        fontWeight: "bold"
+                    }}
+                    description="2/3 questions"
+                    left={props => <List.Icon {...props}
+                        icon="plus"
+                        color="cyan"
+                    />}
+                    right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
+                />
                 {
 
                     translations.map(item => {
                         return Object.keys(item)
-                            .filter(key => key !== "tribe" && key !== "_id" && key !== "status" 
-                                && key !== "__v" && key !== "ststus"  && key !== "timestamp"  )
-                            .map((key, val)=> {
-                        console.log("----------",item[key]);
-                                
+                            .filter(key => key !== "tribe" && key !== "_id" && key !== "status"
+                                && key !== "__v" && key !== "ststus" && key !== "timestamp")
+                            .map((key, val) => {
+                                console.log("----------", item[key]);
+
                                 return <List.Item
                                     title={
-                                        key == "preLesson"? "Pre-lesson questions": 
-                                        key == "localChallenges"? "Local challenges":
-                                        key == "mindfullExercises"? "Mindfulness exercises":
-                                        key == "rle"? " Real-life existing examples":key
+                                        key == "preLesson" ? "Pre-lesson questions" :
+                                            key == "localChallenges" ? "Local challenges" :
+                                                key == "mindfullExercises" ? "Mindfulness exercises" :
+                                                    key == "rle" ? " Real-life existing examples" : key
 
-                                       
+
                                     }
                                     titleStyle={{
                                         fontWeight: "bold"
                                     }}
                                     key={key}
                                     description="2/3 questions"
-                                    left={props => <List.Icon {...props} 
-                                    icon={
-                                        key == "preLesson"? "apps": 
-                                        key == "localChallenges"? "offer":
-                                        key == "mindfullExercises"? "odnoklassniki":
-                                        key == "rle"? "run":key
+                                    left={props => <List.Icon {...props}
+                                        icon={
+                                            key == "preLesson" ? "apps" :
+                                                key == "localChallenges" ? "offer" :
+                                                    key == "mindfullExercises" ? "odnoklassniki" :
+                                                        key == "rle" ? "run" : key
 
-                                    }
-                                    color={
-                                        key == "preLesson"? "chocolate": 
-                                        key == "localChallenges"? "blue":
-                                        key == "mindfullExercises"? "green":
-                                        key == "rle"? "magenta":key
+                                        }
+                                        color={
+                                            key == "preLesson" ? "chocolate" :
+                                                key == "localChallenges" ? "blue" :
+                                                    key == "mindfullExercises" ? "green" :
+                                                        key == "rle" ? "magenta" : key
 
-                                    } 
-                                     />}
+                                        }
+                                    />}
                                     right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
                                 />
-                    });
+                            });
                     })}
 
 
