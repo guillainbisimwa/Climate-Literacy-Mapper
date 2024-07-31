@@ -3,13 +3,41 @@ import { Block, Text } from "../../components"
 import { logoutUser } from "@/redux/authReducer";
 import { Avatar, Button, List } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLORS, SIZES } from "@/constants";
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { PageSlider } from '@pietile-native-kit/page-slider';
+
 
 const MainScreen = ({ navigation }) => {
     const { error, isLoading, success, user } = useSelector((state) => state.user);
+    const snapPoints = useMemo(() => ["50%", '70%', '80%', '90%'], []);
+    const [open, setOpen] = useState(false);
+
+    const bottomSheet = useRef(null);
+
+    const BackdropElement = useCallback(
+        (backdropProps) => (
+            <BottomSheetBackdrop
+                {...backdropProps}
+                opacity={0.7}
+                appearsOnIndex={0}
+                disappearsOnIndex={-1}
+            />
+        ),
+        []
+    );
+
+
+    const openModal = useCallback(() => {
+        bottomSheet.current?.present();
+        setTimeout(() => {
+            setOpen(true);
+        }, 5);
+    }, []);
 
     const pieData = [
         { value: 70, color: '#177AD5' },
@@ -93,6 +121,31 @@ const MainScreen = ({ navigation }) => {
         }
     ];
 
+    const renderBottom = () => (
+
+        <BottomSheetModal
+            ref={bottomSheet}
+            index={0}
+            backdropComponent={BackdropElement}
+            snapPoints={snapPoints}
+            onDismiss={() => setOpen(false)}
+        >
+            <BottomSheetScrollView style={{ padding: 17 }}>
+
+                <Block>
+                <PageSlider
+      style={styles.pageSlider}
+      selectedPage={selectedPage}
+      onSelectedPageChange={setSelectedPage}
+    >
+
+                </Block>
+
+            </BottomSheetScrollView>
+        </BottomSheetModal>
+    );
+
+
 
 
     const dispatch = useDispatch();
@@ -128,119 +181,135 @@ const MainScreen = ({ navigation }) => {
         }
     };
 
-    return <Block flex style={{ position: "relative", }}>
-        <Block paddingBottom={60} padding={30} middle row space="between" color={COLORS.primary}>
-            <Block>
-                <Text white >Climate Literacy Mapper</Text>
-                <Text bold h2 white >Hi, Guillain weza </Text>
-            </Block>
-            <Avatar.Icon size={54} icon="account-circle" />
-        </Block>
-        <Block center padding={[30, 10, 30, 20]} row
-            space="between" color={COLORS.white} card shadow style={{
-                width: '90%',
-                position: "relative", left: '2.5%', top: -30
-            }}
-        >
-            <Block>
-                <Text gray>
-                    Please the form here!
-                </Text>
-                <Text bold h3>Climate Literacy Mapper</Text>
-            </Block>
-            <PieChart
-                donut
-                radius={30}
-                innerRadius={25}
-                data={pieData}
-                centerLabelComponent={() => {
-                    return <Text style={{ fontSize: 15 }}>70%</Text>;
-                }}
-            />
-
-
-        </Block>
-        <ScrollView style={{ marginTop: -25 }}>
-            <Block margin={20} padding={40} card shadow color={COLORS.yellow} >
-                <Text center bold>
-                    Do you know people from other tribes that would like to participate in this exercise?
-                </Text>
-                <Button style={{ marginTop: 15 }} mode="outlined" >Invite a friend</Button>
-                <Image
-                    source={{ uri: 'https://deep-image.ai/_next/static/media/app-info-deepimage.a6eea05d.webp' }}
-                    style={[styles.profileImage, styles.profileImageLeft]}
-                />
-                <Image
-                    source={{ uri: 'https://deep-image.ai/_next/static/media/app-info-deepimage.a6eea05d.webp' }}
-                    style={[styles.profileImage, styles.profileImageBottomRight]}
-                />
-            </Block>
-
-            <Block padding={[0, 20]} flex>
-                <Text bold>What is climate change in your native language?</Text>
-                <Text accent>MBURA</Text>
-            </Block>
-            <Block>
-                <List.Item
-                    title="Start here"
-                    titleStyle={{
-                        fontWeight: "bold"
+    return <GestureHandlerRootView>
+        <BottomSheetModalProvider>
+            <Block flex style={{ position: "relative", }}>
+                <Block paddingBottom={60} padding={30} middle row space="between" color={COLORS.primary}>
+                    <Block>
+                        <Text white >Climate Literacy Mapper</Text>
+                        <Text bold h2 white >Hi, Guillain weza </Text>
+                    </Block>
+                    <Avatar.Icon size={54} icon="account-circle" />
+                </Block>
+                <Block center padding={[30, 10, 30, 20]} row
+                    space="between" color={COLORS.white} card shadow style={{
+                        width: '90%',
+                        position: "relative", left: '2.5%', top: -30
                     }}
-                    description="2/3 questions"
-                    left={props => <List.Icon {...props}
-                        icon="plus"
-                        color="red"
-                    />}
-                    right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
-                />
-                {
-
-                    translations.map(item => {
-                        return Object.keys(item)
-                            .filter(key => key !== "tribe" && key !== "_id" && key !== "status"
-                                && key !== "__v" && key !== "ststus" && key !== "timestamp")
-                            .map((key, val) => {
-                                console.log("----------", item[key]);
-
-                                return <List.Item
-                                    title={
-                                        key == "preLesson" ? "Pre-lesson questions" :
-                                            key == "localChallenges" ? "Local challenges" :
-                                                key == "mindfullExercises" ? "Mindfulness exercises" :
-                                                    key == "rle" ? " Real-life existing examples" : key
+                >
+                    <Block>
+                        <Text gray>
+                            Please the form here!
+                        </Text>
+                        <Text bold h3>Climate Literacy Mapper</Text>
+                    </Block>
+                    <PieChart
+                        donut
+                        radius={30}
+                        innerRadius={25}
+                        data={pieData}
+                        centerLabelComponent={() => {
+                            return <Text style={{ fontSize: 15 }}>70%</Text>;
+                        }}
+                    />
 
 
-                                    }
-                                    titleStyle={{
-                                        fontWeight: "bold"
-                                    }}
-                                    key={key}
-                                    description="2/3 questions"
-                                    left={props => <List.Icon {...props}
-                                        icon={
-                                            key == "preLesson" ? "apps" :
-                                                key == "localChallenges" ? "offer" :
-                                                    key == "mindfullExercises" ? "odnoklassniki" :
-                                                        key == "rle" ? "run" : key
+                </Block>
+                <ScrollView style={{ marginTop: -25 }}>
+                    <Block margin={20} padding={40} card shadow color={COLORS.yellow} >
+                        <Text center bold>
+                            Do you know people from other tribes that would like to participate in this exercise?
+                        </Text>
+                        <Button style={{ marginTop: 15 }} mode="outlined" >Invite a friend</Button>
+                        <Image
+                            source={{ uri: 'https://deep-image.ai/_next/static/media/app-info-deepimage.a6eea05d.webp' }}
+                            style={[styles.profileImage, styles.profileImageLeft]}
+                        />
+                        <Image
+                            source={{ uri: 'https://deep-image.ai/_next/static/media/app-info-deepimage.a6eea05d.webp' }}
+                            style={[styles.profileImage, styles.profileImageBottomRight]}
+                        />
+                    </Block>
 
-                                        }
-                                        color={
-                                            key == "preLesson" ? "chocolate" :
-                                                key == "localChallenges" ? "blue" :
-                                                    key == "mindfullExercises" ? "green" :
-                                                        key == "rle" ? "magenta" : key
+                    <Block padding={[0, 20]} flex>
+                        <Text bold>What is climate change in your native language?</Text>
+                        <Text accent>MBURA</Text>
+                    </Block>
+                    <Block>
+                        <List.Item
+                         onPress={() => {
+                            console.log("ok");
 
-                                        }
-                                    />}
-                                    right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
-                                />
-                            });
-                    })}
+                            openModal();
+                        }}
+                            title="Start here"
+                            titleStyle={{
+                                fontWeight: "bold"
+                            }}
+                            description="2/3 questions"
+                            left={props => <List.Icon {...props}
+                                icon="plus"
+                                color="red"
+                            />}
+                            right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
+                        />
+                        {
+
+                            translations.map(item => {
+                                return Object.keys(item)
+                                    .filter(key => key !== "tribe" && key !== "_id" && key !== "status"
+                                        && key !== "__v" && key !== "ststus" && key !== "timestamp")
+                                    .map((key, val) => {
+                                        console.log("----------", item[key]);
+
+                                        return <List.Item
+                                            onPress={() => {
+                                                console.log("ok");
+
+                                                openModal();
+                                            }}
+                                            title={
+                                                key == "preLesson" ? "Pre-lesson questions" :
+                                                    key == "localChallenges" ? "Local challenges" :
+                                                        key == "mindfullExercises" ? "Mindfulness exercises" :
+                                                            key == "rle" ? " Real-life existing examples" : key
 
 
+                                            }
+                                            titleStyle={{
+                                                fontWeight: "bold"
+                                            }}
+                                            key={key}
+                                            description="2/3 questions"
+                                            left={props => <List.Icon {...props}
+                                                icon={
+                                                    key == "preLesson" ? "apps" :
+                                                        key == "localChallenges" ? "offer" :
+                                                            key == "mindfullExercises" ? "odnoklassniki" :
+                                                                key == "rle" ? "run" : key
+
+                                                }
+                                                color={
+                                                    key == "preLesson" ? "chocolate" :
+                                                        key == "localChallenges" ? "blue" :
+                                                            key == "mindfullExercises" ? "green" :
+                                                                key == "rle" ? "magenta" : key
+
+                                                }
+                                            />}
+                                            right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
+                                        />
+                                    });
+                            })}
+
+                    </Block>
+                </ScrollView>
             </Block>
-        </ScrollView>
-    </Block>
+            {
+                renderBottom()
+            }
+        </BottomSheetModalProvider>
+    </GestureHandlerRootView>
 };
 
 
