@@ -1,21 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Block, Text } from "../../components"
-import { logoutUser } from "@/redux/authReducer";
 import { Avatar, Button, List } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLORS, SIZES } from "@/constants";
-import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Animated, TouchableOpacity, Image, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { PageSlider } from '@pietile-native-kit/page-slider';
+import { PageIndicator } from 'react-native-page-indicator';
 
 
 const MainScreen = ({ navigation }) => {
     const { error, isLoading, success, user } = useSelector((state) => state.user);
     const snapPoints = useMemo(() => ["50%", '70%', '80%', '90%'], []);
     const [open, setOpen] = useState(false);
+    const pages = ['Page 1', 'Page 2', 'Page 3'];
+
 
     const bottomSheet = useRef(null);
 
@@ -121,29 +122,71 @@ const MainScreen = ({ navigation }) => {
         }
     ];
 
-    const renderBottom = () => (
+    const renderBottom = () => {
+        const { width, height } = useWindowDimensions();
+        const scrollX = useRef(new Animated.Value(0)).current;
+        const animatedCurrent = useRef(Animated.divide(scrollX, width)).current;
+        const scrollViewRef = useRef(null);
 
-        <BottomSheetModal
+        const goToNextPage = () => {
+            const currentPageIndex = Math.floor(scrollX._value / width);
+            const nextPageIndex = Math.min(currentPageIndex + 1, pages.length - 1);
+            scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
+        };
+
+        const goToPreviousPage = () => {
+            const currentPageIndex = Math.floor(scrollX._value / width);
+            const prevPageIndex = Math.max(currentPageIndex - 1, 0);
+            scrollViewRef.current.scrollTo({ x: prevPageIndex * width, animated: true });
+        };
+
+
+
+        return <BottomSheetModal
             ref={bottomSheet}
             index={0}
             backdropComponent={BackdropElement}
             snapPoints={snapPoints}
             onDismiss={() => setOpen(false)}
         >
-            <BottomSheetScrollView style={{ padding: 17 }}>
+
+            <Block >
 
                 <Block>
-                <PageSlider
-      style={styles.pageSlider}
-      selectedPage={selectedPage}
-      onSelectedPageChange={setSelectedPage}
-    >
+                    <View style={styles.pageIndicator}>
+                        <PageIndicator count={pages.length} current={Animated.divide(scrollX, width)} />
+                    </View>
+                    <View style={styles.navigationButtons}>
+                        <TouchableOpacity onPress={goToPreviousPage} style={styles.button}>
+                            <Text>Previous</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={goToNextPage} style={styles.button}>
+                            <Text>Next</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Animated.ScrollView
+                        ref={scrollViewRef}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+                            useNativeDriver: false, // Changed to false to use _value
+                        })}
+                        scrollEventThrottle={16} // Handle scroll event every 16ms
+                    >
+                        {pages.map((page, index) => (
+                            <View key={index} style={[styles.page, { width, height }]}>
+                                <Text>{page}</Text>
+                            </View>
+                        ))}
+                    </Animated.ScrollView>
 
                 </Block>
 
-            </BottomSheetScrollView>
+            </Block>
+
         </BottomSheetModal>
-    );
+    };
 
 
 
@@ -237,11 +280,11 @@ const MainScreen = ({ navigation }) => {
                     </Block>
                     <Block>
                         <List.Item
-                         onPress={() => {
-                            console.log("ok");
+                            onPress={() => {
+                                console.log("ok");
 
-                            openModal();
-                        }}
+                                openModal();
+                            }}
                             title="Start here"
                             titleStyle={{
                                 fontWeight: "bold"
@@ -328,6 +371,15 @@ const styles = StyleSheet.create({
     profileImageBottomRight: {
         bottom: -10,
         right: -10,
+    },
+    page: {
+        display: "flex",
+        padding: 20
+    },
+    pageIndicator: {
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 
