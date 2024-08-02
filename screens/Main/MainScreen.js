@@ -174,14 +174,7 @@ const MainScreen = ({ navigation }) => {
                     <View style={styles.pageIndicator}>
                         <PageIndicator count={pages.length} current={Animated.divide(scrollX, width)} />
                     </View>
-                    <Block padding={[0, 20]} row space="between" >
-                        <Button mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
-                            <Text>Previous</Text>
-                        </Button>
-                        <Button mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
-                            <Text>Next</Text>
-                        </Button>
-                    </Block>
+
                     <Animated.ScrollView
                         ref={scrollViewRef}
                         horizontal
@@ -193,9 +186,18 @@ const MainScreen = ({ navigation }) => {
                         scrollEventThrottle={16} // Handle scroll event every 16ms
                     >
                         {pages.map((page, index) => (
-                            <View key={index} style={[styles.page, { width, height }]}>
-                                <Text>{page}</Text>
-                            </View>
+                            <Block key={index} style={[styles.page, { width, height }]}>
+                                <Text>{pages.length}</Text>
+
+                                <Block padding={[10, 0]} row space="between" >
+                                    <Button disabled={index == 0? true:false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
+                                        <Text>Previous</Text>
+                                    </Button>
+                                    <Button disabled={index == pages.length - 1? true:false} mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
+                                        <Text>Next</Text>
+                                    </Button>
+                                </Block>
+                            </Block>
                         ))}
                     </Animated.ScrollView>
 
@@ -395,13 +397,10 @@ const styles = StyleSheet.create({
         padding: 20
     },
     pageIndicator: {
-        padding: 20,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    button: {
-        marginTop: -40,
-    }
+
 });
 
 
