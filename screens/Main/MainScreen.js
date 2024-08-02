@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Block, Text } from "../../components"
-import { Avatar, Button, List } from "react-native-paper";
+import { Avatar, Button, IconButton, List } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLORS, SIZES } from "@/constants";
@@ -17,7 +17,6 @@ const MainScreen = ({ navigation }) => {
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
 
-
     const bottomSheet = useRef(null);
 
     const BackdropElement = useCallback(
@@ -31,6 +30,11 @@ const MainScreen = ({ navigation }) => {
         ),
         []
     );
+
+    const hideModal = () => handleClosePress();
+    const handleClosePress = useCallback(() => {
+        bottomSheet.current?.close();
+    }, []);
 
 
     const openModal = useCallback(() => {
@@ -140,8 +144,6 @@ const MainScreen = ({ navigation }) => {
             scrollViewRef.current.scrollTo({ x: prevPageIndex * width, animated: true });
         };
 
-
-
         return <BottomSheetModal
             ref={bottomSheet}
             index={0}
@@ -150,20 +152,36 @@ const MainScreen = ({ navigation }) => {
             onDismiss={() => setOpen(false)}
         >
 
-            <Block >
+            <Block row space='between' padding={[0, 20]}>
+                <Block m_b={10} flex={1}>
+                    <Text bold h2>CLIMATE KNOWLEDGE</Text>
+                    <Text color={COLORS.blue}>{`In our local language`}</Text>
+                </Block>
+                <TouchableOpacity
+                    onPress={() => hideModal()}
+                >
+                    <IconButton
+                        icon="close"
+                        iconColor={COLORS.red}
+                        size={40}
+                    />
+                </TouchableOpacity>
 
-                <Block>
+            </Block>
+            <Block>
+
+                <Block >
                     <View style={styles.pageIndicator}>
                         <PageIndicator count={pages.length} current={Animated.divide(scrollX, width)} />
                     </View>
-                    <View style={styles.navigationButtons}>
-                        <TouchableOpacity onPress={goToPreviousPage} style={styles.button}>
+                    <Block padding={[0, 20]} row space="between" >
+                        <Button mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
                             <Text>Previous</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={goToNextPage} style={styles.button}>
+                        </Button>
+                        <Button mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
                             <Text>Next</Text>
-                        </TouchableOpacity>
-                    </View>
+                        </Button>
+                    </Block>
                     <Animated.ScrollView
                         ref={scrollViewRef}
                         horizontal
@@ -303,7 +321,7 @@ const MainScreen = ({ navigation }) => {
                                     .filter(key => key !== "tribe" && key !== "_id" && key !== "status"
                                         && key !== "__v" && key !== "ststus" && key !== "timestamp")
                                     .map((key, val) => {
-                                        console.log("----------", item[key]);
+                                        // console.log("----------", item[key]);
 
                                         return <List.Item
                                             onPress={() => {
@@ -381,6 +399,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    button: {
+        marginTop: -40,
+    }
 });
 
 
