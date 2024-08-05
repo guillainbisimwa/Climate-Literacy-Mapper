@@ -9,7 +9,8 @@ import { PieChart } from "react-native-gifted-charts";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PageIndicator } from 'react-native-page-indicator';
-
+import SelectDropdown from 'react-native-select-dropdown';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const MainScreen = ({ navigation }) => {
     const { error, isLoading, success, user } = useSelector((state) => state.user);
@@ -17,6 +18,397 @@ const MainScreen = ({ navigation }) => {
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
+
+    const tribes = [
+
+        { title: "Abe", icon: "square-rounded-outline" },
+        { title: "Abidji", icon: "square-rounded-outline" },
+        { title: "Abron", icon: "square-rounded-outline" },
+        { title: "Abure", icon: "square-rounded-outline" },
+        { title: "Adanse", icon: "square-rounded-outline" },
+        { title: "Adjukru", icon: "square-rounded-outline" },
+        { title: "Afar", icon: "square-rounded-outline" },
+        { title: "Afo", icon: "square-rounded-outline" },
+        { title: "Agbogho monnwhu", icon: "square-rounded-outline" },
+        { title: "Agwa", icon: "square-rounded-outline" },
+        { title: "Aizi", icon: "square-rounded-outline" },
+        { title: "Akan", icon: "square-rounded-outline" },
+        { title: "Akuapem", icon: "square-rounded-outline" },
+        { title: "Aladyan", icon: "square-rounded-outline" },
+        { title: "Ambo", icon: "square-rounded-outline" },
+        { title: "Anang", icon: "square-rounded-outline" },
+        { title: "Anyang", icon: "square-rounded-outline" },
+        { title: "Anyi", icon: "square-rounded-outline" },
+        { title: "Aowin", icon: "square-rounded-outline" },
+        { title: "Arugba", icon: "square-rounded-outline" },
+        { title: "Asante", icon: "square-rounded-outline" },
+        { title: "Asinda", icon: "square-rounded-outline" },
+        { title: "Akye", icon: "square-rounded-outline" },
+        { title: "Avikam", icon: "square-rounded-outline" },
+        { title: "Bafo", icon: "square-rounded-outline" },
+        { title: "Baga", icon: "square-rounded-outline" },
+        { title: "Bakota", icon: "square-rounded-outline" },
+        { title: "Balante", icon: "square-rounded-outline" },
+        { title: "Bali", icon: "square-rounded-outline" },
+        { title: "Bamana", icon: "square-rounded-outline" },
+        { title: "Bambara", icon: "square-rounded-outline" },
+        { title: "Bamileke", icon: "square-rounded-outline" },
+        { title: "Bamum", icon: "square-rounded-outline" },
+        { title: "Bana", icon: "square-rounded-outline" },
+        { title: "Bangba", icon: "square-rounded-outline" },
+        { title: "Bangubangu", icon: "square-rounded-outline" },
+        { title: "Bangwa", icon: "square-rounded-outline" },
+        { title: "Bankoni", icon: "square-rounded-outline" },
+        { title: "Banyambo", icon: "square-rounded-outline" },
+        { title: "Barambu", icon: "square-rounded-outline" },
+        { title: "Bariba", icon: "square-rounded-outline" },
+        { title: "Barotse", icon: "square-rounded-outline" },
+        { title: "Basikasingo", icon: "square-rounded-outline" },
+        { title: "Bassa", icon: "square-rounded-outline" },
+        { title: "Baster", icon: "square-rounded-outline" },
+        { title: "Baule", icon: "square-rounded-outline" },
+        { title: "Beke", icon: "square-rounded-outline" },
+        { title: "Bella", icon: "square-rounded-outline" },
+        { title: "Bemba", icon: "square-rounded-outline" },
+        { title: "Bembe", icon: "square-rounded-outline" },
+        { title: "Bena Luluwa", icon: "square-rounded-outline" },
+        { title: "Bende", icon: "square-rounded-outline" },
+        { title: "Benin", icon: "square-rounded-outline" },
+        { title: "Berber", icon: "square-rounded-outline" },
+        { title: "Bete", icon: "square-rounded-outline" },
+        { title: "Betsi", icon: "square-rounded-outline" },
+        { title: "Bidjogo", icon: "square-rounded-outline" },
+        { title: "Bidyogo", icon: "square-rounded-outline" },
+        { title: "Bijema", icon: "square-rounded-outline" },
+        { title: "Bira", icon: "square-rounded-outline" },
+        { title: "Bjiri", icon: "square-rounded-outline" },
+        { title: "Boa", icon: "square-rounded-outline" },
+        { title: "Bobo", icon: "square-rounded-outline" },
+        { title: "Bodo", icon: "square-rounded-outline" },
+        { title: "Boki", icon: "square-rounded-outline" },
+        { title: "Bongo", icon: "square-rounded-outline" },
+        { title: "Boni", icon: "square-rounded-outline" },
+        { title: "Borana", icon: "square-rounded-outline" },
+        { title: "Bozo", icon: "square-rounded-outline" },
+        { title: "Buganda", icon: "square-rounded-outline" },
+        { title: "Bundu", icon: "square-rounded-outline" },
+        { title: "Burra", icon: "square-rounded-outline" },
+        { title: "Bushoong", icon: "square-rounded-outline" },
+        { title: "Buyu", icon: "square-rounded-outline" },
+        { title: "Bwa", icon: "square-rounded-outline" },
+        { title: "Bwaka", icon: "square-rounded-outline" },
+        { title: "Bwende", icon: "square-rounded-outline" },
+        { title: "Bwile", icon: "square-rounded-outline" },
+        { title: "Byeri", icon: "square-rounded-outline" },
+        { title: "Byeru", icon: "square-rounded-outline" },
+        { title: "Chagga", icon: "square-rounded-outline" },
+        // { title: "Chamba", icon: "square-rounded-outline" },
+        // { title: "Chokwe", icon: "square-rounded-outline" },
+        // { title: "Chopi", icon: "square-rounded-outline" },
+        // { title: "Dabakala", icon: "square-rounded-outline" },
+        // { title: "Dagari", icon: "square-rounded-outline" },
+        // { title: "Dakakari", icon: "square-rounded-outline" },
+        // { title: "Damara", icon: "square-rounded-outline" },
+        // { title: "Dan", icon: "square-rounded-outline" },
+        // { title: "Dinka", icon: "square-rounded-outline" },
+        // { title: "Diomande", icon: "square-rounded-outline" },
+        // { title: "Dioula", icon: "square-rounded-outline" },
+        // { title: "Djenné", icon: "square-rounded-outline" },
+        // { title: "Dogon", icon: "square-rounded-outline" },
+        // { title: "Dorobo", icon: "square-rounded-outline" },
+        // { title: "Ebandza", icon: "square-rounded-outline" },
+        // { title: "Edan", icon: "square-rounded-outline" },
+        // { title: "Ega", icon: "square-rounded-outline" },
+        // { title: "Ejagham", icon: "square-rounded-outline" },
+        // { title: "Eket", icon: "square-rounded-outline" },
+        // { title: "Ekoi", icon: "square-rounded-outline" },
+        // { title: "Ekonda", icon: "square-rounded-outline" },
+        // { title: "Elefon", icon: "square-rounded-outline" },
+        // { title: "Elegba", icon: "square-rounded-outline" },
+        // { title: "Eotile", icon: "square-rounded-outline" },
+        // { title: "Epa", icon: "square-rounded-outline" },
+        // { title: "Esie", icon: "square-rounded-outline" },
+        // { title: "Esuma", icon: "square-rounded-outline" },
+        // { title: "Ewe", icon: "square-rounded-outline" },
+        // { title: "Fale", icon: "square-rounded-outline" },
+        // { title: "Fang", icon: "square-rounded-outline" },
+        // { title: "Fante", icon: "square-rounded-outline" },
+        // { title: "Fon", icon: "square-rounded-outline" },
+        // { title: "Frafra", icon: "square-rounded-outline" },
+        // { title: "Fuga", icon: "square-rounded-outline" },
+        // { title: "Fulani", icon: "square-rounded-outline" },
+        // { title: "Few", icon: "square-rounded-outline" },
+        // { title: "Gan", icon: "square-rounded-outline" },
+        // { title: "Gaola", icon: "square-rounded-outline" },
+        // { title: "Gato", icon: "square-rounded-outline" },
+        // { title: "Gbekre", icon: "square-rounded-outline" },
+        // { title: "Gciriku", icon: "square-rounded-outline" },
+        // { title: "Geh", icon: "square-rounded-outline" },
+        // { title: "Ghimbala", icon: "square-rounded-outline" },
+        // { title: "Gio", icon: "square-rounded-outline" },
+        // { title: "Giryama", icon: "square-rounded-outline" },
+        // { title: "Gogo", icon: "square-rounded-outline" },
+        // { title: "Goma", icon: "square-rounded-outline" },
+        // { title: "Gon", icon: "square-rounded-outline" },
+        // { title: "Grebo", icon: "square-rounded-outline" },
+        // { title: "Guerre", icon: "square-rounded-outline" },
+        // { title: "Guerze_Kpelle", icon: "square-rounded-outline" },
+        // { title: "Guin", icon: "square-rounded-outline" },
+        // { title: "Gurage", icon: "square-rounded-outline" },
+        // { title: "Guro", icon: "square-rounded-outline" },
+        // { title: "Gurunsi", icon: "square-rounded-outline" },
+        // { title: "Gwa", icon: "square-rounded-outline" },
+        // { title: "Hamar", icon: "square-rounded-outline" },
+        // { title: "Hamba", icon: "square-rounded-outline" },
+        // { title: "Hausa", icon: "square-rounded-outline" },
+        // { title: "Hehe", icon: "square-rounded-outline" },
+        // { title: "Hemba", icon: "square-rounded-outline" },
+        // { title: "Herero", icon: "square-rounded-outline" },
+        // { title: "Himba", icon: "square-rounded-outline" },
+        // { title: "Holoholo", icon: "square-rounded-outline" },
+        // { title: "Hutu", icon: "square-rounded-outline" },
+        // { title: "Hungana", icon: "square-rounded-outline" },
+        // { title: "Ibibio", icon: "square-rounded-outline" },
+        // { title: "Idoma", icon: "square-rounded-outline" },
+        // { title: "Igala", icon: "square-rounded-outline" },
+        // { title: "Igbira", icon: "square-rounded-outline" },
+        // { title: "Igbo", icon: "square-rounded-outline" },
+        // { title: "Igbo Ukwu", icon: "square-rounded-outline" },
+        // { title: "Ijo", icon: "square-rounded-outline" },
+        // { title: "Iraqw", icon: "square-rounded-outline" },
+        // { title: "Jaba", icon: "square-rounded-outline" },
+        // { title: "Jukun", icon: "square-rounded-outline" },
+        // { title: "Kafigeledio", icon: "square-rounded-outline" },
+        // { title: "Kaguru", icon: "square-rounded-outline" },
+        // { title: "Kaka", icon: "square-rounded-outline" },
+        // { title: "Kanu", icon: "square-rounded-outline" },
+        // { title: "Kara", icon: "square-rounded-outline" },
+        // { title: "Karo", icon: "square-rounded-outline" },
+        // { title: "Karagwe", icon: "square-rounded-outline" },
+        // { title: "Karamojong", icon: "square-rounded-outline" },
+        // { title: "Karsina", icon: "square-rounded-outline" },
+        // { title: "Kassena", icon: "square-rounded-outline" },
+        // { title: "Katana", icon: "square-rounded-outline" },
+        // { title: "Katsina", icon: "square-rounded-outline" },
+        // { title: "Kerebe", icon: "square-rounded-outline" },
+        // { title: "Kete", icon: "square-rounded-outline" },
+        // { title: "Kholuka", icon: "square-rounded-outline" },
+        // { title: "Kigango", icon: "square-rounded-outline" },
+        // { title: "Kikuyu", icon: "square-rounded-outline" },
+        // { title: "Kipsigi", icon: "square-rounded-outline" },
+        // { title: "Kissi", icon: "square-rounded-outline" },
+        // { title: "Kiteki", icon: "square-rounded-outline" },
+        // { title: "Kom", icon: "square-rounded-outline" },
+        // { title: "Koma", icon: "square-rounded-outline" },
+        // { title: "Komo", icon: "square-rounded-outline" },
+        // { title: "Kongo", icon: "square-rounded-outline" },
+        // { title: "Konso", icon: "square-rounded-outline" },
+        // { title: "Koro", icon: "square-rounded-outline" },
+        // { title: "Kota", icon: "square-rounded-outline" },
+        // { title: "Kpaniya", icon: "square-rounded-outline" },
+        // { title: "Kpelie", icon: "square-rounded-outline" },
+        // { title: "Kponiugo", icon: "square-rounded-outline" },
+        // { title: "Kran", icon: "square-rounded-outline" },
+        // { title: "Krinjabo", icon: "square-rounded-outline" },
+        // { title: "Krobu", icon: "square-rounded-outline" },
+        // { title: "Kru", icon: "square-rounded-outline" },
+        // { title: "Kuba", icon: "square-rounded-outline" },
+        // { title: "Kusu", icon: "square-rounded-outline" },
+        // { title: "Kuyu", icon: "square-rounded-outline" },
+        // { title: "Kwahu", icon: "square-rounded-outline" },
+        // { title: "Kwame", icon: "square-rounded-outline" },
+        // { title: "Kwangali", icon: "square-rounded-outline" },
+        // { title: "Kwele", icon: "square-rounded-outline" },
+        // { title: "Kwere", icon: "square-rounded-outline" },
+        // { title: "Kyaman", icon: "square-rounded-outline" },
+        // { title: "Laka", icon: "square-rounded-outline" },
+        // { title: "Lamba", icon: "square-rounded-outline" },
+        // { title: "Landuma", icon: "square-rounded-outline" },
+        // { title: "Lega", icon: "square-rounded-outline" },
+        // { title: "Leka", icon: "square-rounded-outline" },
+        // { title: "Lele", icon: "square-rounded-outline" },
+        // { title: "Lemba", icon: "square-rounded-outline" },
+        // { title: "Lenge", icon: "square-rounded-outline" },
+        // { title: "Lengola", icon: "square-rounded-outline" },
+        // { title: "Lese", icon: "square-rounded-outline" },
+        // { title: "Liko", icon: "square-rounded-outline" },
+        // { title: "Lobedu", icon: "square-rounded-outline" },
+        // { title: "Lobi", icon: "square-rounded-outline" },
+        // { title: "Loma", icon: "square-rounded-outline" },
+        // { title: "Lombi", icon: "square-rounded-outline" },
+        // { title: "Lomotwa", icon: "square-rounded-outline" },
+        // { title: "Lovale", icon: "square-rounded-outline" },
+        // { title: "Lovedu", icon: "square-rounded-outline" },
+        // { title: "Lozi", icon: "square-rounded-outline" },
+        // { title: "Luba Upemba", icon: "square-rounded-outline" },
+        // { title: "Luchazi", icon: "square-rounded-outline" },
+        // { title: "Lulua", icon: "square-rounded-outline" },
+        // { title: "Lumbo", icon: "square-rounded-outline" },
+        // { title: "Lunda", icon: "square-rounded-outline" },
+        // { title: "Lungu", icon: "square-rounded-outline" },
+        // { title: "Luvale", icon: "square-rounded-outline" },
+        // { title: "Lwalwa", icon: "square-rounded-outline" },
+        // { title: "Lwena", icon: "square-rounded-outline" },
+        // { title: "Maasai", icon: "square-rounded-outline" },
+        // { title: "Mabaan", icon: "square-rounded-outline" },
+        // { title: "Mabea", icon: "square-rounded-outline" },
+        // { title: "Mahafaly", icon: "square-rounded-outline" },
+        // { title: "Mahongwe", icon: "square-rounded-outline" },
+        // { title: "Makonde", icon: "square-rounded-outline" },
+        // { title: "Malinke", icon: "square-rounded-outline" },
+        // { title: "Mambila", icon: "square-rounded-outline" },
+        // { title: "Mandinka", icon: "square-rounded-outline" },
+        // { title: "Mangbetu", icon: "square-rounded-outline" },
+        // { title: "Manja", icon: "square-rounded-outline" },
+        // { title: "Mano", icon: "square-rounded-outline" },
+        // { title: "Marka", icon: "square-rounded-outline" },
+        // { title: "Masai", icon: "square-rounded-outline" },
+        // { title: "Mau", icon: "square-rounded-outline" },
+        // { title: "Mbala", icon: "square-rounded-outline" },
+        // { title: "Mbanja", icon: "square-rounded-outline" },
+        // { title: "Mbete", icon: "square-rounded-outline" },
+        // { title: "Mbo", icon: "square-rounded-outline" },
+        // { title: "Mbole", icon: "square-rounded-outline" },
+        // { title: "Mbukushu", icon: "square-rounded-outline" },
+        // { title: "Mbunza", icon: "square-rounded-outline" },
+        // { title: "Mbuti", icon: "square-rounded-outline" },
+        // { title: "Medje", icon: "square-rounded-outline" },
+        // { title: "Mende", icon: "square-rounded-outline" },
+        // { title: "Mfumte", icon: "square-rounded-outline" },
+        // { title: "Mindumu", icon: "square-rounded-outline" },
+        // { title: "Mitsogo", icon: "square-rounded-outline" },
+        // { title: "Mongo", icon: "square-rounded-outline" },
+        // { title: "Mossi", icon: "square-rounded-outline" },
+        // { title: "Mpo", icon: "square-rounded-outline" },
+        // { title: "Mumuye", icon: "square-rounded-outline" },
+        // { title: "Munchi", icon: "square-rounded-outline" },
+        // { title: "Mvuba", icon: "square-rounded-outline" },
+        // { title: "Nalu", icon: "square-rounded-outline" },
+        // { title: "Nama", icon: "square-rounded-outline" },
+        // { title: "Namji", icon: "square-rounded-outline" },
+        // { title: "Nande", icon: "square-rounded-outline" },
+        // { title: "Ndaaka", icon: "square-rounded-outline" },
+        // { title: "Ndabi", icon: "square-rounded-outline" },
+        // { title: "Ndebele", icon: "square-rounded-outline" },
+        // { title: "Ndengese", icon: "square-rounded-outline" },
+        // { title: "Ngbaka", icon: "square-rounded-outline" },
+        // { title: "Ngbandi", icon: "square-rounded-outline" },
+        // { title: "Ngere", icon: "square-rounded-outline" },
+        // { title: "Ngoni", icon: "square-rounded-outline" },
+        // { title: "Nguni", icon: "square-rounded-outline" },
+        // { title: "Nkanu", icon: "square-rounded-outline" },
+        // { title: "Nkondi", icon: "square-rounded-outline" },
+        // { title: "Nok", icon: "square-rounded-outline" },
+        // { title: "Ntumu", icon: "square-rounded-outline" },
+        // { title: "Nuna", icon: "square-rounded-outline" },
+        // { title: "Nupe", icon: "square-rounded-outline" },
+        // { title: "Nyamwezi", icon: "square-rounded-outline" },
+        // { title: "Nyanga", icon: "square-rounded-outline" },
+        // { title: "Nyanzi", icon: "square-rounded-outline" },
+        // { title: "Nyindu", icon: "square-rounded-outline" },
+        // { title: "Nyoro", icon: "square-rounded-outline" },
+        // { title: "Obamba", icon: "square-rounded-outline" },
+        // { title: "Ogboni", icon: "square-rounded-outline" },
+        // { title: "Ogoni", icon: "square-rounded-outline" },
+        // { title: "Ogowe", icon: "square-rounded-outline" },
+        // { title: "Okua", icon: "square-rounded-outline" },
+        // { title: "Ondumbo", icon: "square-rounded-outline" },
+        // { title: "Oromo", icon: "square-rounded-outline" },
+        // { title: "Oron", icon: "square-rounded-outline" },
+        // { title: "Ovambo", icon: "square-rounded-outline" },
+        // { title: "Ovimbundu", icon: "square-rounded-outline" },
+        // { title: "Owe", icon: "square-rounded-outline" },
+        // { title: "Owo", icon: "square-rounded-outline" },
+        // { title: "Pangwa", icon: "square-rounded-outline" },
+        // { title: "Pedi", icon: "square-rounded-outline" },
+        // { title: "Pende", icon: "square-rounded-outline" },
+        // { title: "Pere", icon: "square-rounded-outline" },
+        // { title: "Pfemba", icon: "square-rounded-outline" },
+        // { title: "Pokot", icon: "square-rounded-outline" },
+        // { title: "Pomdo", icon: "square-rounded-outline" },
+        // { title: "Punu", icon: "square-rounded-outline" },
+        // { title: "Pygmy", icon: "square-rounded-outline" },
+        // { title: "Qua", icon: "square-rounded-outline" },
+        // { title: "Rungu", icon: "square-rounded-outline" },
+        // { title: "Sakalava", icon: "square-rounded-outline" },
+        // { title: "Salampasu", icon: "square-rounded-outline" },
+        // { title: "Samburu", icon: "square-rounded-outline" },
+        // { title: "San", icon: "square-rounded-outline" },
+        // { title: "Sango", icon: "square-rounded-outline" },
+        // { title: "Sanwi", icon: "square-rounded-outline" },
+        // { title: "Sapi", icon: "square-rounded-outline" },
+        // { title: "Segou", icon: "square-rounded-outline" },
+        // { title: "Senufo", icon: "square-rounded-outline" },
+        // { title: "Shamaye", icon: "square-rounded-outline" },
+        // { title: "Shambaa", icon: "square-rounded-outline" },
+        // { title: "Shambiu", icon: "square-rounded-outline" },
+        // { title: "Shangaan", icon: "square-rounded-outline" },
+        // { title: "Sherbo", icon: "square-rounded-outline" },
+        // { title: "Shi", icon: "square-rounded-outline" },
+        // { title: "Shilluk", icon: "square-rounded-outline" },
+        // { title: "Shona", icon: "square-rounded-outline" },
+        // { title: "Sikasingo", icon: "square-rounded-outline" },
+        // { title: "Sikka", icon: "square-rounded-outline" },
+        // { title: "Sokoto", icon: "square-rounded-outline" },
+        // { title: "Somali", icon: "square-rounded-outline" },
+        // { title: "Songhai", icon: "square-rounded-outline" },
+        // { title: "Songo", icon: "square-rounded-outline" },
+        // { title: "Songola", icon: "square-rounded-outline" },
+        // { title: "Songye", icon: "square-rounded-outline" },
+        // { title: "Soninke", icon: "square-rounded-outline" },
+        // { title: "Sotho", icon: "square-rounded-outline" },
+        // { title: "Subia", icon: "square-rounded-outline" },
+        // { title: "Suku", icon: "square-rounded-outline" },
+        // { title: "Surma", icon: "square-rounded-outline" },
+        // { title: "Susu", icon: "square-rounded-outline" },
+        // { title: "Swahili", icon: "square-rounded-outline" },
+        // { title: "Swazi", icon: "square-rounded-outline" },
+        // { title: "Tabwa", icon: "square-rounded-outline" },
+        // { title: "Tale", icon: "square-rounded-outline" },
+        // { title: "Teke", icon: "square-rounded-outline" },
+        // { title: "Tellem", icon: "square-rounded-outline" },
+        // { title: "Temne", icon: "square-rounded-outline" },
+        // { title: "Tetela", icon: "square-rounded-outline" },
+        // { title: "Thonga", icon: "square-rounded-outline" },
+        // { title: "Tikar", icon: "square-rounded-outline" },
+        // { title: "Tiv", icon: "square-rounded-outline" },
+        // { title: "Tjiwara", icon: "square-rounded-outline" },
+        // { title: "Toma", icon: "square-rounded-outline" },
+        // { title: "Tongwe", icon: "square-rounded-outline" },
+        // { title: "Totela", icon: "square-rounded-outline" },
+        // { title: "Toubou", icon: "square-rounded-outline" },
+        // { title: "Tsogho", icon: "square-rounded-outline" },
+        // { title: "Tsonga", icon: "square-rounded-outline" },
+        // { title: "Tswana", icon: "square-rounded-outline" },
+        // { title: "Tuareg", icon: "square-rounded-outline" },
+        // { title: "Tumbwe", icon: "square-rounded-outline" },
+        // { title: "Tutsi", icon: "square-rounded-outline" },
+        // { title: "Twifo", icon: "square-rounded-outline" },
+        // { title: "Urhobo", icon: "square-rounded-outline" },
+        // { title: "Venda", icon: "square-rounded-outline" },
+        // { title: "Vezo", icon: "square-rounded-outline" },
+        // { title: "Vili", icon: "square-rounded-outline" },
+        // { title: "Wassa", icon: "square-rounded-outline" },
+        // { title: "We", icon: "square-rounded-outline" },
+        // { title: "Winiama", icon: "square-rounded-outline" },
+        // { title: "Wodaabe", icon: "square-rounded-outline" },
+        // { title: "Wolof", icon: "square-rounded-outline" },
+        // { title: "Wongo", icon: "square-rounded-outline" },
+        // { title: "Woyo", icon: "square-rounded-outline" },
+        // { title: "Wum", icon: "square-rounded-outline" },
+        // { title: "Xhosa", icon: "square-rounded-outline" },
+        // { title: "Yaka", icon: "square-rounded-outline" },
+        // { title: "Yaure", icon: "square-rounded-outline" },
+        // { title: "Yeyi", icon: "square-rounded-outline" },
+        // { title: "Ymbe", icon: "square-rounded-outline" },
+        // { title: "Yoruba", icon: "square-rounded-outline" },
+        // { title: "Zande", icon: "square-rounded-outline" },
+        // { title: "Zaramo", icon: "square-rounded-outline" },
+        // { title: "Zela", icon: "square-rounded-outline" },
+        // { title: "Zimba", icon: "square-rounded-outline" },
+        { title: "Zombo", icon: "square-rounded-outline" },
+        { title: "Zulu", icon: "square-rounded-outline" },
+    ];
 
 
     const bottomSheet = useRef(null);
@@ -190,45 +582,79 @@ const MainScreen = ({ navigation }) => {
                         {pages.map((page, index) => (
                             <Block key={index} style={[styles.page, { width, height }]}>
                                 {
-                                    index == 0?  
-                                    <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
-                                    <SegmentedButtons
-                                    value={ans}
-                                    onValueChange={setAns}
-                                    style={{ marginTop: 20 }}
-                                    buttons={[
-                                        {
-                                            value: 'yes',
-                                            label: 'YES',
-                                            icon: 'check',
-                                            style: ans === 'yes' ? styles.yesButton : {},
-                                        },
-                                        {
-                                            value: 'notsure',
-                                            label: 'NOT SURE',
-                                            icon: 'minus',
-                                            style: ans === 'notsure' ? styles.notSureButton : {},
+                                    index == 0 ?
+                                        <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
+                                            <SegmentedButtons
+                                                value={ans}
+                                                onValueChange={setAns}
+                                                style={{ marginTop: 20 }}
+                                                buttons={[
+                                                    {
+                                                        value: 'yes',
+                                                        label: 'YES',
+                                                        icon: 'check',
+                                                        style: ans === 'yes' ? styles.yesButton : {},
+                                                    },
+                                                    {
+                                                        value: 'notsure',
+                                                        label: 'NOT SURE',
+                                                        icon: 'minus',
+                                                        style: ans === 'notsure' ? styles.notSureButton : {},
 
-                                        },
-                                        {
-                                            value: 'no',
-                                            label: 'NO',
-                                            icon: 'cancel',
-                                            style: ans === 'no' ? styles.noButton : {},
+                                                    },
+                                                    {
+                                                        value: 'no',
+                                                        label: 'NO',
+                                                        icon: 'cancel',
+                                                        style: ans === 'no' ? styles.noButton : {},
 
-                                        },
-                                    ]}
-                                /></>:
-                                    index == 1 ? <>
-                                        <TextInput label="Name of tribe or native language"
-                                         mode="outlined" keyboardType="default" />
-                                        <TextInput label="What is climate change in your native language" mode="outlined" placeholder="test" keyboardType="default" />
-                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
-                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
-                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
-                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
-                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
-                                    </> : null
+                                                    },
+                                                ]}
+                                            /></> :
+                                        index == 1 ? <>
+
+                                            <SelectDropdown
+                                                search
+                                                style={styles.selectDropdown}
+                                                data={tribes}
+                                                onSelect={(selectedItem, index) => {
+                                                    console.log(selectedItem, index);
+                                                }}
+                                                renderButton={(selectedItem, isOpened) => {
+                                                    return (
+                                                        <View style={styles.dropdownButtonStyle}>
+                                                            {selectedItem && (
+                                                                <Icon name="square-rounded" nameq={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
+                                                            )}
+                                                            <Text style={styles.dropdownButtonTxtStyle}>
+                                                                {(selectedItem && selectedItem.title) || 'Select your tribe'}
+                                                            </Text>
+                                                            <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
+                                                        </View>
+                                                    );
+                                                }}
+                                                renderItem={(item, index, isSelected) => {
+                                                    return (
+                                                        <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
+                                                            <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
+                                                            <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
+                                                        </View>
+                                                    );
+                                                }}
+                                                showsVerticalScrollIndicator={false}
+                                                dropdownStyle={styles.dropdownMenuStyle}
+                                            />
+                                            <TextInput style={styles.textInput} label="Name of tribe or native language"
+                                                mode="outlined" keyboardType="default" />
+
+                                            <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined" placeholder="test" keyboardType="default" />
+
+                                            <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                            <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                            <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                            <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                            <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                        </> : null
                                 }
                                 <Block padding={[30, 0, 0, 0]} row space="between" >
                                     <Button disabled={index == 0 ? true : false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
@@ -443,14 +869,64 @@ const styles = StyleSheet.create({
     },
     yesButton: {
         backgroundColor: "#A2CA71",
-      },
-      noButton: {
+    },
+    noButton: {
         backgroundColor: '#FF7777',
-      },
-      notSureButton:{
+    },
+    notSureButton: {
         backgroundColor: "#FFDE4D",
-      }
-
+    },
+    dropdownButtonStyle: {
+        // width: 200,
+        height: 50,
+        backgroundColor: '#12345',
+        borderRadius: 4,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // paddingHorizontal: 12,
+    },
+    dropdownButtonTxtStyle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#151E26',
+    },
+    dropdownButtonArrowStyle: {
+        fontSize: 28,
+    },
+    dropdownButtonIconStyle: {
+        fontSize: 28,
+        marginRight: 8,
+    },
+    dropdownMenuStyle: {
+        backgroundColor: '#E9ECEF',
+        borderRadius: 8,
+    },
+    dropdownItemStyle: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingHorizontal: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 8,
+    },
+    dropdownItemTxtStyle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#151E26',
+    },
+    dropdownItemIconStyle: {
+        fontSize: 28,
+        marginRight: 8,
+    },
+    selectDropdown: {
+        marginBottom: 5
+    },
+    textInput: {
+        marginTop: 10
+    }
 });
 
 
