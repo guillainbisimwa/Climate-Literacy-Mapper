@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Block, Text } from "../../components"
-import { Avatar, Button, IconButton, List } from "react-native-paper";
+import { Avatar, Button, IconButton, List, SegmentedButtons, TextInput } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLORS, SIZES } from "@/constants";
@@ -16,6 +16,8 @@ const MainScreen = ({ navigation }) => {
     const snapPoints = useMemo(() => ["50%", '70%', '80%', '90%'], []);
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
+    const [ans, setAns] = useState('');
+
 
     const bottomSheet = useRef(null);
 
@@ -154,8 +156,8 @@ const MainScreen = ({ navigation }) => {
 
             <Block row space='between' padding={[0, 20]}>
                 <Block m_b={10} flex={1}>
-                    <Text bold h2>CLIMATE KNOWLEDGE</Text>
-                    <Text color={COLORS.blue}>{`In our local language`}</Text>
+                    <Text bold h3>CLIMATE KNOWLEDGE</Text>
+                    <Text color={COLORS.blue}>{`In your local language`}</Text>
                 </Block>
                 <TouchableOpacity
                     onPress={() => hideModal()}
@@ -163,7 +165,7 @@ const MainScreen = ({ navigation }) => {
                     <IconButton
                         icon="close"
                         iconColor={COLORS.red}
-                        size={40}
+                        size={30}
                     />
                 </TouchableOpacity>
 
@@ -187,13 +189,52 @@ const MainScreen = ({ navigation }) => {
                     >
                         {pages.map((page, index) => (
                             <Block key={index} style={[styles.page, { width, height }]}>
-                                <Text>{pages.length}</Text>
+                                {
+                                    index == 0?  
+                                    <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
+                                    <SegmentedButtons
+                                    value={ans}
+                                    onValueChange={setAns}
+                                    style={{ marginTop: 20 }}
+                                    buttons={[
+                                        {
+                                            value: 'yes',
+                                            label: 'YES',
+                                            icon: 'check',
+                                            style: ans === 'yes' ? styles.yesButton : {},
+                                        },
+                                        {
+                                            value: 'notsure',
+                                            label: 'NOT SURE',
+                                            icon: 'minus',
+                                            style: ans === 'notsure' ? styles.notSureButton : {},
 
-                                <Block padding={[10, 0]} row space="between" >
-                                    <Button disabled={index == 0? true:false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
+                                        },
+                                        {
+                                            value: 'no',
+                                            label: 'NO',
+                                            icon: 'cancel',
+                                            style: ans === 'no' ? styles.noButton : {},
+
+                                        },
+                                    ]}
+                                /></>:
+                                    index == 1 ? <>
+                                        <TextInput label="Name of tribe or native language"
+                                         mode="outlined" keyboardType="default" />
+                                        <TextInput label="What is climate change in your native language" mode="outlined" placeholder="test" keyboardType="default" />
+                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                        <TextInput label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                    </> : null
+                                }
+                                <Block padding={[30, 0, 0, 0]} row space="between" >
+                                    <Button disabled={index == 0 ? true : false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
                                         <Text>Previous</Text>
                                     </Button>
-                                    <Button disabled={index == pages.length - 1? true:false} mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
+                                    <Button disabled={index == pages.length - 1 ? true : false} mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
                                         <Text>Next</Text>
                                     </Button>
                                 </Block>
@@ -400,6 +441,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    yesButton: {
+        backgroundColor: "#A2CA71",
+      },
+      noButton: {
+        backgroundColor: '#FF7777',
+      },
+      notSureButton:{
+        backgroundColor: "#FFDE4D",
+      }
 
 });
 
