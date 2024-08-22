@@ -14,13 +14,18 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const MainScreen = ({ navigation }) => {
     const { error, isLoading, success, user } = useSelector((state) => state.user);
+    const isSignedIn = useSelector((state) => state.auth.user);
+
     const snapPoints = useMemo(() => ["50%", '70%', '80%', '90%'], []);
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
-
+    console.log();
+    console.log("{user?.user?.user?.name}", isSignedIn?.user?.user?.name);
+    console.log();
     const tribes = [
 
+        { title: "Cannot find your tribe?", icon: "square-rounded-outline" },
         { title: "Abe", icon: "square-rounded-outline" },
         { title: "Abidji", icon: "square-rounded-outline" },
         { title: "Abron", icon: "square-rounded-outline" },
@@ -717,7 +722,7 @@ const MainScreen = ({ navigation }) => {
                 <Block paddingBottom={60} padding={30} middle row space="between" color={COLORS.primary}>
                     <Block>
                         <Text white >Climate Literacy Mapper</Text>
-                        <Text bold h2 white >Hi, Guillain weza </Text>
+                        <Text bold h2 white >Hi, {isSignedIn?.user?.user?.name}</Text>
                     </Block>
                     <Avatar.Icon size={54} icon="account-circle" />
                 </Block>

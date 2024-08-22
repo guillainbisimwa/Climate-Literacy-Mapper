@@ -86,6 +86,23 @@ const App = () => {
       const value = await AsyncStorage.getItem('user');
       console.log("--------value", value);
       if (value !== null) {
+        // user = {
+        //   "message": "Connexion réussie",
+        //   "user": {
+        //     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmJjNzk5OWY4ZmUwZmZmODZhMWVkZmYiLCJuYW1lIjoidmFsIiwiZW1haWwiOiJ2YWxAdGVzdC5tZSIsIm1vYmlsZSI6IisyNDM4OTA5ODg3NjkiLCJzZXgiOiJGIiwicm9sZSI6IkNPQUNIRSIsInVzZXJuYW1lIjoidmFsIiwicHJvZmlsZV9waWN0dXJlIjoiaHR0cHM6Ly9pLnByYXZhdGFyLmNjLzQ4P3U9ODUxNDA3IiwiaWF0IjoxNzIzNzE4MzIyLCJleHAiOjE3MjM4MDQ3MjJ9.5H6sOK1Gi8GppWljELWNx9eYB51fd8mvvmHEmTmSaPQ",
+        //     "user": {
+        //       "userId": "66bc7999f8fe0fff86a1edff",
+        //       "name": "Valence NDIBWAMI",
+        //       "email": "val@test.me",
+        //       "mobile": "+243890988769",
+        //       "sex": "F",
+        //       "role": "COACHE",
+        //       "username": "Valence NDIBWAMI",
+        //       "profile_picture": "https://i.pravatar.cc/48?u=851407"
+        //     }
+        //   }
+        // },
+        // dispatch(loginSuccess(user));
         dispatch(loginSuccess(value));
       }else{
         dispatch(logoutUser())
