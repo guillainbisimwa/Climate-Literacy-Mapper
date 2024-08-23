@@ -24,11 +24,11 @@ const MainScreen = ({ navigation }) => {
     const [newTribeNext, setNewTribeNext] = useState(false);
 
     const snapPoints90 = useMemo(() => ['90%'], []);
-    const snapPoints = useMemo(() => ["50%", '70%', '80%', '90%'], []);
+    const snapPoints = useMemo(() => ['90%'], []);
+    const snapPoints9 = useMemo(() => ["50%", '70%', '80%', '90%'], []);
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
-    console.log();
     // console.log("{user?.user?.user?.name}", isSignedIn?.user?.user?.name);
     console.log();
 
@@ -38,7 +38,6 @@ const MainScreen = ({ navigation }) => {
         return { title: val.tribe, icon: "square-rounded-outline" }
     });
     tribes.push( { title: "Other", icon: "square-rounded-outline" },)
-
 
     const tribes2 = [
 
@@ -549,6 +548,7 @@ const MainScreen = ({ navigation }) => {
         const scrollViewRef = useRef(null);
 
         const goToNextPage = () => {
+
             const currentPageIndex = Math.floor(scrollX._value / width);
             const nextPageIndex = Math.min(currentPageIndex + 1, pages.length - 1);
             console.log("currentPageIndex", currentPageIndex);
@@ -578,6 +578,11 @@ const MainScreen = ({ navigation }) => {
 
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
 
+            } else if(currentPageIndex == 0 && selectedTribe.length !== 0){
+                scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
+            }
+            else if(currentPageIndex == 1 && (selectedTribe.length !== 0 || newTribe.trim() != "" )){
+                scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
             }
         };
 
@@ -611,7 +616,7 @@ const MainScreen = ({ navigation }) => {
                 </TouchableOpacity>
 
             </Block>
-
+            <BottomSheetScrollView>
             <Block>
 
                 <Block >
@@ -701,7 +706,9 @@ const MainScreen = ({ navigation }) => {
                                             <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined" placeholder="test" keyboardType="default" /> */}
 
                                         </> :
-                                        index == 1 ? <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
+                                        index == 1 ? 
+                                        !foundTribe()?
+                                        <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
                                             <SegmentedButtons
                                                 value={ans}
                                                 onValueChange={setAns}
@@ -728,40 +735,15 @@ const MainScreen = ({ navigation }) => {
 
                                                     },
                                                 ]}
-                                            /></> :
+                                            /></>:
+                                           <>
+                                           <Text bold h2 color={COLORS.darkgreen}>Good news for your {selectedTribe} tribe!</Text>
+                                           <Text h3>Climate knowledge exists in your local language</Text>
+
+                                            </>
+                                            :
                                             index == 2 ? <>
 
-                                                <SelectDropdown
-                                                    search
-                                                    style={styles.selectDropdown}
-                                                    data={tribes}
-                                                    onSelect={(selectedItem, index) => {
-                                                        console.log(selectedItem, index);
-                                                    }}
-                                                    renderButton={(selectedItem, isOpened) => {
-                                                        return (
-                                                            <View style={styles.dropdownButtonStyle}>
-                                                                {selectedItem && (
-                                                                    <Icon name="square-rounded" nameq={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
-                                                                )}
-                                                                <Text style={styles.dropdownButtonTxtStyle}>
-                                                                    {(selectedItem && selectedItem.title) || 'Select your tribe'}
-                                                                </Text>
-                                                                <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
-                                                            </View>
-                                                        );
-                                                    }}
-                                                    renderItem={(item, index, isSelected) => {
-                                                        return (
-                                                            <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
-                                                                <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
-                                                                <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-                                                            </View>
-                                                        );
-                                                    }}
-                                                    showsVerticalScrollIndicator={false}
-                                                    dropdownStyle={styles.dropdownMenuStyle}
-                                                />
                                                 <TextInput style={styles.textInput} label="Name of tribe or native language"
                                                     mode="outlined" keyboardType="default" />
 
@@ -789,6 +771,7 @@ const MainScreen = ({ navigation }) => {
                 </Block>
 
             </Block>
+            </BottomSheetScrollView>
 
         </BottomSheetModal>
     };
@@ -825,6 +808,10 @@ const MainScreen = ({ navigation }) => {
             Toast.error("An error has occurred!!", 'top');
         }
     };
+
+    const foundTribe = () => {
+        return true
+    }
 
     return <GestureHandlerRootView>
         <BottomSheetModalProvider>
