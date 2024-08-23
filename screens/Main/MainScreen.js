@@ -14,11 +14,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const MainScreen = ({ navigation }) => {
     const { error, isLoading, success, user } = useSelector((state) => state.user);
+    const { tribeList } = useSelector((state) => state.tribe);
+
     const isSignedIn = useSelector((state) => state.auth.user);
     const [selectedTribe, setSelectedTribe] = useState("");
     const [newTribe, setNewTribe] = useState("");
     const [newTribeNext, setNewTribeNext] = useState(false);
-    
+
     const snapPoints90 = useMemo(() => ['90%'], []);
     const snapPoints = useMemo(() => ["50%", '70%', '80%', '90%'], []);
     const [open, setOpen] = useState(false);
@@ -27,7 +29,16 @@ const MainScreen = ({ navigation }) => {
     console.log();
     console.log("{user?.user?.user?.name}", isSignedIn?.user?.user?.name);
     console.log();
-    const tribes = [
+
+    console.log("tribeList---------", tribeList);
+    
+    const tribes = tribeList.map(val => {
+        return { title: val.tribe, icon: "square-rounded-outline" }
+    });
+    tribes.push( { title: "Other", icon: "square-rounded-outline" },)
+
+
+    const tribes2 = [
 
         { title: "Other", icon: "square-rounded-outline" },
         { title: "Abe", icon: "square-rounded-outline" },
@@ -541,13 +552,14 @@ const MainScreen = ({ navigation }) => {
             console.log("currentPageIndex", currentPageIndex);
             console.log("selectedTribe", selectedTribe);
             console.log("newTribe", newTribe);
-            if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() ==="") {
+            if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() === "") {
                 console.log("No");
                 setNewTribeNext(true)
             }
-            else {
-                console.log("Swahili",newTribe);
-                // scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
+            else if(currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() !== "") {
+                // check if tribe is already exists
+                
+                scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
             }
         };
 
@@ -657,11 +669,11 @@ const MainScreen = ({ navigation }) => {
 
                                             {
                                                 selectedTribe === "Other" ?
-                                                <>
-                                                <ActivityIndicator />
-                                                    <TextInput error={newTribeNext} onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
-                                                        mode="outlined" keyboardType="default" />
-                                                        </> : null
+                                                    <>
+                                                        <ActivityIndicator />
+                                                        <TextInput error={newTribeNext} onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
+                                                            mode="outlined" keyboardType="default" />
+                                                    </> : null
                                             }
 
                                             {/* <TextInput style={styles.textInput} label="Name of tribe or native language"
@@ -763,8 +775,6 @@ const MainScreen = ({ navigation }) => {
     };
 
 
-
-
     const dispatch = useDispatch();
     // Use useEffect or any other method to handle the success state and display the alert
     useEffect(() => {
@@ -776,7 +786,6 @@ const MainScreen = ({ navigation }) => {
             Toast.error("An error has occurred", 'top');
             setValid(false);
             setPasswordError(true)
-
         }
     }, []);
 

@@ -122,10 +122,91 @@ export const editTribe = createAsyncThunk(
 const tribeSlice = createSlice({
   name: "tribes",
   initialState: {
-    tribeList: null,
+    tribeList2: [],
+    // 66bc7999f8fe0fff86a1edff
+    tribeList: [
+      {
+        "_id": "66bc7999f8fe0fff86a1edf1",
+        "climate_know_exist": false,
+        "tribe": "Abe",
+        "location": {
+          "type": "Point",
+          "coordinates": [10.0, 11.2],
+        },
+        "proof_link": [
+          {
+            "name": "pATER",
+            "link": "URL1",
+            "owner": "66bc7999f8fe0fff86a1edff",
+            "status": "PENDING"
+          },
+          {
+            "name": "wEB",
+            "link": "URL2",
+            "owner": "66bc7999f8fe0fff86a1edff",
+            "status": "PENDING"
+          }
+        ],
+        "images": [
+          {
+            "link": "URL1",
+            "owner": "66bc7999f8fe0fff86a1edff",
+            "status": "PENDING"
+          },
+          {
+            "link": "URL2",
+            "owner": "66bc7999f8fe0fff86a1edff",
+            "status": "PENDING"
+          }
+        ],
+        "owner": "66bc7999f8fe0fff86a1edff",
+        "status": "PENDING"
+      }, {
+        "_id": "66bc7999f8fe0fff86a1edf1",
+        "climate_know_exist": false,
+        "tribe": "Masai",
+        "location": {
+          "type": "Point",
+          "coordinates": [10.0, 11.2],
+        },
+        "proof_link": [
+          {
+            "name": "pATER",
+            "link": "URL1",
+            "owner": "66bc7999f8fe0fff86a1edff",
+            "status": "PENDING"
+          },
+          {
+            "name": "wEB",
+            "link": "URL2",
+            "owner": "66bc7999f8fe0fff86a1edff",
+            "status": "PENDING"
+          }
+        ],
+        "images": [
+          {
+            "link": "URL1",
+            "owner": "66bc7999f8fe0fff86a1edff",
+            "status": "PENDING"
+          },
+          {
+            "link": "URL2",
+            "owner": "66bc7999f8fe0fff86a1edff",
+            "status": "PENDING"
+          }
+        ],
+        "owner": "66bc7999f8fe0fff86a1edff",
+        "status": "PENDING"
+      }
+    ],
     error: null,
     isLoading: false,
     success: false,
+
+    errorByName: null,
+    isLoadingByName: false,
+    successByName: false,
+    tribeByName: null,
 
     errorCreate: null,
     isLoadingCreate: false,
@@ -159,7 +240,7 @@ const tribeSlice = createSlice({
         state.success = false
       });
 
-      builder
+    builder
       .addCase(createTribe.pending, (state) => {
         state.isLoadingCreate = true;
         state.errorCreate = null;
@@ -177,7 +258,7 @@ const tribeSlice = createSlice({
         state.successCreate = false
       });
 
-      builder
+    builder
       .addCase(editTribe.pending, (state) => {
         state.isLoadingEdit = true;
         state.errorEdit = null;
@@ -193,6 +274,24 @@ const tribeSlice = createSlice({
         state.isLoadingEdit = false;
         state.errorEdit = action.payload;
         state.successEdit = false
+      });
+
+      builder
+      .addCase(fetchTribeByName.pending, (state) => {
+        state.isLoadingByName = true;
+        state.errorByName = null;
+        state.successByName = false
+      })
+      .addCase(fetchTribeByName.fulfilled, (state, action) => {
+        state.isLoadingByName = false;
+        state.tribeByName = action.payload;
+        state.errorByName = null;
+        state.successByName = true
+      })
+      .addCase(fetchTribeByName.rejected, (state, action) => {
+        state.isLoadingByName = false;
+        state.errorByName = action.payload;
+        state.successByName = false
       });
   },
 });
