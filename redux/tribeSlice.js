@@ -176,6 +176,24 @@ const tribeSlice = createSlice({
         state.errorCreate = action.payload;
         state.successCreate = false
       });
+
+      builder
+      .addCase(editTribe.pending, (state) => {
+        state.isLoadingEdit = true;
+        state.errorEdit = null;
+        state.successEdit = false
+      })
+      .addCase(editTribe.fulfilled, (state, action) => {
+        state.isLoadingEdit = false;
+        state.tribeList.push(action.payload);
+        state.errorEdit = null;
+        state.successEdit = true
+      })
+      .addCase(editTribe.rejected, (state, action) => {
+        state.isLoadingEdit = false;
+        state.errorEdit = action.payload;
+        state.successEdit = false
+      });
   },
 });
 
