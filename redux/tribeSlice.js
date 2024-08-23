@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../constants/utils";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Here, we are using the createAsyncThunk function to create an asynchronous thunk to POST
 // Then we define a new slice called tribeSlice with an initial state containing 
@@ -16,7 +15,6 @@ export const fetchTribes = createAsyncThunk(
     return response.data;
   }
 );
-
 
 export const fetchTribeByName = createAsyncThunk(
   "tribe/fetchTribeByname",
@@ -40,7 +38,7 @@ export const fetchTribeByName = createAsyncThunk(
 );
 
 export const createTribe = createAsyncThunk(
-  "tribe/createTibe",
+  "tribe/createTribe",
   async ({
     climate_know_exist,
     tribe,
@@ -124,10 +122,18 @@ export const editTribe = createAsyncThunk(
 const tribeSlice = createSlice({
   name: "tribes",
   initialState: {
-    tribe: null,
+    tribeList: null,
     error: null,
     isLoading: false,
     success: false,
+
+    errorCreate: null,
+    isLoadingCreate: false,
+    successCreate: false,
+
+    errorEdit: null,
+    isLoadingEdit: false,
+    successEdit: false,
 
   },
   reducers: {
@@ -140,12 +146,10 @@ const tribeSlice = createSlice({
         state.isLoading = true;
         state.error = null;
         state.success = false
-
       })
       .addCase(fetchTribes.fulfilled, (state, action) => {
-
         state.isLoading = false;
-        state.tribe = action.payload;
+        state.tribeList = action.payload;
         state.error = null;
         state.success = true
       })
@@ -155,6 +159,23 @@ const tribeSlice = createSlice({
         state.success = false
       });
 
+      builder
+      .addCase(createTribe.pending, (state) => {
+        state.isLoadingCreate = true;
+        state.errorCreate = null;
+        state.successCreate = false
+      })
+      .addCase(createTribe.fulfilled, (state, action) => {
+        state.isLoadingCreate = false;
+        state.tribeList.push(action.payload);
+        state.errorCreate = null;
+        state.successCreate = true
+      })
+      .addCase(createTribe.rejected, (state, action) => {
+        state.isLoadingCreate = false;
+        state.errorCreate = action.payload;
+        state.successCreate = false
+      });
   },
 });
 
