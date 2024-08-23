@@ -11,10 +11,12 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PageIndicator } from 'react-native-page-indicator';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { fetchTribeByName } from "@/redux/tribeSlice";
+import Container, { Toast } from "toastify-react-native";
 
 const MainScreen = ({ navigation }) => {
-    const { error, isLoading, success, user } = useSelector((state) => state.user);
-    const { tribeList } = useSelector((state) => state.tribe);
+    const { error, success } = useSelector((state) => state.user);
+    const { tribeList, isLoadingByName, errorByName, successByName, tribeByName } = useSelector((state) => state.tribe);
 
     const isSignedIn = useSelector((state) => state.auth.user);
     const [selectedTribe, setSelectedTribe] = useState("");
@@ -27,10 +29,10 @@ const MainScreen = ({ navigation }) => {
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
     console.log();
-    console.log("{user?.user?.user?.name}", isSignedIn?.user?.user?.name);
+    // console.log("{user?.user?.user?.name}", isSignedIn?.user?.user?.name);
     console.log();
 
-    console.log("tribeList---------", tribeList);
+    // console.log("tribeList---------", tribeList);
     
     const tribes = tribeList.map(val => {
         return { title: val.tribe, icon: "square-rounded-outline" }
@@ -553,13 +555,29 @@ const MainScreen = ({ navigation }) => {
             console.log("selectedTribe", selectedTribe);
             console.log("newTribe", newTribe);
             if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() === "") {
-                console.log("No");
                 setNewTribeNext(true)
             }
             else if(currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() !== "") {
                 // check if tribe is already exists
-                
+                dispatch(fetchTribeByName({tribeName: newTribe.trim()})).then((result) => {
+                    if (fetchTribeByName.fulfilled.match(result)) {
+                        // Handle successful login
+                        console.log('Successful:', result.payload);
+                        scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
+
+                    } else if (fetchTribeByName.rejected.match(result)) {
+                        // Handle rejected login
+                        Toast.error(`Error: ${result.payload}`, 'top');
+                    }
+                })
+                .catch((error) => {
+                    // Handle any additional errors
+                    console.error('Error during login:', error);
+                    Toast.error(`Error during login:, ${error}`, 'top');
+                });
+
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
+
             }
         };
 
@@ -670,7 +688,8 @@ const MainScreen = ({ navigation }) => {
                                             {
                                                 selectedTribe === "Other" ?
                                                     <>
-                                                        <ActivityIndicator />
+                                                         {isLoadingByName? <ActivityIndicator />:null}
+                                                         {/* {errorByName? <Text>{errorByName}</Text>:null} */}
                                                         <TextInput error={newTribeNext} onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
                                                             mode="outlined" keyboardType="default" />
                                                     </> : null
@@ -809,7 +828,10 @@ const MainScreen = ({ navigation }) => {
 
     return <GestureHandlerRootView>
         <BottomSheetModalProvider>
+        <Container position="bottom" style={{ width: '100%' }} duration={6000} />
+
             <Block flex style={{ position: "relative", }}>
+
                 <Block paddingBottom={60} padding={30} middle row space="between" color={COLORS.primary}>
                     <Block>
                         <Text white >Climate Literacy Mapper</Text>

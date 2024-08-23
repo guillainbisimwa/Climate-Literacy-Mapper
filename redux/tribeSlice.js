@@ -23,6 +23,8 @@ export const fetchTribeByName = createAsyncThunk(
       const response = await axios.get(`${BASE_URL}api/tribe/tribe/${tribeName}`);
       return response.data;
     } catch (error) {
+      console.log("error-----", error);
+      console.log("%%%%%%%%error.response", error.response);
       if (error.response) {
         // Server responded with a status other than 2xx
         return rejectWithValue(error.response.data);
