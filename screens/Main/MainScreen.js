@@ -703,7 +703,7 @@ const MainScreen = ({ navigation }) => {
                                             {/* <TextInput style={styles.textInput} label="Name of tribe or native language"
                                                 mode="outlined" keyboardType="default" />
 
-                                            <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined" placeholder="test" keyboardType="default" /> */}
+                                            <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined"  keyboardType="default" /> */}
 
                                         </> :
                                         index == 1 ? 
@@ -744,16 +744,24 @@ const MainScreen = ({ navigation }) => {
                                             :
                                             index == 2 ? <>
 
-                                                <TextInput style={styles.textInput} label="Name of tribe or native language"
-                                                    mode="outlined" keyboardType="default" />
+                                        {/* climate_change_in_lang
+                                           translate: 
+                                            value: { type: String },
+                                            owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+                                            timestamp: { type: Date, default: Date.now() },
+                                            vote: { type: [mongoose.Schema.Types.ObjectId], ref: "User" },
 
-                                                <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined" placeholder="test" keyboardType="default" />
+                                        location
 
-                                                <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
-                                                <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
-                                                <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
-                                                <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
-                                                <TextInput style={styles.textInput} label="ok" mode="outlined" placeholder="test" keyboardType="default" />
+                                        proof_link
+
+                                        images */}
+ 
+                                                <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language`} mode="outlined"  keyboardType="default" />
+
+                                                <TextInput style={styles.textInput} label={`Location of ${selectedTribe} tribe`} mode="outlined"  keyboardType="default" />
+                                                <TextInput style={styles.textInput} label={`proof_link of ${selectedTribe} tribe`} mode="outlined"  keyboardType="default" />
+                                                <TextInput style={styles.textInput} label={`images of ${selectedTribe} tribe`} mode="outlined"  keyboardType="default" />
                                             </> : null
                                 }
                                 <Block padding={[30, 0, 0, 0]} row space="between" >
