@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Block, Text } from "../../components"
-import { Avatar, Button, IconButton, List, SegmentedButtons, TextInput } from "react-native-paper";
+import { ActivityIndicator, Avatar, Button, IconButton, List, SegmentedButtons, TextInput } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLORS, SIZES } from "@/constants";
@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const MainScreen = ({ navigation }) => {
     const { error, isLoading, success, user } = useSelector((state) => state.user);
     const isSignedIn = useSelector((state) => state.auth.user);
-    const [selectedTribe, setSelectedTribe] = useState("Other");
+    const [selectedTribe, setSelectedTribe] = useState("");
     const [newTribe, setNewTribe] = useState("");
     const [newTribeNext, setNewTribeNext] = useState(false);
     
@@ -657,8 +657,11 @@ const MainScreen = ({ navigation }) => {
 
                                             {
                                                 selectedTribe === "Other" ?
+                                                <>
+                                                <ActivityIndicator />
                                                     <TextInput error={newTribeNext} onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
-                                                        mode="outlined" keyboardType="default" /> : null
+                                                        mode="outlined" keyboardType="default" />
+                                                        </> : null
                                             }
 
                                             {/* <TextInput style={styles.textInput} label="Name of tribe or native language"
