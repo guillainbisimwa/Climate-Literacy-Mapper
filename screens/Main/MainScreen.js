@@ -15,9 +15,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const MainScreen = ({ navigation }) => {
     const { error, isLoading, success, user } = useSelector((state) => state.user);
     const isSignedIn = useSelector((state) => state.auth.user);
-
-    const snapPoints = useMemo(() => ['90%'], []);
-    // const snapPoints = useMemo(() => ["50%", '70%', '80%', '90%'], []);
+    const [selectedTribe, setSelectedTribe] = useState("Other");
+    const [newTribe, setNewTribe] = useState("");
+    const [newTribeNext, setNewTribeNext] = useState(false);
+    
+    const snapPoints90 = useMemo(() => ['90%'], []);
+    const snapPoints = useMemo(() => ["50%", '70%', '80%', '90%'], []);
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
@@ -535,7 +538,16 @@ const MainScreen = ({ navigation }) => {
         const goToNextPage = () => {
             const currentPageIndex = Math.floor(scrollX._value / width);
             const nextPageIndex = Math.min(currentPageIndex + 1, pages.length - 1);
-            scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
+            console.log("currentPageIndex", currentPageIndex);
+            console.log("selectedTribe", selectedTribe);
+            console.log("newTribe", newTribe);
+            if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe ==="") {
+                console.log("No");
+            }
+            else {
+                console.log("Swahili",newTribe);
+                // scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
+            }
         };
 
         const goToPreviousPage = () => {
@@ -548,7 +560,7 @@ const MainScreen = ({ navigation }) => {
             ref={bottomSheet}
             index={0}
             backdropComponent={BackdropElement}
-            snapPoints={snapPoints}
+            snapPoints={Math.floor(scrollX._value / width) == 0 ? snapPoints90 : snapPoints}
             onDismiss={() => setOpen(false)}
         >
 
@@ -568,6 +580,7 @@ const MainScreen = ({ navigation }) => {
                 </TouchableOpacity>
 
             </Block>
+
             <Block>
 
                 <Block >
@@ -577,6 +590,7 @@ const MainScreen = ({ navigation }) => {
 
                     <Animated.ScrollView
                         ref={scrollViewRef}
+                        scrollEnabled={false}
                         horizontal
                         pagingEnabled
                         showsHorizontalScrollIndicator={false}
@@ -590,56 +604,65 @@ const MainScreen = ({ navigation }) => {
                                 {
                                     index == 0 ?
                                         <>
-                                        {/* <Text bold h3>Please select your tribe</Text> */}
+                                            {/* <Text bold h3>Please select your tribe</Text> */}
                                             <Block style={styles.selectDropdown}>
-                                            <SelectDropdown
-                                                search
-                                                 /**
-                                                 * function callback when the search input text 
-                                                 * changes, this will automatically disable the 
-                                                 * dropdown's internal search to be implemented manually outside the component
-                                                 */
+                                                <SelectDropdown
+                                                    search
+                                                    /**
+                                                    * function callback when the search input text 
+                                                    * changes, this will automatically disable the 
+                                                    * dropdown's internal search to be implemented manually outside the component
+                                                    */
 
-                                                // onChangeSearchInputText={(val)=>{
-                                                //     console.log("val", val);
-                                                //     return val
-                                                // }}
-                                                searchPlaceHolder="Type: 'Other' If your tribe doesn't exist "
-                                                
-                                                data={tribes}
-                                                onSelect={(selectedItem, index) => {
-                                                    console.log(selectedItem, index);
-                                                }}
+                                                    // onChangeSearchInputText={(val)=>{
+                                                    //     console.log("val", val);
+                                                    //     return val
+                                                    // }}
+                                                    searchPlaceHolder="Type: 'Other' If your tribe doesn't exist "
 
-                                                renderButton={(selectedItem, isOpened) => {
-                                                    return (
-                                                        <View style={styles.dropdownButtonStyle}>
-                                                            {selectedItem && (
-                                                                <Icon name="square-rounded" nameq={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
-                                                            )}
-                                                            <Text style={styles.dropdownButtonTxtStyle}>
-                                                                {(selectedItem && selectedItem.title) || 'Select your tribe'}
-                                                            </Text>
-                                                            <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
-                                                        </View>
-                                                    );
-                                                }}
-                                                renderItem={(item, index, isSelected) => {
-                                                    return (
-                                                        <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
-                                                            <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
-                                                            <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-                                                        </View>
-                                                    );
-                                                }}
-                                                showsVerticalScrollIndicator={false}
-                                                dropdownStyle={styles.dropdownMenuStyle}
-                                            />
+                                                    data={tribes}
+                                                    onSelect={(selectedItem, index) => {
+                                                        console.log(selectedItem, index);
+                                                        setSelectedTribe(selectedItem.title);
+                                                        setNewTribe("")
+                                                    }}
+
+                                                    renderButton={(selectedItem, isOpened) => {
+                                                        return (
+                                                            <View style={styles.dropdownButtonStyle}>
+                                                                {selectedItem && (
+                                                                    <Icon name="square-rounded" nameq={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
+                                                                )}
+                                                                <Text style={styles.dropdownButtonTxtStyle}>
+                                                                    {(selectedItem && selectedItem.title) || 'Select your tribe'}
+                                                                </Text>
+                                                                <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
+                                                            </View>
+                                                        );
+                                                    }}
+                                                    renderItem={(item, index, isSelected) => {
+                                                        return (
+                                                            <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
+                                                                <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
+                                                                <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
+                                                            </View>
+                                                        );
+                                                    }}
+                                                    showsVerticalScrollIndicator={false}
+                                                    dropdownStyle={styles.dropdownMenuStyle}
+                                                />
                                             </Block>
-                                            <TextInput style={styles.textInput} label="Name of tribe or native language"
+
+                                            {
+                                                selectedTribe === "Other" ?
+                                                    <TextInput onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
+                                                        mode="outlined" keyboardType="default" /> : null
+                                            }
+
+                                            {/* <TextInput style={styles.textInput} label="Name of tribe or native language"
                                                 mode="outlined" keyboardType="default" />
 
-                                            <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined" placeholder="test" keyboardType="default" />
+                                            <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined" placeholder="test" keyboardType="default" /> */}
 
                                         </> :
                                         index == 1 ? <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
@@ -983,9 +1006,9 @@ const styles = StyleSheet.create({
     selectDropdown: {
         marginBottom: 5,
         borderWidth: 1,
-        borderRadius:5,
-        paddingHorizontal:8,
-        borderColor:COLORS.darkgray
+        borderRadius: 5,
+        paddingHorizontal: 8,
+        borderColor: COLORS.darkgray
     },
     textInput: {
         marginTop: 10
