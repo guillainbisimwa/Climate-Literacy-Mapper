@@ -541,8 +541,9 @@ const MainScreen = ({ navigation }) => {
             console.log("currentPageIndex", currentPageIndex);
             console.log("selectedTribe", selectedTribe);
             console.log("newTribe", newTribe);
-            if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe ==="") {
+            if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() ==="") {
                 console.log("No");
+                setNewTribeNext(true)
             }
             else {
                 console.log("Swahili",newTribe);
@@ -624,7 +625,8 @@ const MainScreen = ({ navigation }) => {
                                                     onSelect={(selectedItem, index) => {
                                                         console.log(selectedItem, index);
                                                         setSelectedTribe(selectedItem.title);
-                                                        setNewTribe("")
+                                                        setNewTribe("");
+                                                        setNewTribeNext(false)
                                                     }}
 
                                                     renderButton={(selectedItem, isOpened) => {
@@ -655,7 +657,7 @@ const MainScreen = ({ navigation }) => {
 
                                             {
                                                 selectedTribe === "Other" ?
-                                                    <TextInput onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
+                                                    <TextInput error={newTribeNext} onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
                                                         mode="outlined" keyboardType="default" /> : null
                                             }
 

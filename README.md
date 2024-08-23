@@ -70,6 +70,14 @@ Once the update is built and uploaded to EAS and the command completes, force cl
 - Twitter : [@gullain_bisimwa](https://twitter.com/gullain_bisimwa)
 - Linkedin : [guillain-bisimwa](https://www.linkedin.com/in/guillain-bisimwa-8a8b7a7b/)
 
+
+## TODO
+- Check if new tribe really doesn't exit []
+- Deactivate all translation if Climate knowledge section is not set up []
+- Fill Climate knowledge section []
+- If Climate knowledge section is already completed, then see the info as summary (with erase and edit action) []
+
+
 <!-- 
 Did you know there are over 3,000 distinct ethnic groups in Africa? So far, we've mapped 13 tribes - just 0.4% of the total. Our upcoming app will help us scale up through collaborations.
 Want to get involved?  🚀Sign up here to help us on this exciting journey: -->
