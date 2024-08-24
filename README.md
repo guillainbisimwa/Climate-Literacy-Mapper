@@ -76,7 +76,7 @@ Once the update is built and uploaded to EAS and the command completes, force cl
 - Deactivate all translation if Climate knowledge section is not set up []
 - Fill Climate knowledge section []
 - If Climate knowledge section is already completed, then see the info as summary (with erase and edit action) []
-
+- Share and invit via social media (whatsapp, telegram, facebook, x and linkdin)
 
 <!-- 
 Did you know there are over 3,000 distinct ethnic groups in Africa? So far, we've mapped 13 tribes - just 0.4% of the total. Our upcoming app will help us scale up through collaborations.

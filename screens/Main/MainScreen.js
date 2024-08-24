@@ -25,7 +25,7 @@ const MainScreen = ({ navigation }) => {
 
     const snapPoints90 = useMemo(() => ['90%'], []);
     const snapPoints = useMemo(() => ['90%'], []);
-    const snapPoints9 = useMemo(() => ["50%", '70%', '80%', '90%'], []);
+    const snapPoint = useMemo(() => ["50%", '70%', '80%', '90%'], []);
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
@@ -757,7 +757,7 @@ const MainScreen = ({ navigation }) => {
 
                                         images */}
  
-                                                <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language`} mode="outlined"  keyboardType="default" />
+                                                <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined"  keyboardType="default" />
 
                                                 <TextInput style={styles.textInput} label={`Location of ${selectedTribe} tribe`} mode="outlined"  keyboardType="default" />
                                                 <TextInput style={styles.textInput} label={`proof_link of ${selectedTribe} tribe`} mode="outlined"  keyboardType="default" />
@@ -937,7 +937,6 @@ const MainScreen = ({ navigation }) => {
                                                         key == "localChallenges" ? "blue" :
                                                             key == "mindfullExercises" ? "green" :
                                                                 key == "rle" ? "magenta" : key
-
                                                 }
                                             />}
                                             right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
