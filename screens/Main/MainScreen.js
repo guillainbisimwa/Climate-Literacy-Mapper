@@ -549,13 +549,16 @@ const MainScreen = ({ navigation }) => {
 
     const renderImage = () => {
         return (
-            <Block>
+            <Block margin={[15,0,0,0]}>
+                    <Text light>Feel free to share images of landscapes from this location</Text>
+
                 <Block row space="between">
                     <TouchableOpacity
                         style={styles.btn}
                         onPress={() => (images.length >= 3 ? info() : pickImage())}
                     >
                         <Ionicons name="cloud-upload" size={30} color={COLORS.white} style={styles.icon} />
+
                         <Text style={{ color: COLORS.white }}>Upload image</Text>
                     </TouchableOpacity>
 
@@ -869,6 +872,9 @@ const MainScreen = ({ navigation }) => {
 
                                                     <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined" keyboardType="default" />
 
+                                                    {/* name of the location
+                                                    - coordinates, gold
+                                                    - a link if you know how to share it: */}
                                                     <TextInput style={styles.textInput} label={`Location of ${selectedTribe} tribe`} mode="outlined" keyboardType="default" />
                                                     <TextInput style={styles.textInput} label={`proof_link of ${selectedTribe} tribe`} mode="outlined" keyboardType="default" />
                                                     {
