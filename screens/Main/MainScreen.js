@@ -14,12 +14,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { fetchTribeByName } from "@/redux/tribeSlice";
 import Container, { Toast } from "toastify-react-native";
 import * as ImagePicker from 'expo-image-picker';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 const MainScreen = ({ navigation }) => {
     const { error, success } = useSelector((state) => state.user);
     const { tribeList, isLoadingByName, errorByName, successByName, tribeByName } = useSelector((state) => state.tribe);
     const [images, setImages] = useState([]);
+    const [loadPic, setLoadPic] = useState(false);
 
     const isSignedIn = useSelector((state) => state.auth.user);
     const [selectedTribe, setSelectedTribe] = useState("");
@@ -28,7 +30,7 @@ const MainScreen = ({ navigation }) => {
 
     const snapPoints90 = useMemo(() => ['90%'], []);
     const snapPoints = useMemo(() => ['90%'], []);
-    const snapPoint = useMemo(() => ["50%", '70%', '80%', '90%'], []);
+    const snapPoint = useMemo(() => ["51%", '70%', '80%', '90%'], []);
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
@@ -547,14 +549,14 @@ const MainScreen = ({ navigation }) => {
 
     const renderImage = () => {
         return (
-            <Block flex={1}>
+            <Block>
                 <Block row space="between">
                     <TouchableOpacity
                         style={styles.btn}
                         onPress={() => (images.length >= 3 ? info() : pickImage())}
                     >
                         <Ionicons name="cloud-upload" size={30} color={COLORS.white} style={styles.icon} />
-                        <Text style={{ color: COLORS.white }}>Téléverser une image</Text>
+                        <Text style={{ color: COLORS.white }}>Upload image</Text>
                     </TouchableOpacity>
 
                 </Block>
@@ -577,8 +579,9 @@ const MainScreen = ({ navigation }) => {
             if (!result.canceled) {
                 let base64Img = `data:image/jpg;base64,${result.assets[0].base64}`; // result.assets[0].base64
 
-                console.log("------------");
-                let imgCb = await onCloudinarySaveCb(base64Img);
+                console.log("------------", result.assets[0].uri);
+                // let imgCb = await onCloudinarySaveCb(base64Img);
+                let imgCb = result.assets[0].uri;
                 let imgCb2 = [...images];
 
                 imgCb2.push(imgCb);
@@ -640,7 +643,7 @@ const MainScreen = ({ navigation }) => {
     };
 
     const info = () => Toast.error(`You cannot exceed 3 pictures`, 'top');
-        
+
 
 
 
@@ -868,7 +871,27 @@ const MainScreen = ({ navigation }) => {
 
                                                     <TextInput style={styles.textInput} label={`Location of ${selectedTribe} tribe`} mode="outlined" keyboardType="default" />
                                                     <TextInput style={styles.textInput} label={`proof_link of ${selectedTribe} tribe`} mode="outlined" keyboardType="default" />
-                                                    <TextInput style={styles.textInput} label={`images of ${selectedTribe} tribe`} mode="outlined" keyboardType="default" />
+                                                    {
+                                                        renderImage()
+                                                    }
+                                                   
+                                                        <Block style={styles.imgContainer}>
+                                                            {images.map((img, key) => (
+                                                                <View key={key}>
+                                                                    <Ionicons
+                                                                        color={COLORS.red}
+                                                                        size={SIZES.base * 6}
+                                                                        name={'close-circle'}
+                                                                        style={styles.cancel}
+                                                                        onPress={() => removePic(img)}
+                                                                    />
+                                                                    <Block style={styles.bg}>
+                                                                        <Image source={{ uri: img }} style={styles.img} />
+                                                                    </Block>
+                                                                </View>
+                                                            ))}
+                                                            <ActivityIndicator animating={loadPic} color={COLORS.peach} />
+                                                        </Block>
                                                 </> : null
                                     }
                                     <Block padding={[30, 0, 0, 0]} row space="between" >
@@ -1152,18 +1175,42 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginHorizontal: 5,
-      },
-      btn: {
+    },
+    btn: {
         backgroundColor: COLORS.peach,
         padding: SIZES.base,
-       // width: SIZES.width / 2.5,
+        width: "100%",
         borderRadius: SIZES.radius,
         elevation: 2,
         marginTop: SIZES.base * 1.8,
         flexDirection: 'row',
         alignItems: 'center',
-        ///height: SIZES.base * 7,
-      },
+    },
+    imgContainer: {
+        marginVertical: SIZES.base,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+    },
+    img: {
+        width: SIZES.width / 3.6,
+        height: SIZES.width / 3.6,
+        borderRadius: SIZES.radius,
+        opacity: 0.8,
+        borderColor: COLORS.black,
+        borderWidth: 3,
+    },
+    bg: {
+        borderRadius: SIZES.radius,
+        marginRight: SIZES.base * 1.7,
+    },
+    cancel: {
+        position: 'absolute',
+        zIndex: 100,
+        margin: 10,
+        backgroundColor: COLORS.white,
+        borderRadius: SIZES.radius*2,
+        overflow: "hidden"
+    },
 });
 
 
