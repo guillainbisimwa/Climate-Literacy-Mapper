@@ -3,14 +3,27 @@ import React from 'react';
 import { AppRegistry, StatusBar } from 'react-native'; // Add this import
 import { store } from '../redux/Store';
 import { Provider } from 'react-redux';
+import { DefaultTheme, Provider as PaperProvider} from  'react-native-paper'
 import Routes from './Routes';
+
+const theme = {
+  ...DefaultTheme, 
+  // roundness: 1,
+dark: false,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#3498db',
+    accent: '#f1c40f'
+  }
+};
 
 const Index = () => {
   return (
     <Provider store={store}>
-      {/* <StatusBar style="auto" /> */}
+      <PaperProvider theme={theme}>
       <StatusBar barStyle="dark-content" />
       <Routes />
+      </PaperProvider>
     </Provider>
   );
 };
