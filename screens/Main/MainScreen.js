@@ -13,10 +13,13 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { fetchTribeByName } from "@/redux/tribeSlice";
 import Container, { Toast } from "toastify-react-native";
+import * as ImagePicker from 'expo-image-picker';
+
 
 const MainScreen = ({ navigation }) => {
     const { error, success } = useSelector((state) => state.user);
     const { tribeList, isLoadingByName, errorByName, successByName, tribeByName } = useSelector((state) => state.tribe);
+    const [images, setImages] = useState([]);
 
     const isSignedIn = useSelector((state) => state.auth.user);
     const [selectedTribe, setSelectedTribe] = useState("");
@@ -33,11 +36,11 @@ const MainScreen = ({ navigation }) => {
     console.log();
 
     // console.log("tribeList---------", tribeList);
-    
+
     const tribes = tribeList.map(val => {
         return { title: val.tribe, icon: "square-rounded-outline" }
     });
-    tribes.push( { title: "Other", icon: "square-rounded-outline" },)
+    tribes.push({ title: "Other", icon: "square-rounded-outline" },)
 
     const tribes2 = [
 
@@ -541,6 +544,106 @@ const MainScreen = ({ navigation }) => {
         }
     ];
 
+
+    const renderImage = () => {
+        return (
+            <Block flex={1}>
+                <Block row space="between">
+                    <TouchableOpacity
+                        style={styles.btn}
+                        onPress={() => (images.length >= 3 ? info() : pickImage())}
+                    >
+                        <Ionicons name="cloud-upload" size={30} color={COLORS.white} style={styles.icon} />
+                        <Text style={{ color: COLORS.white }}>Téléverser une image</Text>
+                    </TouchableOpacity>
+
+                </Block>
+            </Block>
+        );
+    };
+
+
+    const pickImage = async () => {
+        try {
+            // No permissions request is necessary for launching the image library
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images, // Use proper syntax for mediaTypes
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+                base64: true,
+            });
+
+            if (!result.canceled) {
+                let base64Img = `data:image/jpg;base64,${result.assets[0].base64}`; // result.assets[0].base64
+
+                console.log("------------");
+                let imgCb = await onCloudinarySaveCb(base64Img);
+                let imgCb2 = [...images];
+
+                imgCb2.push(imgCb);
+                setImages(imgCb2); // Use proper syntax for setting the state
+                console.log(images);
+            }
+        } catch (e) {
+            setLoadPic(false);
+            console.log("Error while picking image", e);
+        }
+    };
+
+
+    const onCloudinarySaveCb = async (base64Img) => {
+        try {
+            setLoadPic(true)
+            var pic = "";
+            let apiUrl =
+                'https://api.cloudinary.com/v1_1/micity/image/upload';
+            let data = {
+                file: base64Img,
+                upload_preset: 'ml_default'
+            };
+
+            await fetch(apiUrl, {
+                body: JSON.stringify(data),
+                headers: {
+                    'content-type': 'application/json'
+                },
+                method: 'POST'
+            })
+                .then(async response => {
+                    let data = await response.json();
+                    //console.log(data);
+                    if (await data.secure_url) {
+                        //console.log('Upload successful');
+                        setLoadPic(false);
+                        pic = await data.secure_url;
+                    }
+                })
+                .catch(err => {
+                    console.log('Cannot upload');
+                    setLoadPic(false);
+                    console.log(err);
+                });
+            return pic;
+        } catch (e) {
+            setLoadPic(false);
+            console.log("Error while onCloudinarySave", e);
+        }
+    };
+
+    const removePic = (id) => {
+        var removed = images.filter((value) => value !== id);
+        setImages(removed);
+
+        var removedV2 = images.filter((value) => value !== id);
+        setImages(removedV2);
+    };
+
+    const info = () => Toast.error(`You cannot exceed 3 pictures`, 'top');
+        
+
+
+
     const renderBottom = () => {
         const { width, height } = useWindowDimensions();
         const scrollX = useRef(new Animated.Value(0)).current;
@@ -551,15 +654,15 @@ const MainScreen = ({ navigation }) => {
 
             const currentPageIndex = Math.floor(scrollX._value / width);
             const nextPageIndex = Math.min(currentPageIndex + 1, pages.length - 1);
-            console.log("currentPageIndex", currentPageIndex);
-            console.log("selectedTribe", selectedTribe);
-            console.log("newTribe", newTribe);
+            // console.log("currentPageIndex", currentPageIndex);
+            // console.log("selectedTribe", selectedTribe);
             if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() === "") {
                 setNewTribeNext(true)
             }
-            else if(currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() !== "") {
+            else if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() !== "") {
+
                 // check if tribe is already exists
-                dispatch(fetchTribeByName({tribeName: newTribe.trim()})).then((result) => {
+                dispatch(fetchTribeByName({ tribeName: newTribe.trim() })).then((result) => {
                     if (fetchTribeByName.fulfilled.match(result)) {
                         // Handle successful login
                         console.log('Successful:', result.payload);
@@ -570,19 +673,22 @@ const MainScreen = ({ navigation }) => {
                         Toast.error(`Error: ${result.payload}`, 'top');
                     }
                 })
-                .catch((error) => {
-                    // Handle any additional errors
-                    console.error('Error during login:', error);
-                    Toast.error(`Error during login:, ${error}`, 'top');
-                });
+                    .catch((error) => {
+                        // Handle any additional errors
+                        console.error('Error during login:', error);
+                        Toast.error(`Error :, ${error}`, 'top');
+                    });
 
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
 
-            } else if(currentPageIndex == 0 && selectedTribe.length !== 0){
+            } else if (currentPageIndex == 0 && selectedTribe.length !== 0) {
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
             }
-            else if(currentPageIndex == 1 && (selectedTribe.length !== 0 || newTribe.trim() != "" )){
+            else if (currentPageIndex == 1 && (selectedTribe.length !== 0 || newTribe.trim() != "")) {
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
+            }
+            else {
+                Toast.error(`You nedd to choose a tribe`, 'top');
             }
         };
 
@@ -617,134 +723,135 @@ const MainScreen = ({ navigation }) => {
 
             </Block>
             <BottomSheetScrollView>
-            <Block>
+                <Block>
 
-                <Block >
-                    <View style={styles.pageIndicator}>
-                        <PageIndicator count={pages.length} current={Animated.divide(scrollX, width)} />
-                    </View>
+                    <Block >
+                        <View style={styles.pageIndicator}>
+                            <PageIndicator variant="train" count={pages.length} current={Animated.divide(scrollX, width)} />
+                        </View>
 
-                    <Animated.ScrollView
-                        ref={scrollViewRef}
-                        scrollEnabled={false}
-                        horizontal
-                        pagingEnabled
-                        showsHorizontalScrollIndicator={false}
-                        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-                            useNativeDriver: false, // Changed to false to use _value
-                        })}
-                        scrollEventThrottle={16} // Handle scroll event every 16ms
-                    >
-                        {pages.map((page, index) => (
-                            <Block key={index} style={[styles.page, { width, height }]}>
-                                {
-                                    index == 0 ?
-                                        <>
-                                            {/* <Text bold h3>Please select your tribe</Text> */}
-                                            <Block style={styles.selectDropdown}>
-                                                <SelectDropdown
-                                                    search
-                                                    /**
-                                                    * function callback when the search input text 
-                                                    * changes, this will automatically disable the 
-                                                    * dropdown's internal search to be implemented manually outside the component
-                                                    */
+                        <Animated.ScrollView
+                            ref={scrollViewRef}
+                            scrollEnabled={false}
+                            horizontal
+                            pagingEnabled
+                            showsHorizontalScrollIndicator={false}
+                            onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+                                useNativeDriver: false, // Changed to false to use _value
+                            })}
+                            scrollEventThrottle={16} // Handle scroll event every 16ms
+                        >
+                            {pages.map((page, index) => (
+                                <Block key={index} style={[styles.page, { width, height }]}>
+                                    {
+                                        index == 0 ?
+                                            <>
+                                                {/* <Text bold h3>Please select your tribe</Text> */}
+                                                <Block style={styles.selectDropdown}>
+                                                    <SelectDropdown
+                                                        search
+                                                        /**
+                                                        * function callback when the search input text 
+                                                        * changes, this will automatically disable the 
+                                                        * dropdown's internal search to be implemented manually outside the component
+                                                        */
 
-                                                    // onChangeSearchInputText={(val)=>{
-                                                    //     console.log("val", val);
-                                                    //     return val
-                                                    // }}
-                                                    searchPlaceHolder="Type: 'Other' If your tribe doesn't exist "
+                                                        // onChangeSearchInputText={(val)=>{
+                                                        //     console.log("val", val);
+                                                        //     return val
+                                                        // }}
+                                                        searchPlaceHolder="Type: 'Other' If your tribe doesn't exist "
 
-                                                    data={tribes}
-                                                    onSelect={(selectedItem, index) => {
-                                                        console.log(selectedItem, index);
-                                                        setSelectedTribe(selectedItem.title);
-                                                        setNewTribe("");
-                                                        setNewTribeNext(false)
-                                                    }}
+                                                        data={tribes}
+                                                        onSelect={(selectedItem, index) => {
+                                                            console.log(selectedItem, index);
+                                                            setSelectedTribe(selectedItem.title);
+                                                            setNewTribe("");
+                                                            setNewTribeNext(false)
+                                                        }}
 
-                                                    renderButton={(selectedItem, isOpened) => {
-                                                        return (
-                                                            <View style={styles.dropdownButtonStyle}>
-                                                                {selectedItem && (
-                                                                    <Icon name="square-rounded" nameq={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
-                                                                )}
-                                                                <Text style={styles.dropdownButtonTxtStyle}>
-                                                                    {(selectedItem && selectedItem.title) || 'Select your tribe'}
-                                                                </Text>
-                                                                <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
-                                                            </View>
-                                                        );
-                                                    }}
-                                                    renderItem={(item, index, isSelected) => {
-                                                        return (
-                                                            <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
-                                                                <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
-                                                                <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-                                                            </View>
-                                                        );
-                                                    }}
-                                                    showsVerticalScrollIndicator={false}
-                                                    dropdownStyle={styles.dropdownMenuStyle}
-                                                />
-                                            </Block>
+                                                        renderButton={(selectedItem, isOpened) => {
+                                                            return (
+                                                                <View style={styles.dropdownButtonStyle}>
+                                                                    {selectedItem && (
+                                                                        <Icon name="square-rounded" nameq={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
+                                                                    )}
+                                                                    <Text style={styles.dropdownButtonTxtStyle}>
+                                                                        {(selectedItem && selectedItem.title) || 'Select your tribe'}
+                                                                    </Text>
+                                                                    <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
+                                                                </View>
+                                                            );
+                                                        }}
+                                                        renderItem={(item, index, isSelected) => {
+                                                            return (
+                                                                <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
+                                                                    <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
+                                                                    <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
+                                                                </View>
+                                                            );
+                                                        }}
+                                                        showsVerticalScrollIndicator={false}
+                                                        dropdownStyle={styles.dropdownMenuStyle}
+                                                    />
+                                                </Block>
 
-                                            {
-                                                selectedTribe === "Other" ?
-                                                    <>
-                                                         {isLoadingByName? <ActivityIndicator />:null}
-                                                         {/* {errorByName? <Text>{errorByName}</Text>:null} */}
-                                                        <TextInput error={newTribeNext} onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
-                                                            mode="outlined" keyboardType="default" />
-                                                    </> : null
-                                            }
+                                                {
+                                                    selectedTribe === "Other" ?
+                                                        <>
+                                                            {isLoadingByName ? <ActivityIndicator /> : null}
+                                                            {/* {errorByName? <Text>{errorByName}</Text>:null} */}
+                                                            <TextInput error={newTribeNext} onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
+                                                                mode="outlined" keyboardType="default" />
+                                                        </> : null
+                                                }
 
-                                            {/* <TextInput style={styles.textInput} label="Name of tribe or native language"
+                                                {/* <TextInput style={styles.textInput} label="Name of tribe or native language"
                                                 mode="outlined" keyboardType="default" />
 
                                             <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined"  keyboardType="default" /> */}
 
-                                        </> :
-                                        index == 1 ? 
-                                        !foundTribe()?
-                                        <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
-                                            <SegmentedButtons
-                                                value={ans}
-                                                onValueChange={setAns}
-                                                style={{ marginTop: 20 }}
-                                                buttons={[
-                                                    {
-                                                        value: 'yes',
-                                                        label: 'YES',
-                                                        icon: 'check',
-                                                        style: ans === 'yes' ? styles.yesButton : {},
-                                                    },
-                                                    {
-                                                        value: 'notsure',
-                                                        label: 'NOT SURE',
-                                                        icon: 'minus',
-                                                        style: ans === 'notsure' ? styles.notSureButton : {},
+                                            </> :
+                                            index == 1 ?
+                                                !foundTribe() ?
+                                                    <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
+                                                        <SegmentedButtons
+                                                            value={ans}
+                                                            onValueChange={setAns}
+                                                            style={{ marginTop: 20 }}
+                                                            buttons={[
+                                                                {
+                                                                    value: 'yes',
+                                                                    label: 'YES',
+                                                                    icon: 'check',
+                                                                    style: ans === 'yes' ? styles.yesButton : {},
+                                                                },
+                                                                {
+                                                                    value: 'notsure',
+                                                                    label: 'NOT SURE',
+                                                                    icon: 'minus',
+                                                                    style: ans === 'notsure' ? styles.notSureButton : {},
 
-                                                    },
-                                                    {
-                                                        value: 'no',
-                                                        label: 'NO',
-                                                        icon: 'cancel',
-                                                        style: ans === 'no' ? styles.noButton : {},
+                                                                },
+                                                                {
+                                                                    value: 'no',
+                                                                    label: 'NO',
+                                                                    icon: 'cancel',
+                                                                    style: ans === 'no' ? styles.noButton : {},
 
-                                                    },
-                                                ]}
-                                            /></>:
-                                           <>
-                                           <Text bold h2 color={COLORS.darkgreen}>Good news for your {selectedTribe} tribe!</Text>
-                                           <Text h3>Climate knowledge exists in your local language</Text>
+                                                                },
+                                                            ]}
+                                                        /></> :
+                                                    <>
+                                                        <Text bold h2 color={COLORS.darkgreen}>
+                                                            Good news for your {selectedTribe}'s tribe!</Text>
+                                                        <Text h3>Climate knowledge exists in your local language!</Text>
 
-                                            </>
-                                            :
-                                            index == 2 ? <>
+                                                    </>
+                                                :
+                                                index == 2 ? <>
 
-                                        {/* climate_change_in_lang
+                                                    {/* climate_change_in_lang
                                            translate: 
                                             value: { type: String },
                                             owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -756,29 +863,29 @@ const MainScreen = ({ navigation }) => {
                                         proof_link
 
                                         images */}
- 
-                                                <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined"  keyboardType="default" />
 
-                                                <TextInput style={styles.textInput} label={`Location of ${selectedTribe} tribe`} mode="outlined"  keyboardType="default" />
-                                                <TextInput style={styles.textInput} label={`proof_link of ${selectedTribe} tribe`} mode="outlined"  keyboardType="default" />
-                                                <TextInput style={styles.textInput} label={`images of ${selectedTribe} tribe`} mode="outlined"  keyboardType="default" />
-                                            </> : null
-                                }
-                                <Block padding={[30, 0, 0, 0]} row space="between" >
-                                    <Button disabled={index == 0 ? true : false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
-                                        <Text>Previous</Text>
-                                    </Button>
-                                    <Button disabled={index == pages.length - 1 ? true : false} mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
-                                        <Text>Next</Text>
-                                    </Button>
+                                                    <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined" keyboardType="default" />
+
+                                                    <TextInput style={styles.textInput} label={`Location of ${selectedTribe} tribe`} mode="outlined" keyboardType="default" />
+                                                    <TextInput style={styles.textInput} label={`proof_link of ${selectedTribe} tribe`} mode="outlined" keyboardType="default" />
+                                                    <TextInput style={styles.textInput} label={`images of ${selectedTribe} tribe`} mode="outlined" keyboardType="default" />
+                                                </> : null
+                                    }
+                                    <Block padding={[30, 0, 0, 0]} row space="between" >
+                                        <Button disabled={index == 0 ? true : false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
+                                            <Text>Previous</Text>
+                                        </Button>
+                                        <Button disabled={index == pages.length - 1 ? true : false} mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
+                                            <Text>Next</Text>
+                                        </Button>
+                                    </Block>
                                 </Block>
-                            </Block>
-                        ))}
-                    </Animated.ScrollView>
+                            ))}
+                        </Animated.ScrollView>
+
+                    </Block>
 
                 </Block>
-
-            </Block>
             </BottomSheetScrollView>
 
         </BottomSheetModal>
@@ -823,7 +930,7 @@ const MainScreen = ({ navigation }) => {
 
     return <GestureHandlerRootView>
         <BottomSheetModalProvider>
-        <Container position="bottom" style={{ width: '100%' }} duration={6000} />
+            <Container position="bottom" style={{ width: '100%' }} duration={6000} />
 
             <Block flex style={{ position: "relative", }}>
 
@@ -1042,7 +1149,21 @@ const styles = StyleSheet.create({
     },
     textInput: {
         marginTop: 10
-    }
+    },
+    icon: {
+        marginHorizontal: 5,
+      },
+      btn: {
+        backgroundColor: COLORS.peach,
+        padding: SIZES.base,
+       // width: SIZES.width / 2.5,
+        borderRadius: SIZES.radius,
+        elevation: 2,
+        marginTop: SIZES.base * 1.8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        ///height: SIZES.base * 7,
+      },
 });
 
 
