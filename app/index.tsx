@@ -9,7 +9,6 @@ import Routes from './Routes';
 const theme = {
   ...DefaultTheme, 
   // roundness: 1,
-dark: false,
   colors: {
     ...DefaultTheme.colors,
     // primary: '#3498db',

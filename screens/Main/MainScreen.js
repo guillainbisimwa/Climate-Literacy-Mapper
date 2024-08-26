@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Block, Location, Text } from "../../components"
+import { Block, Location, Proof, Text } from "../../components"
 import { ActivityIndicator, Avatar, Button, IconButton, List, SegmentedButtons, TextInput } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -869,8 +869,9 @@ const MainScreen = ({ navigation }) => {
 
                                                     <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined" keyboardType="default" />
                                                     <Location />
+
+                                                    <Proof />
                                                    
-                                                    <TextInput style={styles.textInput} label={`proof_link of ${selectedTribe} tribe`} mode="outlined" keyboardType="default" />
                                                     {
                                                         renderImage()
                                                     }
