@@ -546,7 +546,6 @@ const MainScreen = ({ navigation }) => {
         }
     ];
 
-
     const renderImage = () => {
         return (
             <Block margin={[15,0,0,0]}>

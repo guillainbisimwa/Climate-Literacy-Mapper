@@ -65,8 +65,6 @@ const Loaction = () => {
                         : null
         }
 
-
-
     </Block>
 };
 
