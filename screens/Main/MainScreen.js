@@ -557,8 +557,7 @@ const MainScreen = ({ navigation }) => {
                         onPress={() => (images.length >= 3 ? info() : pickImage())}
                     >
                         <Ionicons name="cloud-upload" size={30} color={COLORS.white} style={styles.icon} />
-
-                        <Text style={{ color: COLORS.white }}>Upload image</Text>
+                        <Text style={{ color: COLORS.white }}>Press here to upload images</Text>
                     </TouchableOpacity>
 
                 </Block>
@@ -690,7 +689,7 @@ const MainScreen = ({ navigation }) => {
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
             }
             else {
-                Toast.error(`You nedd to choose a tribe`, 'top');
+                Toast.error(`You need to choose a tribe`, 'top');
             }
         };
 

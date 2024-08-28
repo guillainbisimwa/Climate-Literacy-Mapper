@@ -27,7 +27,7 @@ const Loaction = () => {
             anchor={
                 <TouchableOpacity style={styles.btn} onPress={openMenu}>
                     <Ionicons name="location" size={30} color={COLORS.white} style={styles.icon} />
-                    <Text style={{ color: COLORS.white }}>Location of your tribe</Text>
+                    <Text style={{ color: COLORS.white }}>Add the location of your tribe</Text>
                 </TouchableOpacity>
             }
         >
