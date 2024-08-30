@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Block, Location, Proof, Text } from "../../components"
-import { ActivityIndicator, Avatar, Button, IconButton, List, SegmentedButtons, TextInput } from "react-native-paper";
+import { ActivityIndicator, Avatar, Button, IconButton, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLORS, SIZES } from "@/constants";
-import { Animated, TouchableOpacity, Image, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
+import { Animated, ImageBackground, TouchableOpacity, Image, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -16,6 +16,7 @@ import Container, { Toast } from "toastify-react-native";
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ClimateKnowledge from "./ClimateKnowledge";
+import { LinearGradient } from "react-native-svg";
 
 
 const MainScreen = ({ navigation }) => {
@@ -576,8 +577,8 @@ const MainScreen = ({ navigation }) => {
 
     const renderImage = () => {
         return (
-            <Block margin={[15,0,0,0]}>
-                    <Text light>Feel free to share images of landscapes from this location</Text>
+            <Block margin={[15, 0, 0, 0]}>
+                <Text light>Feel free to share images of landscapes from this location</Text>
 
                 <Block row space="between">
                     <TouchableOpacity
@@ -897,27 +898,27 @@ const MainScreen = ({ navigation }) => {
                                                     <Location />
 
                                                     <Proof />
-                                                   
+
                                                     {
                                                         renderImage()
                                                     }
-                                                        <Block style={styles.imgContainer}>
-                                                            {images.map((img, key) => (
-                                                                <View key={key}>
-                                                                    <Ionicons
-                                                                        color={COLORS.red}
-                                                                        size={SIZES.base * 6}
-                                                                        name={'close-circle'}
-                                                                        style={styles.cancel}
-                                                                        onPress={() => removePic(img)}
-                                                                    />
-                                                                    <Block style={styles.bg}>
-                                                                        <Image source={{ uri: img }} style={styles.img} />
-                                                                    </Block>
-                                                                </View>
-                                                            ))}
-                                                            <ActivityIndicator animating={loadPic} color={COLORS.peach} />
-                                                        </Block>
+                                                    <Block style={styles.imgContainer}>
+                                                        {images.map((img, key) => (
+                                                            <View key={key}>
+                                                                <Ionicons
+                                                                    color={COLORS.red}
+                                                                    size={SIZES.base * 6}
+                                                                    name={'close-circle'}
+                                                                    style={styles.cancel}
+                                                                    onPress={() => removePic(img)}
+                                                                />
+                                                                <Block style={styles.bg}>
+                                                                    <Image source={{ uri: img }} style={styles.img} />
+                                                                </Block>
+                                                            </View>
+                                                        ))}
+                                                        <ActivityIndicator animating={loadPic} color={COLORS.peach} />
+                                                    </Block>
                                                 </> : null
                                     }
                                     <Block padding={[30, 0, 0, 0]} row space="between" >
@@ -943,7 +944,44 @@ const MainScreen = ({ navigation }) => {
 
 
     const renderBottomCK = () => {
-       
+
+        const renderImages = () => {
+            const scrollX = useRef(new Animated.Value(0)).current;
+
+            return (
+              <ScrollView
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+                  useNativeDriver: false,
+                })}
+                scrollEventThrottle={16}
+              >
+                {["https://picsum.photos/200/300.jpg", "https://picsum.photos/200/300.jpg"].map((image, index) => (
+                  <ImageBackground
+                    key={index}
+                    source={{ uri: image}}
+                    resizeMode="cover"
+                    style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
+                  >
+                    <LinearGradient
+                      colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        height: 170,
+                      }}
+                    ></LinearGradient>
+                  </ImageBackground>
+                ))}
+              </ScrollView>
+            );
+          };
+        
+
         return <BottomSheetModal
             ref={bottomSheetCK}
             index={0}
@@ -971,7 +1009,67 @@ const MainScreen = ({ navigation }) => {
             <BottomSheetScrollView>
                 <Block>
 
-                   
+                    <ScrollView showsVerticalScrollIndicator={false} accessibilityElementsHidden={true}>
+                        <Block flex={1}>
+                            <Block style={{ height: 180 }}>
+                                {renderImages()}
+                                {/* {renderScrollIndicator()} */}
+                            </Block>
+                            <Block
+                                p={20}
+                                style={{
+                                    backgroundColor: 'white',
+                                    marginHorizontal: '5%',
+                                    width: '90%',
+                                    borderRadius: 10,
+                                    elevation: 2,
+                                    marginTop: -20,
+                                }}
+                            >
+                                <Text center numberOfLines={1} size={20} bold>
+                                    name
+                                </Text>
+                                
+                                        <Text color={COLORS.red} center>[Bruillon]</Text> 
+                                
+                                <Text bold center>Du au</Text>
+                                <Text center>Prix total</Text>
+                                <Text bold size={30} center color={COLORS.peach}>
+                                    200$
+                                </Text>
+
+                                <Block>
+                                    <Block row space="between">
+                                        <TouchableOpacity onPress={() => {
+                                            console.log('Images');
+                                            // navigation.navigate('ShowImages', { images: foodDetails.images })
+                                        }}>
+                                            <Block row center style={styles.round}>
+                                                <Ionicons name="md-image" color={COLORS.peach} size={20} />
+                                                <Text style={{ marginLeft: 5 }} numberOfLines={1}>Voir images</Text>
+                                            </Block>
+                                        </TouchableOpacity>
+
+                                        <Block row center style={styles.round}>
+                                            <Ionicons name="md-time" color={COLORS.peach} size={20} />
+                                            <Text numberOfLines={1}>jours</Text>                                    
+
+                                            </Block>
+                                    </Block>
+
+                                    <Block center m_t={10}>
+                                        <ProgressBar
+                                            progress={0}
+                                            color={MD3Colors.error50}
+                                            style={{ width: SIZES.width / 1.4, height: SIZES.base }}
+                                        />
+                                    </Block>
+                                </Block>
+                            </Block>
+                        </Block>
+
+
+                    </ScrollView>
 
                 </Block>
             </BottomSheetScrollView>
@@ -1074,7 +1172,7 @@ const MainScreen = ({ navigation }) => {
                         <Text accent>MBURA</Text>
                     </Block>
                     <Block>
-                        <ClimateKnowledge openModal={openModalCK}  />
+                        <ClimateKnowledge openModal={openModalCK} />
                         <List.Item
                             onPress={() => {
                                 console.log("ok");
@@ -1277,7 +1375,7 @@ const styles = StyleSheet.create({
         zIndex: 100,
         margin: 10,
         backgroundColor: COLORS.white,
-        borderRadius: SIZES.radius*2,
+        borderRadius: SIZES.radius * 2,
         overflow: "hidden"
     },
 });
