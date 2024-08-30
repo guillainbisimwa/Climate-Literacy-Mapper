@@ -18,7 +18,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 const MainScreen = ({ navigation }) => {
-    const { error, success } = useSelector((state) => state.user);
+    const { user, error, success } = useSelector((state) => state.user);
     const { tribeList, isLoadingByName, errorByName, successByName, tribeByName } = useSelector((state) => state.tribe);
     const [images, setImages] = useState([]);
     const [loadPic, setLoadPic] = useState(false);
@@ -35,7 +35,7 @@ const MainScreen = ({ navigation }) => {
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
     // console.log("{user?.user?.user?.name}", isSignedIn?.user?.user?.name);
-    console.log();
+    console.log("value user", user);
 
     // console.log("tribeList---------", tribeList);
 
@@ -958,7 +958,7 @@ const MainScreen = ({ navigation }) => {
                 <Block paddingBottom={60} padding={30} middle row space="between" color={COLORS.primary}>
                     <Block>
                         <Text white >Climate Literacy Mapper</Text>
-                        <Text numberOfLines={0.5} bold h2 white >Hi, {isSignedIn?.user?.user?.name}</Text>
+                        <Text numberOfLines={0.5} bold h2 white >Hi, {isSignedIn?.user?.name}</Text>
                     </Block>
                     <Avatar.Icon size={54} icon="account-circle" />
                 </Block>

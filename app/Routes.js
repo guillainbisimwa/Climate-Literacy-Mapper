@@ -86,25 +86,14 @@ const App = () => {
       const value = await AsyncStorage.getItem('user');
       console.log("--------value", value);
       if (value !== null) {
-        // user = {
-        //   "message": "Connexion réussie",
-        //   "user": {
-        //     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmJjNzk5OWY4ZmUwZmZmODZhMWVkZmYiLCJuYW1lIjoidmFsIiwiZW1haWwiOiJ2YWxAdGVzdC5tZSIsIm1vYmlsZSI6IisyNDM4OTA5ODg3NjkiLCJzZXgiOiJGIiwicm9sZSI6IkNPQUNIRSIsInVzZXJuYW1lIjoidmFsIiwicHJvZmlsZV9waWN0dXJlIjoiaHR0cHM6Ly9pLnByYXZhdGFyLmNjLzQ4P3U9ODUxNDA3IiwiaWF0IjoxNzIzNzE4MzIyLCJleHAiOjE3MjM4MDQ3MjJ9.5H6sOK1Gi8GppWljELWNx9eYB51fd8mvvmHEmTmSaPQ",
-        //     "user": {
-        //       "userId": "66bc7999f8fe0fff86a1edff",
-        //       "name": "Valence NDIBWAMI",
-        //       "email": "val@test.me",
-        //       "mobile": "+243890988769",
-        //       "sex": "F",
-        //       "role": "COACHE",
-        //       "username": "Valence NDIBWAMI",
-        //       "profile_picture": "https://i.pravatar.cc/48?u=851407"
-        //     }
-        //   }
-        // },
+        user = {"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmE3ODNmMjVhMzQyNjE4ZmVjZTA3MGIiLCJlbWFpbCI6Imd1eUBleGFtcGxlLmNvbSIsIm5hbWUiOiJHdXkgIiwibW9iaWxlIjoiKzI0Mzg5MTk3OTAxOCIsInByb2ZpbGVfcGljIjoiaHR0cDovL2V4YW1wbGUuY29tL3Byb2ZpbGUuanBnIiwiaWF0IjoxNzI1MDE0NjEwLCJleHAiOjE3MjUxMDEwMTB9.QG2KE-NganefXQpAUQskuCXl6or0lEAVIfnNrN6V42s", 
+          "user": {"email": "guy@example.com", "mobile": "+243891979018",
+             "name": "Guy WEZA ", "profile_pic": "http://example.com/profile.jpg", 
+             "userId": "66a783f25a342618fece070b"}}
+
         // dispatch(loginSuccess(user));
         dispatch(loginSuccess(value));
-      }else{
+      } else {
         dispatch(logoutUser())
       }
     } catch (error) {
