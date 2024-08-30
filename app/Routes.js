@@ -85,14 +85,14 @@ const App = () => {
       // AsyncStorage.clear();
       const value = await AsyncStorage.getItem('user');
       console.log("--------value", value);
-      if (value !== null) {
+      if (value == null) {
         user = {"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmE3ODNmMjVhMzQyNjE4ZmVjZTA3MGIiLCJlbWFpbCI6Imd1eUBleGFtcGxlLmNvbSIsIm5hbWUiOiJHdXkgIiwibW9iaWxlIjoiKzI0Mzg5MTk3OTAxOCIsInByb2ZpbGVfcGljIjoiaHR0cDovL2V4YW1wbGUuY29tL3Byb2ZpbGUuanBnIiwiaWF0IjoxNzI1MDE0NjEwLCJleHAiOjE3MjUxMDEwMTB9.QG2KE-NganefXQpAUQskuCXl6or0lEAVIfnNrN6V42s", 
           "user": {"email": "guy@example.com", "mobile": "+243891979018",
              "name": "Guy WEZA ", "profile_pic": "http://example.com/profile.jpg", 
              "userId": "66a783f25a342618fece070b"}}
 
-        // dispatch(loginSuccess(user));
-        dispatch(loginSuccess(value));
+        dispatch(loginSuccess(user));
+        //dispatch(loginSuccess(value));
       } else {
         dispatch(logoutUser())
       }

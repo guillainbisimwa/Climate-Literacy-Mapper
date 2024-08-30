@@ -17,6 +17,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ClimateKnowledge from "./ClimateKnowledge";
 import { LinearGradient } from "react-native-svg";
+import ClimateKnowledgeComponet from '../../components/ClimateKnowledgeComponet';
 
 
 const MainScreen = ({ navigation }) => {
@@ -945,87 +946,7 @@ const MainScreen = ({ navigation }) => {
 
     const renderBottomCK = () => {
 
-        const scrollX = useRef(new Animated.Value(0)).current;
-
-
-        const renderScrollIndicator = () => {
-
-            const dotPosition = Animated.divide(scrollX, SIZES.width);
-
-            return (
-                <Block
-                    row
-                    center
-                    middle
-                    style={{
-                        position: 'absolute',
-                        bottom: 40,
-                        left: 0,
-                        right: 0,
-                        justifyContent: 'center',
-                    }}
-                >
-                    {["https://picsum.photos/200/300.jpg", "https://picsum.photos/200/300.jpg"].map((image, index) => {
-                        const opacity = dotPosition.interpolate({
-                            inputRange: [index - 1, index, index + 1],
-                            outputRange: [0.3, 1, 0.3],
-                            extrapolate: 'clamp',
-                        });
-
-                        return (
-                            <Animated.View
-                                key={index}
-                                style={{
-                                    height: 10,
-                                    width: 10,
-                                    borderRadius: 5,
-                                    backgroundColor: COLORS.gray,
-                                    opacity,
-                                    marginHorizontal: 4,
-                                }}
-                            />
-                        );
-                    })}
-                </Block>
-            );
-        };
-
-
-        const renderImages = () => {
-
-            return (
-                <ScrollView
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-                        useNativeDriver: false,
-                    })}
-                    scrollEventThrottle={16}
-                >
-                    {["https://picsum.photos/200/300.jpg", "https://picsum.photos/200/300.jpg"].map((image, index) => (
-                        <ImageBackground
-                            key={index}
-                            source={{ uri: image }}
-                            resizeMode="cover"
-                            style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
-                        >
-                            <LinearGradient
-                                colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
-                                style={{
-                                    position: 'absolute',
-                                    left: 0,
-                                    right: 0,
-                                    top: 0,
-                                    height: 170,
-                                }}
-                            ></LinearGradient>
-                        </ImageBackground>
-                    ))}
-                </ScrollView>
-            );
-        };
-
+        
 
         return <BottomSheetModal
             ref={bottomSheetCK}
@@ -1054,67 +975,9 @@ const MainScreen = ({ navigation }) => {
             <BottomSheetScrollView>
                 <Block>
 
-                    <ScrollView showsVerticalScrollIndicator={false} accessibilityElementsHidden={true}>
-                        <Block flex={1}>
-                            <Block style={{ height: 180 }}>
-                                {renderImages()}
-                                {renderScrollIndicator()}
-                            </Block>
-                            <Block
-                                p={20}
-                                style={{
-                                    backgroundColor: 'white',
-                                    marginHorizontal: '5%',
-                                    width: '90%',
-                                    borderRadius: 10,
-                                    elevation: 2,
-                                    marginTop: -20,
-                                }}
-                            >
-                                <Text center numberOfLines={1} size={20} bold>
-                                    name
-                                </Text>
-
-                                <Text color={COLORS.red} center>[Bruillon]</Text>
-
-                                <Text bold center>Du au</Text>
-                                <Text center>Prix total</Text>
-                                <Text bold size={30} center color={COLORS.peach}>
-                                    200$
-                                </Text>
-
-                                <Block>
-                                    <Block row space="between">
-                                        <TouchableOpacity onPress={() => {
-                                            console.log('Images');
-                                            // navigation.navigate('ShowImages', { images: foodDetails.images })
-                                        }}>
-                                            <Block row center style={styles.round}>
-                                                <Ionicons name="md-image" color={COLORS.peach} size={20} />
-                                                <Text style={{ marginLeft: 5 }} numberOfLines={1}>Voir images</Text>
-                                            </Block>
-                                        </TouchableOpacity>
-
-                                        <Block row center style={styles.round}>
-                                            <Ionicons name="md-time" color={COLORS.peach} size={20} />
-                                            <Text numberOfLines={1}>jours</Text>
-
-                                        </Block>
-                                    </Block>
-
-                                    <Block center m_t={10}>
-                                        <ProgressBar
-                                            progress={0}
-                                            color={MD3Colors.error50}
-                                            style={{ width: SIZES.width / 1.4, height: SIZES.base }}
-                                        />
-                                    </Block>
-                                </Block>
-                            </Block>
-                        </Block>
-
-
-                    </ScrollView>
+                    {
+                        <ClimateKnowledgeComponet />
+                    }
 
                 </Block>
             </BottomSheetScrollView>
