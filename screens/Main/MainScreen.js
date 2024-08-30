@@ -945,42 +945,87 @@ const MainScreen = ({ navigation }) => {
 
     const renderBottomCK = () => {
 
-        const renderImages = () => {
-            const scrollX = useRef(new Animated.Value(0)).current;
+        const scrollX = useRef(new Animated.Value(0)).current;
+
+
+        const renderScrollIndicator = () => {
+
+            const dotPosition = Animated.divide(scrollX, SIZES.width);
 
             return (
-              <ScrollView
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-                  useNativeDriver: false,
-                })}
-                scrollEventThrottle={16}
-              >
-                {["https://picsum.photos/200/300.jpg", "https://picsum.photos/200/300.jpg"].map((image, index) => (
-                  <ImageBackground
-                    key={index}
-                    source={{ uri: image}}
-                    resizeMode="cover"
-                    style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
-                  >
-                    <LinearGradient
-                      colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
-                      style={{
+                <Block
+                    row
+                    center
+                    middle
+                    style={{
                         position: 'absolute',
+                        bottom: 40,
                         left: 0,
                         right: 0,
-                        top: 0,
-                        height: 170,
-                      }}
-                    ></LinearGradient>
-                  </ImageBackground>
-                ))}
-              </ScrollView>
+                        justifyContent: 'center',
+                    }}
+                >
+                    {["https://picsum.photos/200/300.jpg", "https://picsum.photos/200/300.jpg"].map((image, index) => {
+                        const opacity = dotPosition.interpolate({
+                            inputRange: [index - 1, index, index + 1],
+                            outputRange: [0.3, 1, 0.3],
+                            extrapolate: 'clamp',
+                        });
+
+                        return (
+                            <Animated.View
+                                key={index}
+                                style={{
+                                    height: 10,
+                                    width: 10,
+                                    borderRadius: 5,
+                                    backgroundColor: COLORS.gray,
+                                    opacity,
+                                    marginHorizontal: 4,
+                                }}
+                            />
+                        );
+                    })}
+                </Block>
             );
-          };
-        
+        };
+
+
+        const renderImages = () => {
+
+            return (
+                <ScrollView
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+                        useNativeDriver: false,
+                    })}
+                    scrollEventThrottle={16}
+                >
+                    {["https://picsum.photos/200/300.jpg", "https://picsum.photos/200/300.jpg"].map((image, index) => (
+                        <ImageBackground
+                            key={index}
+                            source={{ uri: image }}
+                            resizeMode="cover"
+                            style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
+                        >
+                            <LinearGradient
+                                colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
+                                style={{
+                                    position: 'absolute',
+                                    left: 0,
+                                    right: 0,
+                                    top: 0,
+                                    height: 170,
+                                }}
+                            ></LinearGradient>
+                        </ImageBackground>
+                    ))}
+                </ScrollView>
+            );
+        };
+
 
         return <BottomSheetModal
             ref={bottomSheetCK}
@@ -1013,7 +1058,7 @@ const MainScreen = ({ navigation }) => {
                         <Block flex={1}>
                             <Block style={{ height: 180 }}>
                                 {renderImages()}
-                                {/* {renderScrollIndicator()} */}
+                                {renderScrollIndicator()}
                             </Block>
                             <Block
                                 p={20}
@@ -1029,9 +1074,9 @@ const MainScreen = ({ navigation }) => {
                                 <Text center numberOfLines={1} size={20} bold>
                                     name
                                 </Text>
-                                
-                                        <Text color={COLORS.red} center>[Bruillon]</Text> 
-                                
+
+                                <Text color={COLORS.red} center>[Bruillon]</Text>
+
                                 <Text bold center>Du au</Text>
                                 <Text center>Prix total</Text>
                                 <Text bold size={30} center color={COLORS.peach}>
@@ -1052,9 +1097,9 @@ const MainScreen = ({ navigation }) => {
 
                                         <Block row center style={styles.round}>
                                             <Ionicons name="md-time" color={COLORS.peach} size={20} />
-                                            <Text numberOfLines={1}>jours</Text>                                    
+                                            <Text numberOfLines={1}>jours</Text>
 
-                                            </Block>
+                                        </Block>
                                     </Block>
 
                                     <Block center m_t={10}>
