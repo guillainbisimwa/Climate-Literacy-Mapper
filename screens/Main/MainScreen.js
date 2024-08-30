@@ -481,9 +481,9 @@ const MainScreen = ({ navigation }) => {
         }, 5);
     }, []);
 
-    const hideModalCK = () => handleClosePress();
+    const hideModalCK = () => handleClosePressCK();
     const handleClosePressCK = useCallback(() => {
-        bottomSheet.current?.close();
+        bottomSheetCK.current?.close();
     }, []);
 
 
@@ -1080,7 +1080,7 @@ const MainScreen = ({ navigation }) => {
                         <Text accent>MBURA</Text>
                     </Block>
                     <Block>
-                        <ClimateKnowledge openModal={openModalCK} />
+                        <ClimateKnowledge openModal={openModalCK}  />
                         <List.Item
                             onPress={() => {
                                 console.log("ok");
