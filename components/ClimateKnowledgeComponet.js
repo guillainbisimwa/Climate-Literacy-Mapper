@@ -7,28 +7,133 @@ import Location from "./Location";
 import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
 import SelectDropdown from "react-native-select-dropdown";
-import { useSelector } from "react-redux";
-import { ActivityIndicator, Icon, SegmentedButtons, TextInput } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import { ActivityIndicator, Button, Icon, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import { Toast } from "toastify-react-native";
-
-
+import { fetchTribeByName } from "@/redux/tribeSlice";
 
 const ClimateKnowledgeComponet = () => {
+    const dispatch = useDispatch();
+
     const scrollX = useRef(new Animated.Value(0)).current;
     const { tribeList, isLoadingByName, errorByName, successByName, tribeByName } = useSelector((state) => state.tribe);
 
     const [selectedTribe, setSelectedTribe] = useState("");
-    const [newTribe, setNewTribe] = useState("");
-    const [newTribeNext, setNewTribeNext] = useState(false);
+    const [newTribe, setNewTribe] = useState(null);
+    const [newTribeSearch, setNewTribeSearch] = useState(null);
+    const [errorTribeNext, setErrorTribeNext] = useState(false);
     const [images, setImages] = useState([]);
     const [loadPic, setLoadPic] = useState(false);
     const [ans, setAns] = useState('');
+    const [foundTribe, setFoundTribe] = useState(null)
 
-    const foundTribe = () => {
-        return false
+    const checkIfTribeExists = (val) => {
+        console.log("ok", val);
+        setNewTribeSearch(val)
+        if (val !== null) {
+            dispatch(fetchTribeByName({ tribeName: val.trim() })).then((result) => {
+                if (fetchTribeByName.fulfilled.match(result)) {
+                    // Handle successful login
+                    console.log('Successful:', result.payload);
+                    setFoundTribe(
+                        {
+                            "location": {
+                                "type": "Point",
+                                "coordinates": [
+                                    40.7128,
+                                    -74.006
+                                ]
+                            },
+                            "_id": "66a41a99ef8a25a0e67448ff",
+                            "climate_know_exist": true,
+                            "tribe": "Some Tribe",
+                            "language": "Some Language",
+                            "climate_change_in_lang": "Climate Change in Native Language",
+                            "proof_link": [
+                                {
+                                    "name": "Proof 1",
+                                    "link": "http://example.com/proof1",
+                                    "_id": "66a41a99ef8a25a0e6744900"
+                                }
+                            ],
+                            "images": [
+                                "http://example.com/image1.jpg"
+                            ],
+                            "owner": {
+                                "_id": "66a4181c117b9cf55e5807ec",
+                                "name": "Stella ",
+                                "email": "stella@example.com",
+                                "mobile": "+25578987654",
+                                "role": "user",
+                                "cover_url": "http://example.com/cover.jpg",
+                                "profile_pic": "http://example.com/profile.jpg",
+                                "status": "PENDING"
+                            },
+                            "status": "PENDING",
+                            "timestamp": "2024-07-26T21:52:25.737Z",
+                            "__v": 0
+                        }
+                    )
+
+                } else if (fetchTribeByName.rejected.match(result)) {
+                    // Handle rejected login
+                    // Toast.error(`Error: ${result.payload}`, 'top');
+                    console.log('');
+                    console.log('Error******:', result.payload);
+                    // setFoundTribe(
+                    //     {
+                    //         "location": {
+                    //             "type": "Point",
+                    //             "coordinates": [
+                    //                 40.7128,
+                    //                 -74.006
+                    //             ]
+                    //         },
+                    //         "_id": "66a41a99ef8a25a0e67448ff",
+                    //         "climate_know_exist": true,
+                    //         "tribe": "Some Tribe",
+                    //         "language": "Some Language",
+                    //         "climate_change_in_lang": "Climate Change in Native Language",
+                    //         "proof_link": [
+                    //             {
+                    //                 "name": "Proof 1",
+                    //                 "link": "http://example.com/proof1",
+                    //                 "_id": "66a41a99ef8a25a0e6744900"
+                    //             }
+                    //         ],
+                    //         "images": [
+                    //             "http://example.com/image1.jpg"
+                    //         ],
+                    //         "owner": {
+                    //             "_id": "66a4181c117b9cf55e5807ec",
+                    //             "name": "Stella ",
+                    //             "email": "stella@example.com",
+                    //             "mobile": "+25578987654",
+                    //             "role": "user",
+                    //             "cover_url": "http://example.com/cover.jpg",
+                    //             "profile_pic": "http://example.com/profile.jpg",
+                    //             "status": "PENDING"
+                    //         },
+                    //         "status": "PENDING",
+                    //         "timestamp": "2024-07-26T21:52:25.737Z",
+                    //         "__v": 0
+                    //     }
+                    // )
+                    setFoundTribe(null)
+                }
+            })
+                .catch((error) => {
+                    // Handle any additional errors
+                    console.error('--------Error during fetching:', error);
+                    // Toast.error(`Error :, ${error}`, 'top');
+                });
+        } else {
+            Toast.error(`Please add a tribe`, 'top');
+            setErrorTribeNext(true);
+        }
     }
 
     const tribes = tribeList.map(val => {
@@ -93,46 +198,46 @@ const ClimateKnowledgeComponet = () => {
                 scrollEventThrottle={16}
             >
                 {
-                images.length === 0?
-                <ImageBackground
-                       
-                        source={imagesConstants.noImage}
-                        resizeMode="cover"
-                        style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
-                    >
-                        <LinearGradient
-                            colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
-                            style={{
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
-                                top: 0,
-                                height: 170,
-                            }}
-                        ></LinearGradient>
-                    </ImageBackground>:
+                    images.length === 0 ?
+                        <ImageBackground
 
-                
+                            source={imagesConstants.noImage}
+                            resizeMode="cover"
+                            style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
+                        >
+                            <LinearGradient
+                                colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
+                                style={{
+                                    position: 'absolute',
+                                    left: 0,
+                                    right: 0,
+                                    top: 0,
+                                    height: 170,
+                                }}
+                            ></LinearGradient>
+                        </ImageBackground> :
 
-                images?.map((image, index) => (
-                    <ImageBackground
-                        key={index}
-                        source={{ uri: image }}
-                        resizeMode="cover"
-                        style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
-                    >
-                        <LinearGradient
-                            colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
-                            style={{
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
-                                top: 0,
-                                height: 170,
-                            }}
-                        ></LinearGradient>
-                    </ImageBackground>
-                ))
+
+
+                        images?.map((image, index) => (
+                            <ImageBackground
+                                key={index}
+                                source={{ uri: image }}
+                                resizeMode="cover"
+                                style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
+                            >
+                                <LinearGradient
+                                    colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
+                                    style={{
+                                        position: 'absolute',
+                                        left: 0,
+                                        right: 0,
+                                        top: 0,
+                                        height: 170,
+                                    }}
+                                ></LinearGradient>
+                            </ImageBackground>
+                        ))
                 }
             </ScrollView>
         );
@@ -239,8 +344,14 @@ const ClimateKnowledgeComponet = () => {
     const info = () => Toast.error(`You cannot exceed 3 pictures`, 'top');
 
     const foundTribeFunction = () => {
-        return !foundTribe() ?
-            <><Text bold h3>Is climate knowledge exists in your local language?</Text>
+        return foundTribe && foundTribe.climate_know_exist ?
+            <Block margin={[10, 0]}>
+                <Text bold h2 color={COLORS.darkgreen}>
+                    Good news for your {selectedTribe}'s tribe!</Text>
+                <Text h3>Climate knowledge exists in your local language!</Text>
+
+            </Block> :
+            <Block margin={[10, 0]}><Text bold>Is climate knowledge exists in your local language?</Text>
                 <SegmentedButtons
                     value={ans}
                     onValueChange={setAns}
@@ -267,46 +378,39 @@ const ClimateKnowledgeComponet = () => {
 
                         },
                     ]}
-                /></> :
-            <>
-                <Text bold h2 color={COLORS.darkgreen}>
-                    Good news for your {selectedTribe}'s tribe!</Text>
-                <Text h3>Climate knowledge exists in your local language!</Text>
-
-            </>
-        
+                /></Block>
     }
 
     const tribeExists = () => {
         return <>
-         <Text bold>What is climate change in your native language?</Text>
-                <Text >MBURA</Text>
+            <Text bold>What is climate change in your native language?</Text>
+            <Text >MBURA</Text>
 
-                <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined" keyboardType="default" />
-                <Location />
+            <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined" keyboardType="default" />
+            <Location />
 
-                <Proof />
+            <Proof />
 
-                {
-                    renderImage()
-                }
-                <Block style={styles.imgContainer}>
-                    {images.map((img, key) => (
-                        <View key={key}>
-                            <Ionicons
-                                color={COLORS.red}
-                                size={SIZES.base * 6}
-                                name={'close-circle'}
-                                style={styles.cancel}
-                                onPress={() => removePic(img)}
-                            />
-                            <Block style={styles.bg}>
-                                <Image source={{ uri: img }} style={styles.img} />
-                            </Block>
-                        </View>
-                    ))}
-                    <ActivityIndicator animating={loadPic} color={COLORS.peach} />
-                </Block>
+            {
+                renderImage()
+            }
+            <Block style={styles.imgContainer}>
+                {images.map((img, key) => (
+                    <View key={key}>
+                        <Ionicons
+                            color={COLORS.red}
+                            size={SIZES.base * 6}
+                            name={'close-circle'}
+                            style={styles.cancel}
+                            onPress={() => removePic(img)}
+                        />
+                        <Block style={styles.bg}>
+                            <Image source={{ uri: img }} style={styles.img} />
+                        </Block>
+                    </View>
+                ))}
+                <ActivityIndicator animating={loadPic} color={COLORS.peach} />
+            </Block>
         </>
     }
 
@@ -318,7 +422,7 @@ const ClimateKnowledgeComponet = () => {
                 {renderScrollIndicator()}
             </Block>
             <Block
-                padding={[20,0]}
+                padding={[20, 0]}
 
                 style={{
                     backgroundColor: 'white',
@@ -345,11 +449,14 @@ const ClimateKnowledgeComponet = () => {
                         searchPlaceHolder="Type: 'Other' If your tribe doesn't exist "
 
                         data={tribes}
-                        onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index);
+                        onSelect={async (selectedItem, index) => {
+                            console.log(selectedItem, "----", index);
                             setSelectedTribe(selectedItem.title);
-                            setNewTribe("");
-                            setNewTribeNext(false)
+                            setNewTribe(null);
+                            setNewTribeSearch(null)
+                            setErrorTribeNext(false);
+                            if (selectedItem.title != 'Other') await checkIfTribeExists(selectedItem.title);
+
                         }}
 
                         renderButton={(selectedItem, isOpened) => {
@@ -381,23 +488,32 @@ const ClimateKnowledgeComponet = () => {
                 {
                     selectedTribe === "Other" ?
                         <>
-                            {isLoadingByName ? <ActivityIndicator /> : null}
-                            {/* {errorByName? <Text>{errorByName}</Text>:null} */}
-                            <TextInput error={newTribeNext} onChangeText={setNewTribe} style={styles.textInput} label="Add manually the name of your tribe"
-                                mode="outlined" keyboardType="default" />
+                            <Block row center>
+                                <TextInput onChangeText={setNewTribe} error={errorTribeNext}
+                                    style={styles.input} label="Add manually the name of your tribe"
+                                    mode="outlined" keyboardType="default" />
+
+                                <Button loading={isLoadingByName}
+                                    disabled={isLoadingByName} mode="contained"
+                                    onPress={() => checkIfTribeExists(newTribe)}>ADD</Button>
+                            </Block>
+                            {errorByName && errorTribeNext ? <Text color={COLORS.red} >{errorByName}</Text> : null}
+
                         </> : null
                 }
-
-                
                 {
-                    // foundTribeFunction()
+                    isLoadingByName ? <ActivityIndicator /> :
+                
+
+                    selectedTribe != 'Other' ? foundTribeFunction() :
+                        (selectedTribe == 'Other' && newTribeSearch != null) ? foundTribeFunction() : null
                 }
 
                 {
                     // tribeExists()
                 }
 
-               
+
 
 
             </Block>
@@ -463,6 +579,12 @@ const styles = StyleSheet.create({
     textInput: {
         marginTop: 10
     },
+    input: {
+        //width: "80%",
+        // marginTop: 10
+        flex: 1,
+        marginRight: 5
+    },
     cancel: {
         position: 'absolute',
         zIndex: 100,
@@ -510,6 +632,7 @@ const styles = StyleSheet.create({
     notSureButton: {
         backgroundColor: "#FFDE4D",
     },
+
 });
 
 export default ClimateKnowledgeComponet;
