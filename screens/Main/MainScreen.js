@@ -15,6 +15,7 @@ import { fetchTribeByName } from "@/redux/tribeSlice";
 import Container, { Toast } from "toastify-react-native";
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import ClimateKnowledge from "./ClimateKnowledge";
 
 
 const MainScreen = ({ navigation }) => {
@@ -31,6 +32,7 @@ const MainScreen = ({ navigation }) => {
     const snapPoints90 = useMemo(() => ['90%'], []);
     const snapPoints = useMemo(() => ['90%'], []);
     const snapPoint = useMemo(() => ["51%", '70%', '80%', '90%'], []);
+    const [openCK, setOpenCK] = useState(false);
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
@@ -438,8 +440,21 @@ const MainScreen = ({ navigation }) => {
 
 
     const bottomSheet = useRef(null);
+    const bottomSheetCK = useRef(null);
 
     const BackdropElement = useCallback(
+        (backdropProps) => (
+            <BottomSheetBackdrop
+                {...backdropProps}
+                opacity={0.7}
+                appearsOnIndex={0}
+                disappearsOnIndex={-1}
+            />
+        ),
+        []
+    );
+
+    const BackdropElementCK = useCallback(
         (backdropProps) => (
             <BottomSheetBackdrop
                 {...backdropProps}
@@ -461,6 +476,19 @@ const MainScreen = ({ navigation }) => {
         bottomSheet.current?.present();
         setTimeout(() => {
             setOpen(true);
+        }, 5);
+    }, []);
+
+    const hideModalCK = () => handleClosePress();
+    const handleClosePressCK = useCallback(() => {
+        bottomSheet.current?.close();
+    }, []);
+
+
+    const openModalCK = useCallback(() => {
+        bottomSheetCK.current?.present();
+        setTimeout(() => {
+            setOpenCK(true);
         }, 5);
     }, []);
 
@@ -913,6 +941,45 @@ const MainScreen = ({ navigation }) => {
     };
 
 
+
+    const renderBottomCK = () => {
+       
+        return <BottomSheetModal
+            ref={bottomSheetCK}
+            index={0}
+            backdropComponent={BackdropElementCK}
+            snapPoints={snapPoints}
+            onDismiss={() => setOpenCK(false)}
+        >
+
+            <Block row space='between' padding={[0, 20]}>
+                <Block m_b={10} flex={1}>
+                    <Text bold h3>CLIMATE KNOWLEDGE</Text>
+                    <Text color={COLORS.blue}>{`In your local language`}</Text>
+                </Block>
+                <TouchableOpacity
+                    onPress={() => hideModalCK()}
+                >
+                    <IconButton
+                        icon="close"
+                        iconColor={COLORS.red}
+                        size={30}
+                    />
+                </TouchableOpacity>
+
+            </Block>
+            <BottomSheetScrollView>
+                <Block>
+
+                   
+
+                </Block>
+            </BottomSheetScrollView>
+
+        </BottomSheetModal>
+    };
+
+
     const dispatch = useDispatch();
     // Use useEffect or any other method to handle the success state and display the alert
     useEffect(() => {
@@ -1007,6 +1074,7 @@ const MainScreen = ({ navigation }) => {
                         <Text accent>MBURA</Text>
                     </Block>
                     <Block>
+                        <ClimateKnowledge openModal={openModalCK}  />
                         <List.Item
                             onPress={() => {
                                 console.log("ok");
@@ -1077,6 +1145,9 @@ const MainScreen = ({ navigation }) => {
             </Block>
             {
                 renderBottom()
+            }
+            {
+                renderBottomCK()
             }
         </BottomSheetModalProvider>
     </GestureHandlerRootView>
