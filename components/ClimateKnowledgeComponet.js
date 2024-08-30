@@ -4,7 +4,7 @@ import { Animated, Image, ImageBackground, ScrollView, StyleSheet, TouchableOpac
 import Block from './Block';
 import Text from './Text';
 import Location from "./Location";
-import { COLORS, SIZES } from "../constants";
+import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
 import SelectDropdown from "react-native-select-dropdown";
 import { useSelector } from "react-redux";
@@ -92,7 +92,29 @@ const ClimateKnowledgeComponet = () => {
                 })}
                 scrollEventThrottle={16}
             >
-                {images?.map((image, index) => (
+                {
+                images.length === 0?
+                <ImageBackground
+                       
+                        source={imagesConstants.noImage}
+                        resizeMode="cover"
+                        style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
+                    >
+                        <LinearGradient
+                            colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                height: 170,
+                            }}
+                        ></LinearGradient>
+                    </ImageBackground>:
+
+                
+
+                images?.map((image, index) => (
                     <ImageBackground
                         key={index}
                         source={{ uri: image }}
@@ -110,7 +132,8 @@ const ClimateKnowledgeComponet = () => {
                             }}
                         ></LinearGradient>
                     </ImageBackground>
-                ))}
+                ))
+                }
             </ScrollView>
         );
     };
