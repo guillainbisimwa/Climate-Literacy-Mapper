@@ -8,10 +8,12 @@ import { COLORS, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
 import SelectDropdown from "react-native-select-dropdown";
 import { useSelector } from "react-redux";
-import { ActivityIndicator, Icon, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
+import { ActivityIndicator, Icon, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
+import { Toast } from "toastify-react-native";
+
 
 
 const ClimateKnowledgeComponet = () => {
@@ -51,10 +53,10 @@ const ClimateKnowledgeComponet = () => {
                     justifyContent: 'center',
                 }}
             >
-                {["https://picsum.photos/200/300.jpg", "https://picsum.photos/200/300.jpg"].map((image, index) => {
+                {images?.map((image, index) => {
                     const opacity = dotPosition.interpolate({
                         inputRange: [index - 1, index, index + 1],
-                        outputRange: [0.3, 1, 0.3],
+                        outputRange: [0.5, 1, 0.5],
                         extrapolate: 'clamp',
                     });
 
@@ -62,12 +64,14 @@ const ClimateKnowledgeComponet = () => {
                         <Animated.View
                             key={index}
                             style={{
-                                height: 10,
-                                width: 10,
-                                borderRadius: 5,
-                                backgroundColor: COLORS.gray,
+                                height: 15,
+                                width: 15,
+                                borderRadius: 15,
+                                backgroundColor: COLORS.white,
                                 opacity,
                                 marginHorizontal: 4,
+                                borderColor: COLORS.black,
+                                borderWidth: 2
                             }}
                         />
                     );
@@ -88,7 +92,7 @@ const ClimateKnowledgeComponet = () => {
                 })}
                 scrollEventThrottle={16}
             >
-                {["https://picsum.photos/200/300.jpg", "https://picsum.photos/200/300.jpg"].map((image, index) => (
+                {images?.map((image, index) => (
                     <ImageBackground
                         key={index}
                         source={{ uri: image }}
@@ -211,6 +215,78 @@ const ClimateKnowledgeComponet = () => {
 
     const info = () => Toast.error(`You cannot exceed 3 pictures`, 'top');
 
+    const foundTribeFunction = () => {
+        return !foundTribe() ?
+            <><Text bold h3>Is climate knowledge exists in your local language?</Text>
+                <SegmentedButtons
+                    value={ans}
+                    onValueChange={setAns}
+                    style={{ marginTop: 20 }}
+                    buttons={[
+                        {
+                            value: 'yes',
+                            label: 'YES',
+                            icon: 'check',
+                            style: ans === 'yes' ? styles.yesButton : {},
+                        },
+                        {
+                            value: 'notsure',
+                            label: 'NOT SURE',
+                            icon: 'minus',
+                            style: ans === 'notsure' ? styles.notSureButton : {},
+
+                        },
+                        {
+                            value: 'no',
+                            label: 'NO',
+                            icon: 'cancel',
+                            style: ans === 'no' ? styles.noButton : {},
+
+                        },
+                    ]}
+                /></> :
+            <>
+                <Text bold h2 color={COLORS.darkgreen}>
+                    Good news for your {selectedTribe}'s tribe!</Text>
+                <Text h3>Climate knowledge exists in your local language!</Text>
+
+            </>
+        
+    }
+
+    const tribeExists = () => {
+        return <>
+         <Text bold>What is climate change in your native language?</Text>
+                <Text >MBURA</Text>
+
+                <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined" keyboardType="default" />
+                <Location />
+
+                <Proof />
+
+                {
+                    renderImage()
+                }
+                <Block style={styles.imgContainer}>
+                    {images.map((img, key) => (
+                        <View key={key}>
+                            <Ionicons
+                                color={COLORS.red}
+                                size={SIZES.base * 6}
+                                name={'close-circle'}
+                                style={styles.cancel}
+                                onPress={() => removePic(img)}
+                            />
+                            <Block style={styles.bg}>
+                                <Image source={{ uri: img }} style={styles.img} />
+                            </Block>
+                        </View>
+                    ))}
+                    <ActivityIndicator animating={loadPic} color={COLORS.peach} />
+                </Block>
+        </>
+    }
+
 
     return <ScrollView showsVerticalScrollIndicator={false} accessibilityElementsHidden={true}>
         <Block flex={1}>
@@ -219,7 +295,7 @@ const ClimateKnowledgeComponet = () => {
                 {renderScrollIndicator()}
             </Block>
             <Block
-                padding={20}
+                padding={[20,0]}
 
                 style={{
                     backgroundColor: 'white',
@@ -288,72 +364,17 @@ const ClimateKnowledgeComponet = () => {
                                 mode="outlined" keyboardType="default" />
                         </> : null
                 }
+
+                
                 {
-
-                    !foundTribe() ?
-                        <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
-                            <SegmentedButtons
-                                value={ans}
-                                onValueChange={setAns}
-                                style={{ marginTop: 20 }}
-                                buttons={[
-                                    {
-                                        value: 'yes',
-                                        label: 'YES',
-                                        icon: 'check',
-                                        style: ans === 'yes' ? styles.yesButton : {},
-                                    },
-                                    {
-                                        value: 'notsure',
-                                        label: 'NOT SURE',
-                                        icon: 'minus',
-                                        style: ans === 'notsure' ? styles.notSureButton : {},
-
-                                    },
-                                    {
-                                        value: 'no',
-                                        label: 'NO',
-                                        icon: 'cancel',
-                                        style: ans === 'no' ? styles.noButton : {},
-
-                                    },
-                                ]}
-                            /></> :
-                        <>
-                            <Text bold h2 color={COLORS.darkgreen}>
-                                Good news for your {selectedTribe}'s tribe!</Text>
-                            <Text h3>Climate knowledge exists in your local language!</Text>
-
-                        </>}
-
-                <Text bold>What is climate change in your native language?</Text>
-                <Text >MBURA</Text>
-
-                <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined" keyboardType="default" />
-                <Location />
-
-                <Proof />
-
-                {
-                    renderImage()
+                    // foundTribeFunction()
                 }
-                <Block style={styles.imgContainer}>
-                    {images.map((img, key) => (
-                        <View key={key}>
-                            <Ionicons
-                                color={COLORS.red}
-                                size={SIZES.base * 6}
-                                name={'close-circle'}
-                                style={styles.cancel}
-                                onPress={() => removePic(img)}
-                            />
-                            <Block style={styles.bg}>
-                                <Image source={{ uri: img }} style={styles.img} />
-                            </Block>
-                        </View>
-                    ))}
-                    <ActivityIndicator animating={loadPic} color={COLORS.peach} />
-                </Block>
+
+                {
+                    // tribeExists()
+                }
+
+               
 
 
             </Block>
