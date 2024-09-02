@@ -18,6 +18,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import ClimateKnowledge from "./ClimateKnowledge";
 import { LinearGradient } from "react-native-svg";
 import ClimateKnowledgeComponet from '../../components/ClimateKnowledgeComponet';
+import ClimateKnowledgeExist from '../../components/ClimateKnowledgeExist';
 
 
 const MainScreen = ({ navigation }) => {
@@ -976,7 +977,7 @@ const MainScreen = ({ navigation }) => {
                 <Block>
 
                     {
-                        <ClimateKnowledgeComponet />
+                        <ClimateKnowledgeExist />
                     }
 
                 </Block>

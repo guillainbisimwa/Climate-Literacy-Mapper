@@ -8,20 +8,20 @@ import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { ActivityIndicator, Button, Icon, SegmentedButtons, TextInput } from "react-native-paper";
+import { ActivityIndicator, Button, Divider, Icon, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import { Toast } from "toastify-react-native";
 import { fetchTribeByName } from "@/redux/tribeSlice";
 
-const ClimateKnowledgeComponet = () => {
+const ClimateKnowledgeExist = () => {
     const dispatch = useDispatch();
 
     const scrollX = useRef(new Animated.Value(0)).current;
     const { tribeList, isLoadingByName, errorByName, successByName, tribeByName } = useSelector((state) => state.tribe);
 
-    const [selectedTribe, setSelectedTribe] = useState("");
+    const [selectedTribe, setSelectedTribe] = useState("MASAI");
     const [newTribe, setNewTribe] = useState(null);
     const [newTribeSearch, setNewTribeSearch] = useState(null);
     const [errorTribeNext, setErrorTribeNext] = useState(false);
@@ -29,6 +29,9 @@ const ClimateKnowledgeComponet = () => {
     const [loadPic, setLoadPic] = useState(false);
     const [ans, setAns] = useState('');
     const [foundTribe, setFoundTribe] = useState(null)
+
+    const [expanded, setExpanded] = useState(true);
+    const handlePress = () => setExpanded(!expanded);
 
     const checkIfTribeExists = (val) => {
         console.log("ok", val);
@@ -201,7 +204,7 @@ const ClimateKnowledgeComponet = () => {
                     images.length === 0 ?
                         <ImageBackground
 
-                            source={imagesConstants.noImage}
+                            source={imagesConstants.noImage2}
                             resizeMode="cover"
                             style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
                         >
@@ -344,49 +347,97 @@ const ClimateKnowledgeComponet = () => {
     const info = () => Toast.error(`You cannot exceed 3 pictures`, 'top');
 
     const foundTribeFunction = () => {
-        return foundTribe && foundTribe.climate_know_exist ?
-            <Block margin={[10, 0]}>
-                <Text bold h2 color={COLORS.darkgreen}>
-                    Good news for your {selectedTribe}'s tribe!</Text>
-                <Text h3>Climate knowledge exists in your local language!</Text>
+        return <Block margin={[10, 0]}>
+            <Text bold h2 color={COLORS.darkgreen}>
+                Good news for your {selectedTribe}'s tribe!</Text>
+            <Text h3>Climate knowledge exists in your local language!</Text>
 
-            </Block> :
-            <Block margin={[10, 0]}><Text bold>Is climate knowledge exists in your local language?</Text>
-                <SegmentedButtons
-                    value={ans}
-                    onValueChange={setAns}
-                    style={{ marginTop: 20 }}
-                    buttons={[
-                        {
-                            value: 'yes',
-                            label: 'YES',
-                            icon: 'check',
-                            style: ans === 'yes' ? styles.yesButton : {},
-                        },
-                        {
-                            value: 'notsure',
-                            label: 'NOT SURE',
-                            icon: 'minus',
-                            style: ans === 'notsure' ? styles.notSureButton : {},
+        </Block>
 
-                        },
-                        {
-                            value: 'no',
-                            label: 'NO',
-                            icon: 'cancel',
-                            style: ans === 'no' ? styles.noButton : {},
-
-                        },
-                    ]}
-                /></Block>
     }
 
     const tribeExists = () => {
-        return <>
-            <Text bold>What is climate change in your native language?</Text>
-            <Text >MBURA</Text>
 
-            <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined" keyboardType="default" />
+
+        return <Block padding={[10, 0]}>
+            {/* <Text bold>What is climate change in your native language?</Text>
+            <Text light>Hali ya mazingira</Text> */}
+
+            <List.Section title="">
+                <List.Accordion
+                    title="What is climate change in your native language?"
+                    titleStyle={{fontWeight:"bold"}}
+                    descriptionStyle={{color:COLORS.darkgreen}}
+                    titleNumberOfLines={5}
+                    description="Hali ya mazingira Hali ya mazira Hali ya mzingira li ya ingira"
+                    left={props => <List.Icon {...props} icon="circle" />}>
+                         <Text>Vote a best translation</Text>
+                    <List.Item title="Hali ya mazingira" 
+                    onPress={()=>{}}
+                      left={props => <Text  onPress={()=>{}} {...props}>1</Text>}
+                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="red" />} />
+                      <List.Item title="Hali ya mazingira" 
+                    onPress={()=>{}}
+                      left={props => <Text  onPress={()=>{}} {...props}>2</Text>}
+                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
+                      <List.Item title="Hali ya mazingira" 
+                    onPress={()=>{}}
+                      left={props => <Text  onPress={()=>{}} {...props}>3</Text>}
+                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
+                    <Button mode="contained" >Add your translation</Button>
+                   
+                </List.Accordion>
+
+                <List.Accordion
+                    title="What is climate change in your native language?"
+                    titleStyle={{fontWeight:"bold"}}
+                    descriptionStyle={{color:COLORS.darkgreen}}
+                    titleNumberOfLines={5}
+                    description="Hali ya mazingira Hali ya mazira Hali ya mzingira li ya ingira"
+                    left={props => <List.Icon {...props} icon="circle" />}>
+                         <Text>Vote a best translation</Text>
+                    <List.Item title="Hali ya mazingira" 
+                    onPress={()=>{}}
+                      left={props => <Text  onPress={()=>{}} {...props}>1</Text>}
+                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="red" />} />
+                      <List.Item title="Hali ya mazingira" 
+                    onPress={()=>{}}
+                      left={props => <Text  onPress={()=>{}} {...props}>2</Text>}
+                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
+                      <List.Item title="Hali ya mazingira" 
+                    onPress={()=>{}}
+                      left={props => <Text  onPress={()=>{}} {...props}>3</Text>}
+                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
+                    <Button mode="contained" >Add your translation</Button>
+                   
+                </List.Accordion>
+
+                <List.Accordion
+                    title="What is climate change in your native language?"
+                    titleStyle={{fontWeight:"bold"}}
+                    descriptionStyle={{color:COLORS.darkgreen}}
+                    titleNumberOfLines={5}
+                    description="Hali ya mazingira Hali ya mazira Hali ya mzingira li ya ingira"
+                    left={props => <List.Icon {...props} icon="circle" />}>
+                         <Text>Vote a best translation</Text>
+                    <List.Item title="Hali ya mazingira" 
+                    onPress={()=>{}}
+                      left={props => <Text  onPress={()=>{}} {...props}>1</Text>}
+                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="red" />} />
+                      <List.Item title="Hali ya mazingira Kti ya africa mzima, na amerika pia" 
+                      titleNumberOfLines={5}
+                    onPress={()=>{}}
+                      left={props => <Text  onPress={()=>{}} {...props}>2</Text>}
+                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
+                      <List.Item title="Hali ya mazingira" 
+                    onPress={()=>{}}
+                      left={props => <Text  onPress={()=>{}} {...props}>3</Text>}
+                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
+                    <Button mode="contained" >Add your translation</Button>
+                   
+                </List.Accordion>
+            </List.Section>
+
             <Location />
 
             <Proof />
@@ -411,7 +462,7 @@ const ClimateKnowledgeComponet = () => {
                 ))}
                 <ActivityIndicator animating={loadPic} color={COLORS.peach} />
             </Block>
-        </>
+        </Block>
     }
 
 
@@ -433,86 +484,37 @@ const ClimateKnowledgeComponet = () => {
                     marginTop: -20,
                 }}
             >
-                 <Text bold h3>Please select your tribe</Text> 
-                <Block style={styles.selectDropdown}>
-                    
-                    <SelectDropdown
-                        search
-                        /**
-                        * function callback when the search input text 
-                        * changes, this will automatically disable the 
-                        * dropdown's internal search to be implemented manually outside the component
-                        */
+                <Text bold h3>MASSAI TRIBE</Text>
+                <Block row space="between" margin={[10, 0, 0, 0]}>
+                    <TouchableOpacity onPress={() => {
+                        console.log('Images');
+                    }}>
+                        <Block row center style={styles.round}>
+                            <Ionicons name="image" color={COLORS.peach} size={20} />
+                            <Text style={{ marginLeft: 5 }} numberOfLines={1}>See images</Text>
+                        </Block>
+                    </TouchableOpacity>
 
-                        // onChangeSearchInputText={(val)=>{
-                        //     console.log("val", val);
-                        //     return val
-                        // }}
-                        searchPlaceHolder="Type: 'Other' If your tribe doesn't exist "
-
-                        data={tribes}
-                        onSelect={async (selectedItem, index) => {
-                            console.log(selectedItem, "----", index);
-                            setSelectedTribe(selectedItem.title);
-                            setNewTribe(null);
-                            setNewTribeSearch(null)
-                            setErrorTribeNext(false);
-                            if (selectedItem.title != 'Other') await checkIfTribeExists(selectedItem.title);
-
-                        }}
-
-                        renderButton={(selectedItem, isOpened) => {
-                            return (
-                                <View style={styles.dropdownButtonStyle}>
-                                    {selectedItem && (
-                                        <Icon name="square-rounded" nameq={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
-                                    )}
-                                    <Text style={styles.dropdownButtonTxtStyle}>
-                                        {(selectedItem && selectedItem.title) || 'Select your tribe'}
-                                    </Text>
-                                    <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
-                                </View>
-                            );
-                        }}
-                        renderItem={(item, index, isSelected) => {
-                            return (
-                                <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
-                                    <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
-                                    <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-                                </View>
-                            );
-                        }}
-                        showsVerticalScrollIndicator={false}
-                        dropdownStyle={styles.dropdownMenuStyle}
-                    />
-
+                    <Block row center style={styles.round}>
+                        <Ionicons name="people" color={COLORS.peach} size={20} />
+                        <Text numberOfLines={1}>
+                            124 PEOPLES INVOLVED</Text>
+                    </Block>
                 </Block>
-                {
-                    selectedTribe === "Other" ?
-                        <>
-                            <Block row center>
-                                <TextInput onChangeText={setNewTribe} error={errorTribeNext}
-                                    style={styles.input} label="Add manually the name of your tribe"
-                                    mode="outlined" keyboardType="default" />
 
-                                <Button loading={isLoadingByName}
-                                    disabled={isLoadingByName} mode="contained"
-                                    onPress={() => checkIfTribeExists(newTribe)}>ADD</Button>
-                            </Block>
-                            {errorByName && errorTribeNext ? <Text color={COLORS.red} >{errorByName}</Text> : null}
+                <Block center>
+                    <ProgressBar
+                        progress={0}
+                        color={MD3Colors.error50}
+                        style={{ width: SIZES.width - 40, height: SIZES.base, marginTop: 10 }}
+                    />
+                </Block>
+                {foundTribeFunction()}
 
-                        </> : null
-                }
-                {
-                    isLoadingByName ? <ActivityIndicator /> :
-                
-
-                    selectedTribe != 'Other' ? foundTribeFunction() :
-                        (selectedTribe == 'Other' && newTribeSearch != null) ? foundTribeFunction() : null
-                }
+                <Divider />
 
                 {
-                      isLoadingByName ? null : tribeExists()
+                    tribeExists()
                 }
 
 
@@ -637,4 +639,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ClimateKnowledgeComponet;
+export default ClimateKnowledgeExist;
