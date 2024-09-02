@@ -19,13 +19,15 @@ export const fetchTribes = createAsyncThunk(
 
 export const findTribeByBelongsId = createAsyncThunk(
   "tribe/findTribeByBelongsId",
-  async ({ id }, { rejectWithValue }) => {
+  async ({id} , { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}api/tribe/belongs/${id}`);
       return response.data;
     } catch (error) {
+      console.log("");
+      console.log("id-----", `${BASE_URL}api/tribe/belongs/${id}`);
       console.log("error-----", error);
-      console.log("%%%%%%%%error.response", error.response);
+      console.log("%%%%%%%%error.response", error.response?.data);
       if (error.response) {
         // Server responded with a status other than 2xx
         return rejectWithValue(error.response.data);

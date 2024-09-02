@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PageIndicator } from 'react-native-page-indicator';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { fetchTribeByName, fetchTribes } from "@/redux/tribeSlice";
+import { fetchTribeByName, fetchTribes, findTribeByBelongsId } from "@/redux/tribeSlice";
 import Container, { Toast } from "toastify-react-native";
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -26,7 +26,7 @@ const MainScreen = ({ navigation }) => {
     const dispatch = useDispatch();
 
     const { user, error, success } = useSelector((state) => state.user);
-    const { tribeList, isLoadingByName, errorByName, successByName, tribeByName } = useSelector((state) => state.tribe);
+    const { tribeList, isLoadingByName, errorByName, successByName, tribeByName, tribeListBelongs } = useSelector((state) => state.tribe);
     const [images, setImages] = useState([]);
     const [loadPic, setLoadPic] = useState(false);
 
@@ -41,10 +41,9 @@ const MainScreen = ({ navigation }) => {
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
-    const [currentTribe, setCurrentTribe] = useState(null);  
-  
 
-    console.log("currentTribe---------", currentTribe);
+
+    console.log("currentTribe tribeListBelongs---------", tribeListBelongs);
 
     const tribes = tribeList.map(val => {
         return { title: val.tribe, icon: "square-rounded-outline" }
@@ -444,39 +443,59 @@ const MainScreen = ({ navigation }) => {
     ];
 
     // Use the useFocusEffect hook to execute reloadScreen when the screen gains focus
-//    useFocusEffect(
-//     useCallback(() => {
-//       const fetchData = async () => {
-//         dispatch(fetchTribes());
-//       };
+    //    useFocusEffect(
+    //     useCallback(() => {
+    //       const fetchData = async () => {
+    //         dispatch(findTribeByBelongsId({"id": user?.user?.userId}));
+    //       };
 
-//       // Fetch data when the screen gains focus
-//       fetchData();
+    //       // Fetch data when the screen gains focus
+    //       fetchData();
 
-//       // Return a cleanup function
-//       return () => {
-//         // You can perform cleanup here if needed
-//         console.log('Cleanup function');
-//       };
-//     }, []) // Empty dependency array to run this effect only once when the screen mounts
-//   );
+    //       // Return a cleanup function
+    //       return () => {
+    //         // You can perform cleanup here if needed
+    //         console.log('Cleanup function');
+    //       };
+    //     }, []) // Empty dependency array to run this effect only once when the screen mounts
+    //   );
 
-  useEffect(() => {
-    // const checkIfIDExistsInBelongs = () => {
-    //   if (currentTribe && currentTribe.belongs) {
-    //     return currentTribe.belongs.includes(idToCheck);
-    //   }
-    //   return null;
-    // };
+    useEffect(() => {
+        const getUserId = async () => {
+          try {
+            const value = await AsyncStorage.getItem('user');
+            if (value) {
+              const userLocal = JSON.parse(value);
+              console.log("userId:", userLocal.user.user.userId);
+              dispatch(findTribeByBelongsId({ id:  userLocal.user.user.userId })).then((result) => {
+                if (findTribeByBelongsId.fulfilled.match(result)) {
+                    // Handle successful login
+                    console.log('Successful:', result.payload);
+                    
 
-    // // Set the result of the check in state
-    // setCurrentTribe({
-    //     ...checkIfIDExistsInBelongs(),
-    //   });
-
-  }, []);
-
-
+                } else if (findTribeByBelongsId.rejected.match(result)) {
+                    // Handle rejected login
+                    Toast.error(`Error: ${result.payload.message}`, 'top');
+                    console.log('');
+                    console.log('Error******:', result.payload);
+                    
+                }
+            })
+                .catch((error) => {
+                    // Handle any additional errors
+                    console.error('--------Error during fetching:', error);
+                    // Toast.error(`Error :, ${error}`, 'top');
+                });
+            } else {
+              console.log("User ID not found");
+            }
+          } catch (error) {
+            console.error("Error retrieving user data", error);
+          }
+        };
+    
+        getUserId();
+      }, [dispatch]);
 
 
 
@@ -985,7 +1004,7 @@ const MainScreen = ({ navigation }) => {
 
     const renderBottomCK = () => {
 
-        
+
 
         return <BottomSheetModal
             ref={bottomSheetCK}
@@ -1118,7 +1137,7 @@ const MainScreen = ({ navigation }) => {
                         <Text accent>MBURA</Text>
                     </Block>
                     <Block>
-                        <ClimateKnowledge openModal={openModalCK}  />
+                        <ClimateKnowledge openModal={openModalCK} />
                         <List.Item
                             onPress={() => {
                                 console.log("ok");
