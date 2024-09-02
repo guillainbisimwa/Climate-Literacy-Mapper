@@ -16,6 +16,30 @@ export const fetchTribes = createAsyncThunk(
   }
 );
 
+
+export const findTribeByBelongsId = createAsyncThunk(
+  "tribe/findTribeByBelongsId",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}api/tribe/belongs/${id}`);
+      return response.data;
+    } catch (error) {
+      console.log("error-----", error);
+      console.log("%%%%%%%%error.response", error.response);
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        return rejectWithValue(error.response.data);
+      } else if (error.request) {
+        // Request was made but no response was received
+        return rejectWithValue('No response received from server');
+      } else {
+        // Something happened in setting up the request
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 export const fetchTribeByName = createAsyncThunk(
   "tribe/fetchTribeByname",
   async ({ tribeName }, { rejectWithValue }) => {
@@ -124,9 +148,9 @@ export const editTribe = createAsyncThunk(
 const tribeSlice = createSlice({
   name: "tribes",
   initialState: {
-    tribeList2: [],
+    tribeList: [],
     // 66bc7999f8fe0fff86a1edff
-    tribeList: [
+    tribeList2: [
       {
         "_id": "66bc7999f8fe0fff86a1edf1",
         "climate_know_exist": false,
@@ -218,6 +242,11 @@ const tribeSlice = createSlice({
     isLoadingEdit: false,
     successEdit: false,
 
+    tribeListBelongs: null,
+    errorBelongs: null,
+    isLoadingBelongs: false,
+    successBelongs: false,
+
   },
   reducers: {
   },
@@ -294,6 +323,24 @@ const tribeSlice = createSlice({
         state.isLoadingByName = false;
         state.errorByName = action.payload;
         state.successByName = false
+      });
+
+      builder
+      .addCase(findTribeByBelongsId.pending, (state) => {
+        state.isLoadingBelongs = true;
+        state.errorBelongs = null;
+        state.successBelongs = false
+      })
+      .addCase(findTribeByBelongsId.fulfilled, (state, action) => {
+        state.isLoadingBelongs = false;
+        state.tribeListBelongs = action.payload;
+        state.errorBelongs = null;
+        state.successBelongs = true
+      })
+      .addCase(findTribeByBelongsId.rejected, (state, action) => {
+        state.isLoadingBelongs = false;
+        state.errorBelongs = action.payload;
+        state.successBelongs = false
       });
   },
 });

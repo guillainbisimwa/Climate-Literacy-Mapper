@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Block, Location, Proof, Text } from "../../components"
-import { ActivityIndicator, Avatar, Button, IconButton, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
+import { ActivityIndicator, Avatar, Button, IconButton, List, SegmentedButtons, TextInput } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLORS, SIZES } from "@/constants";
@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PageIndicator } from 'react-native-page-indicator';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { fetchTribeByName } from "@/redux/tribeSlice";
+import { fetchTribeByName, fetchTribes } from "@/redux/tribeSlice";
 import Container, { Toast } from "toastify-react-native";
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -19,15 +19,17 @@ import ClimateKnowledge from "./ClimateKnowledge";
 import { LinearGradient } from "react-native-svg";
 import ClimateKnowledgeComponet from '../../components/ClimateKnowledgeComponet';
 import ClimateKnowledgeExist from '../../components/ClimateKnowledgeExist';
+import { useFocusEffect } from "@react-navigation/native";
 
 
 const MainScreen = ({ navigation }) => {
+    const dispatch = useDispatch();
+
     const { user, error, success } = useSelector((state) => state.user);
     const { tribeList, isLoadingByName, errorByName, successByName, tribeByName } = useSelector((state) => state.tribe);
     const [images, setImages] = useState([]);
     const [loadPic, setLoadPic] = useState(false);
 
-    const isSignedIn = useSelector((state) => state.auth.user);
     const [selectedTribe, setSelectedTribe] = useState("");
     const [newTribe, setNewTribe] = useState("");
     const [newTribeNext, setNewTribeNext] = useState(false);
@@ -39,10 +41,10 @@ const MainScreen = ({ navigation }) => {
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
-    // console.log("{user?.user?.user?.name}", isSignedIn?.user?.user?.name);
-    console.log("value user", user);
+    const [currentTribe, setCurrentTribe] = useState(null);  
+  
 
-    // console.log("tribeList---------", tribeList);
+    console.log("currentTribe---------", currentTribe);
 
     const tribes = tribeList.map(val => {
         return { title: val.tribe, icon: "square-rounded-outline" }
@@ -440,6 +442,42 @@ const MainScreen = ({ navigation }) => {
         { title: "Zombo", icon: "square-rounded-outline" },
         { title: "Zulu", icon: "square-rounded-outline" },
     ];
+
+    // Use the useFocusEffect hook to execute reloadScreen when the screen gains focus
+//    useFocusEffect(
+//     useCallback(() => {
+//       const fetchData = async () => {
+//         dispatch(fetchTribes());
+//       };
+
+//       // Fetch data when the screen gains focus
+//       fetchData();
+
+//       // Return a cleanup function
+//       return () => {
+//         // You can perform cleanup here if needed
+//         console.log('Cleanup function');
+//       };
+//     }, []) // Empty dependency array to run this effect only once when the screen mounts
+//   );
+
+  useEffect(() => {
+    // const checkIfIDExistsInBelongs = () => {
+    //   if (currentTribe && currentTribe.belongs) {
+    //     return currentTribe.belongs.includes(idToCheck);
+    //   }
+    //   return null;
+    // };
+
+    // // Set the result of the check in state
+    // setCurrentTribe({
+    //     ...checkIfIDExistsInBelongs(),
+    //   });
+
+  }, []);
+
+
+
 
 
     const bottomSheet = useRef(null);
@@ -987,7 +1025,6 @@ const MainScreen = ({ navigation }) => {
     };
 
 
-    const dispatch = useDispatch();
     // Use useEffect or any other method to handle the success state and display the alert
     useEffect(() => {
         checkLoginStatus();
@@ -1004,7 +1041,7 @@ const MainScreen = ({ navigation }) => {
     const checkLoginStatus = async () => {
         try {
             const value = await AsyncStorage.getItem('user');
-            console.log("value main", value)
+            // console.log("value main", value)
             if (value == null) {
                 console.log(navigation);
 
@@ -1032,7 +1069,7 @@ const MainScreen = ({ navigation }) => {
                 <Block paddingBottom={60} padding={30} middle row space="between" color={COLORS.primary}>
                     <Block>
                         <Text white >Climate Literacy Mapper</Text>
-                        <Text numberOfLines={0.5} bold h2 white >Hi, {isSignedIn?.user?.name}</Text>
+                        <Text numberOfLines={0.5} bold h2 white >Hi, {user?.user?.name}</Text>
                     </Block>
                     <Avatar.Icon size={54} icon="account-circle" />
                 </Block>
