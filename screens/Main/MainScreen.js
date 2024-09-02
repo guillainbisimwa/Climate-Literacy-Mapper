@@ -463,6 +463,8 @@ const MainScreen = ({ navigation }) => {
     useEffect(() => {
         const getUserId = async () => {
           try {
+            dispatch(fetchTribes());
+            
             const value = await AsyncStorage.getItem('user');
             if (value) {
               const userLocal = JSON.parse(value);
@@ -1004,8 +1006,6 @@ const MainScreen = ({ navigation }) => {
 
     const renderBottomCK = () => {
 
-
-
         return <BottomSheetModal
             ref={bottomSheetCK}
             index={0}
@@ -1034,7 +1034,10 @@ const MainScreen = ({ navigation }) => {
                 <Block>
 
                     {
-                        <ClimateKnowledgeExist />
+                     tribeListBelongs == null?
+                        <ClimateKnowledgeComponet tribeListBelongs={tribeListBelongs} />:
+
+                        <ClimateKnowledgeExist tribeListBelongs={tribeListBelongs} />
                     }
 
                 </Block>
@@ -1131,11 +1134,14 @@ const MainScreen = ({ navigation }) => {
                             style={[styles.profileImage, styles.profileImageBottomRight]}
                         />
                     </Block>
-
-                    <Block padding={[0, 20]} flex>
+                    {
+                        tribeListBelongs && <Block padding={[0, 20]} flex>
                         <Text bold>What is climate change in your native language?</Text>
                         <Text accent>MBURA</Text>
                     </Block>
+                    }
+
+                    
                     <Block>
                         <ClimateKnowledge openModal={openModalCK} />
                         <List.Item

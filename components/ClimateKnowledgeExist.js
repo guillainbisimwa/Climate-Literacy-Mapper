@@ -15,7 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Toast } from "toastify-react-native";
 import { fetchTribeByName } from "@/redux/tribeSlice";
 
-const ClimateKnowledgeExist = () => {
+const ClimateKnowledgeExist = ({tribeListBelongs}) => {
     const dispatch = useDispatch();
 
     const scrollX = useRef(new Animated.Value(0)).current;
@@ -32,6 +32,7 @@ const ClimateKnowledgeExist = () => {
 
     const [expanded, setExpanded] = useState(true);
     const handlePress = () => setExpanded(!expanded);
+    console.log("tribeListBelongs", tribeListBelongs);
 
     const checkIfTribeExists = (val) => {
         console.log("ok", val);
@@ -85,7 +86,7 @@ const ClimateKnowledgeExist = () => {
                     // Handle rejected login
                     // Toast.error(`Error: ${result.payload}`, 'top');
                     console.log('');
-                    console.log('Error******:', result.payload);
+                    console.log('Error******=====:', result.payload);
                     // setFoundTribe(
                     //     {
                     //         "location": {
@@ -201,10 +202,10 @@ const ClimateKnowledgeExist = () => {
                 scrollEventThrottle={16}
             >
                 {
-                    images.length === 0 ?
+                    tribeListBelongs === null ?
                         <ImageBackground
 
-                            source={imagesConstants.noImage2}
+                            source={imagesConstants.noImage}
                             resizeMode="cover"
                             style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
                         >
@@ -465,6 +466,36 @@ const ClimateKnowledgeExist = () => {
         </Block>
     }
 
+    const topHeader = () => {
+        return <>
+        <Text bold h3>MASSAI TRIBE</Text>
+                
+        <Block row space="between" margin={[10, 0, 0, 0]}>
+            <TouchableOpacity onPress={() => {
+                console.log('Images');
+            }}>
+                <Block row center style={styles.round}>
+                    <Ionicons name="image" color={COLORS.peach} size={20} />
+                    <Text style={{ marginLeft: 5 }} numberOfLines={1}>See images</Text>
+                </Block>
+            </TouchableOpacity>
+
+            <Block row center style={styles.round}>
+                <Ionicons name="people" color={COLORS.peach} size={20} />
+                <Text numberOfLines={1}>
+                    124 PEOPLES INVOLVED</Text>
+            </Block>
+        </Block>
+
+        <Block center>
+            <ProgressBar
+                progress={0}
+                color={MD3Colors.error50}
+                style={{ width: SIZES.width - 40, height: SIZES.base, marginTop: 10 }}
+            />
+        </Block></>
+    }
+
 
     return <ScrollView showsVerticalScrollIndicator={false} accessibilityElementsHidden={true}>
         <Block flex={1}>
@@ -484,38 +515,18 @@ const ClimateKnowledgeExist = () => {
                     marginTop: -20,
                 }}
             >
-                <Text bold h3>MASSAI TRIBE</Text>
-                <Block row space="between" margin={[10, 0, 0, 0]}>
-                    <TouchableOpacity onPress={() => {
-                        console.log('Images');
-                    }}>
-                        <Block row center style={styles.round}>
-                            <Ionicons name="image" color={COLORS.peach} size={20} />
-                            <Text style={{ marginLeft: 5 }} numberOfLines={1}>See images</Text>
-                        </Block>
-                    </TouchableOpacity>
 
-                    <Block row center style={styles.round}>
-                        <Ionicons name="people" color={COLORS.peach} size={20} />
-                        <Text numberOfLines={1}>
-                            124 PEOPLES INVOLVED</Text>
-                    </Block>
-                </Block>
+                
+                {/* { topHeader()} */}
 
-                <Block center>
-                    <ProgressBar
-                        progress={0}
-                        color={MD3Colors.error50}
-                        style={{ width: SIZES.width - 40, height: SIZES.base, marginTop: 10 }}
-                    />
-                </Block>
-                {foundTribeFunction()}
+               
+                {/* {foundTribeFunction()} */}
 
                 <Divider />
 
-                {
+                {/* {
                     tribeExists()
-                }
+                } */}
 
 
 
