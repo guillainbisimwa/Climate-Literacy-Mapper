@@ -13,9 +13,9 @@ import Proof from "./Proof";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import { Toast } from "toastify-react-native";
-import { fetchTribeByName, fetchTribes } from "@/redux/tribeSlice";
+import { createTribe, fetchTribeByName, fetchTribes } from "@/redux/tribeSlice";
 
-const ClimateKnowledgeComponet = () => {
+const ClimateKnowledgeComponet = ({userId}) => {
     const dispatch = useDispatch();
 
     const scrollX = useRef(new Animated.Value(0)).current;
@@ -30,11 +30,18 @@ const ClimateKnowledgeComponet = () => {
     const [ans, setAns] = useState('');
     const [foundTribe, setFoundTribe] = useState(null);
 
-    useEffect(async()=> {
-        dispatch(fetchTribes())
-    }, [dispatch])
-
-    const checkIfTribeExists = async(val) => {
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            await dispatch(fetchTribes());
+          } catch (error) {
+            console.error('Error fetching tribes:', error);
+          }
+        };
+      
+        fetchData();
+      }, [dispatch]);
+    const checkIfTribeExists = async (val) => {
         console.log("ok", val);
         setNewTribeSearch(val)
         // dispatch(fetchTribes())
@@ -43,91 +50,81 @@ const ClimateKnowledgeComponet = () => {
                 if (fetchTribeByName.fulfilled.match(result)) {
                     // Handle successful login
                     console.log('Successful:', result.payload);
-                    // setFoundTribe(
-                    //     {
-                    //         "location": {
-                    //             "type": "Point",
-                    //             "coordinates": [
-                    //                 40.7128,
-                    //                 -74.006
-                    //             ]
-                    //         },
-                    //         "_id": "66a41a99ef8a25a0e67448ff",
-                    //         "climate_know_exist": true,
-                    //         "tribe": "Some Tribe",
-                    //         "language": "Some Language",
-                    //         "climate_change_in_lang": "Climate Change in Native Language",
-                    //         "proof_link": [
-                    //             {
-                    //                 "name": "Proof 1",
-                    //                 "link": "http://example.com/proof1",
-                    //                 "_id": "66a41a99ef8a25a0e6744900"
-                    //             }
-                    //         ],
-                    //         "images": [
-                    //             "http://example.com/image1.jpg"
-                    //         ],
-                    //         "owner": {
-                    //             "_id": "66a4181c117b9cf55e5807ec",
-                    //             "name": "Stella ",
-                    //             "email": "stella@example.com",
-                    //             "mobile": "+25578987654",
-                    //             "role": "user",
-                    //             "cover_url": "http://example.com/cover.jpg",
-                    //             "profile_pic": "http://example.com/profile.jpg",
-                    //             "status": "PENDING"
-                    //         },
-                    //         "status": "PENDING",
-                    //         "timestamp": "2024-07-26T21:52:25.737Z",
-                    //         "__v": 0
-                    //     }
-                    // )
+                    // setFoundTribe(result.payload)
 
                 } else if (fetchTribeByName.rejected.match(result)) {
                     // Handle rejected login
-                    Toast.error(`Error: ${result.payload?.message}`, 'top');
+                    // Toast.error(`Error: ${result.payload?.message}`, 'top');
                     console.log('');
                     console.log('Error******:', result.payload);
-                    // setFoundTribe(
-                    //     {
-                    //         "location": {
-                    //             "type": "Point",
-                    //             "coordinates": [
-                    //                 40.7128,
-                    //                 -74.006
-                    //             ]
-                    //         },
-                    //         "_id": "66a41a99ef8a25a0e67448ff",
-                    //         "climate_know_exist": true,
-                    //         "tribe": "Some Tribe",
-                    //         "language": "Some Language",
-                    //         "climate_change_in_lang": "Climate Change in Native Language",
-                    //         "proof_link": [
-                    //             {
-                    //                 "name": "Proof 1",
-                    //                 "link": "http://example.com/proof1",
-                    //                 "_id": "66a41a99ef8a25a0e6744900"
-                    //             }
-                    //         ],
-                    //         "images": [
-                    //             "http://example.com/image1.jpg"
-                    //         ],
-                    //         "owner": {
-                    //             "_id": "66a4181c117b9cf55e5807ec",
-                    //             "name": "Stella ",
-                    //             "email": "stella@example.com",
-                    //             "mobile": "+25578987654",
-                    //             "role": "user",
-                    //             "cover_url": "http://example.com/cover.jpg",
-                    //             "profile_pic": "http://example.com/profile.jpg",
-                    //             "status": "PENDING"
-                    //         },
-                    //         "status": "PENDING",
-                    //         "timestamp": "2024-07-26T21:52:25.737Z",
-                    //         "__v": 0
-                    //     }
-                    // )
+
                     setFoundTribe(null)
+                }
+            })
+                .catch((error) => {
+                    // Handle any additional errors
+                    console.error('--------Error during fetching:', error);
+                    // Toast.error(`Error :, ${error}`, 'top');
+                });
+        } else {
+            Toast.error(`Please add a tribe`, 'top');
+            setErrorTribeNext(true);
+        }
+    }
+
+    const addTribe = async (val) => {
+        // console.log("ok", val);
+        setNewTribeSearch(val)
+        // dispatch(fetchTribes())
+        if (val !== null) {
+            dispatch(fetchTribeByName({ tribeName: val.trim() })).then((result) => {
+                if (fetchTribeByName.fulfilled.match(result)) {
+                    // Handle successful login
+                    // console.log('Successful:', result.payload);
+                    Toast.error(`Error: ${val.trim()} exists!`, 'top');
+
+                    // setFoundTribe(result.payload)
+
+                } else if (fetchTribeByName.rejected.match(result)) {
+                    // Handle rejected login
+                    // Toast.error(`Error: ${result.payload?.message}`, 'top');
+                    // console.log('');
+                    // console.log('Error******:', result.payload);
+
+                    const obj = {
+                        climate_know_exist: false,
+                        tribe:val.trim() ,
+                        belongs:[`${userId}`],
+                        // climate_change_in_language,
+                        // location,
+                        // proof_link,
+                        // images,
+                        owner:`${userId}`,
+                    };
+                    // console.log(" 000000000000",obj);
+
+                    dispatch(createTribe(obj)).then((result) => {
+                        if (createTribe.fulfilled.match(result)) {
+                            // Handle successful login
+                            console.log('Successful:', result.payload);
+                            Toast.success(`Error: ${result.payload?.message}!`, 'top');
+        
+                            // setFoundTribe(result.payload)
+        
+                        } else if (createTribe.rejected.match(result)) {
+                            // Handle rejected login
+                            Toast.error(`Error: ${result.payload?.message}`, 'top');
+                            console.log('');
+                            console.log('Error---******:', result.payload?.message);
+        
+                            // setFoundTribe(null)
+                        }
+                    })
+                        .catch((error) => {
+                            // Handle any additional errors
+                            console.error('--------Error during fetching:', error);
+                            // Toast.error(`Error :, ${error}`, 'top');
+                        });
                 }
             })
                 .catch((error) => {
@@ -428,7 +425,6 @@ const ClimateKnowledgeComponet = () => {
             </Block>
             <Block
                 padding={[20, 0]}
-
                 style={{
                     backgroundColor: 'white',
                     marginHorizontal: '5%',
@@ -438,9 +434,9 @@ const ClimateKnowledgeComponet = () => {
                     marginTop: -20,
                 }}
             >
-                 <Text bold h3>Please select your tribe</Text> 
+                <Text bold h3>Please select your tribe</Text>
                 <Block style={styles.selectDropdown}>
-                    
+
                     <SelectDropdown
                         search
                         /**
@@ -492,6 +488,7 @@ const ClimateKnowledgeComponet = () => {
                     />
 
                 </Block>
+                
                 {
                     selectedTribe === "Other" ?
                         <>
@@ -502,23 +499,24 @@ const ClimateKnowledgeComponet = () => {
 
                                 <Button loading={isLoadingByName}
                                     disabled={isLoadingByName} mode="contained"
-                                    onPress={() => checkIfTribeExists(newTribe)}>ADD</Button>
+                                    onPress={() => addTribe(newTribe)}>ADD</Button>
                             </Block>
                             {errorByName && errorTribeNext ? <Text color={COLORS.red} >{errorByName}</Text> : null}
 
                         </> : null
                 }
-                {
+
+                {/* {
                     isLoadingByName ? <ActivityIndicator /> :
-                
 
-                    selectedTribe != 'Other' ? foundTribeFunction() :
-                        (selectedTribe == 'Other' && newTribeSearch != null) ? foundTribeFunction() : null
+
+                        selectedTribe != 'Other' ? foundTribeFunction() :
+                            (selectedTribe == 'Other' && newTribeSearch != null) ? foundTribeFunction() : null
                 }
 
                 {
-                      isLoadingByName ? null : tribeExists()
-                }
+                    isLoadingByName ? null : tribeExists()
+                } */}
 
 
 

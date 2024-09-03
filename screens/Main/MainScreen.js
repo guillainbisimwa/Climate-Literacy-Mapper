@@ -41,9 +41,9 @@ const MainScreen = ({ navigation }) => {
     const [open, setOpen] = useState(false);
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
+    const [currentUser, setCurrentUser] = useState(null);
 
-
-    console.log("currentTribe tribeListBelongs---------", tribeListBelongs);
+    console.log("*********currentTribe tribeListBelongs---------", user);
 
     const tribes = tribeList.map(val => {
         return { title: val.tribe, icon: "square-rounded-outline" }
@@ -469,6 +469,8 @@ const MainScreen = ({ navigation }) => {
             if (value) {
               const userLocal = JSON.parse(value);
               console.log("userId:", userLocal.user.user.userId);
+              setCurrentUser(userLocal.user.user.userId)
+              
               dispatch(findTribeByBelongsId({ id:  userLocal.user.user.userId })).then((result) => {
                 if (findTribeByBelongsId.fulfilled.match(result)) {
                     // Handle successful login
@@ -1034,9 +1036,8 @@ const MainScreen = ({ navigation }) => {
                 <Block>
 
                     {
-                     tribeListBelongs == null?
-                        <ClimateKnowledgeComponet tribeListBelongs={tribeListBelongs} />:
-
+                        tribeListBelongs == null?
+                        <ClimateKnowledgeComponet userId={currentUser} tribeListBelongs={tribeListBelongs} />:
                         <ClimateKnowledgeExist tribeListBelongs={tribeListBelongs} />
                     }
 

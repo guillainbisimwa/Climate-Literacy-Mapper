@@ -67,26 +67,14 @@ export const fetchTribeByName = createAsyncThunk(
 
 export const createTribe = createAsyncThunk(
   "tribe/createTribe",
-  async ({
-    climate_know_exist,
-    tribe,
-    climate_change_in_lang,
-    location,
-    proof_link,
-    images,
-    owner
-  }, { rejectWithValue }) => {
+  async (obj, { rejectWithValue }) => {
+    console.log("##################",
+      obj
+     );
     try {
-      const response = await axios.post(BASE_URL + 'api/tribe', {
-        climate_know_exist,
-        tribe,
-        climate_change_in_lang,
-        location,
-        proof_link,
-        images,
-        owner,
-      });
+      const response = await axios.post(BASE_URL + 'api/tribe', obj);
 
+    
       return response.data;
     } catch (error) {
       if (error.response) {
