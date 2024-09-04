@@ -27,12 +27,10 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
     const [errorTribeNext, setErrorTribeNext] = useState(false);
     const [images, setImages] = useState([]);
     const [loadPic, setLoadPic] = useState(false);
-    const [ans, setAns] = useState('');
+    const [ans, setAns] = useState(null);
     const [foundTribe, setFoundTribe] = useState(null);
-    const [addCurrentTribe, setAddCurrentTribe] = useState(null);
+    const [isClimateExist, setIsClimateExist] = useState(null);
 
-
-    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,41 +54,42 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
             return 0;
         }
     };
-    
+
 
     const topHeader = () => {
         return <>
-        <Text bold h3>{foundTribe?.tribe} TRIBE</Text>
-                
-        <Block row space="between" margin={[10, 0, 0, 0]}>
-            <TouchableOpacity onPress={() => {
-               onShowImages(foundTribe.images)
-            }}>
+            <Text bold h3>{foundTribe?.tribe} TRIBE</Text>
+
+            <Block row space="between" margin={[10, 0, 0, 0]}>
+                <TouchableOpacity onPress={() => {
+                    onShowImages(foundTribe.images)
+                }}>
+                    <Block row center style={styles.round}>
+                        <Ionicons name="image" color={COLORS.peach} size={20} />
+                        <Text style={{ marginLeft: 5 }} numberOfLines={1}>See images</Text>
+                    </Block>
+                </TouchableOpacity>
+
                 <Block row center style={styles.round}>
-                    <Ionicons name="image" color={COLORS.peach} size={20} />
-                    <Text style={{ marginLeft: 5 }} numberOfLines={1}>See images</Text>
+                    <Ionicons name="people" color={COLORS.peach} size={20} />
+                    <Text numberOfLines={1}>
+                        {countBelongsArrayLength(foundTribe)} PEOPLES INVOLVED</Text>
                 </Block>
-            </TouchableOpacity>
-
-            <Block row center style={styles.round}>
-                <Ionicons name="people" color={COLORS.peach} size={20} />
-                <Text numberOfLines={1}>
-                    {countBelongsArrayLength(foundTribe)} PEOPLES INVOLVED</Text>
             </Block>
-        </Block>
 
-        <Block center>
-            <ProgressBar
-                progress={0}
-                color={MD3Colors.error50}
-                style={{ width: SIZES.width - 40, height: SIZES.base, marginTop: 10 }}
-            />
-        </Block></>
+            <Block center>
+                <ProgressBar
+                    progress={0}
+                    color={MD3Colors.error50}
+                    style={{ width: SIZES.width - 40, height: SIZES.base, marginTop: 10 }}
+                />
+            </Block></>
     }
 
     const checkIfTribeExists = async (val) => {
         console.log("ok", val);
         setNewTribeSearch(val)
+
         // dispatch(fetchTribes())
         if (val !== null) {
             dispatch(fetchTribeByName({ tribeName: val.trim() })).then((result) => {
@@ -153,10 +152,10 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                     dispatch(createTribe(obj)).then((result) => {
                         if (createTribe.fulfilled.match(result)) {
                             // Handle successful login
-                            console.log('Successful:', result.payload);
+                            console.log('Successfulxxxxxxxx:', result.payload);
                             Toast.success(`${result.payload?.message}!`, 'top');
 
-                            setFoundTribe(result.payload)
+                            setFoundTribe(result?.payload?.tribe)
 
                         } else if (createTribe.rejected.match(result)) {
                             // Handle rejected login
@@ -207,7 +206,7 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                     justifyContent: 'center',
                 }}
             >
-                {images?.map((image, index) => {
+                {foundTribe?.images?.map((image, index) => {
                     const opacity = dotPosition.interpolate({
                         inputRange: [index - 1, index, index + 1],
                         outputRange: [0.5, 1, 0.5],
@@ -236,10 +235,10 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
 
     const isEmpty = (obj) => {
         if (obj === null || obj === undefined) {
-          return true; // Or false depending on your use case
+            return true; // Or false depending on your use case
         }
         return Object.keys(obj).length === 0;
-      };
+    };
 
     const renderImagesHeader = () => {
 
@@ -254,8 +253,8 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                 scrollEventThrottle={16}
             >
                 {
-                  
-                        isEmpty(foundTribe)?
+
+                    isEmpty(foundTribe) ?
 
 
                         <ImageBackground
@@ -409,43 +408,53 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                     Good news for your {selectedTribe}'s tribe!</Text>
                 <Text h3>Climate knowledge exists in your local language!</Text>
 
-            </Block> :
-            <Block margin={[10, 0]}><Text bold>Is climate knowledge exists in your local language?</Text>
-                <SegmentedButtons
-                    value={ans}
-                    onValueChange={setAns}
-                    style={{ marginTop: 20 }}
-                    buttons={[
-                        {
-                            value: 'yes',
-                            label: 'YES',
-                            icon: 'check',
-                            style: ans === 'yes' ? styles.yesButton : {},
-                        },
-                        {
-                            value: 'notsure',
-                            label: 'NOT SURE',
-                            icon: 'minus',
-                            style: ans === 'notsure' ? styles.notSureButton : {},
+            </Block> : foundTribe && !foundTribe.climate_know_exist ?
+                <Block margin={[20, 0]}><Text bold>Is climate knowledge exists in your local language?</Text>
+                    <SegmentedButtons
+                        value={ans}
+                        onValueChange={setAns}
+                        style={{ marginTop: 20 }}
+                        buttons={[
+                            {
+                                value: 'yes',
+                                label: 'YES',
+                                icon: 'check',
+                                style: ans === 'yes' ? styles.yesButton : {},
+                            },
+                            {
+                                value: 'notsure',
+                                label: 'NOT SURE',
+                                icon: 'minus',
+                                style: ans === 'notsure' ? styles.notSureButton : {},
 
-                        },
-                        {
-                            value: 'no',
-                            label: 'NO',
-                            icon: 'cancel',
-                            style: ans === 'no' ? styles.noButton : {},
+                            },
+                            {
+                                value: 'no',
+                                label: 'NO',
+                                icon: 'cancel',
+                                style: ans === 'no' ? styles.noButton : {},
 
-                        },
-                    ]}
-                /></Block>
-    }
+                            },
+                        ]}
+                    /></Block> : null
+                    }
 
-    const tribeExists = () => {
+            const tribeExists = () => {
+                return foundTribe && !foundTribe.climate_know_exist ?
+                <>
+                    
+                    <TextInput style={styles.textInput} 
+                    label={`What is climate change in ${selectedTribe} native language?`} 
+                    mode="outlined" keyboardType="default" />
+
+                </>:
+                foundTribe && foundTribe.climate_know_exist ?<>
+                <Text bold>What is climate change in your native language?</Text>
+                    <Text >{findMostVotedTranslate(foundTribe).value}</Text></>:null
+            };
+
+    const location = () => {
         return <>
-            <Text bold>What is climate change in your native language?</Text>
-            <Text >MBURA</Text>
-
-            <TextInput style={styles.textInput} label={`What is climate change in ${selectedTribe} native language?`} mode="outlined" keyboardType="default" />
             <Location />
 
             <Proof />
@@ -469,10 +478,29 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                     </View>
                 ))}
                 <ActivityIndicator animating={loadPic} color={COLORS.peach} />
-            </Block>
-        </>
+            </Block></>
     }
 
+    // Function to find the most voted translate object, and if tied, the oldest one
+const findMostVotedTranslate = (data) => {
+    const { translate } = data?.climate_change_in_language;
+    
+    if (!translate || translate.length === 0) {
+        return null; // No translate objects present
+    }
+    
+    return translate.reduce((best, current) => {
+        // Compare votes length
+        if (current.vote.length > best.vote.length) {
+            return current;
+        }
+        // If votes are equal, compare timestamp
+        if (current.vote.length === best.vote.length) {
+            return new Date(current.timestamp) < new Date(best.timestamp) ? current : best;
+        }
+        return best;
+    });
+};
 
     return <ScrollView showsVerticalScrollIndicator={false} accessibilityElementsHidden={true}>
         <Block flex={1}>
@@ -494,11 +522,11 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                     marginTop: -20,
                 }}
             >
-                 {!foundTribe  &&<Text bold h3>Please select your tribe</Text>}
+                {!foundTribe && <Text bold h3>Please select your tribe</Text>}
                 <Block row>
-                {!foundTribe  && <Block style={styles.selectDropdown}>
+                    {!foundTribe && <Block style={styles.selectDropdown}>
 
-                    <SelectDropdown
+                        <SelectDropdown
                             search
                             /**
                             * function callback when the search input text 
@@ -519,7 +547,13 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                                 setNewTribe(null);
                                 setNewTribeSearch(null)
                                 setErrorTribeNext(false);
-                                if (selectedItem.title != 'Other') await checkIfTribeExists(selectedItem.title);
+
+                                if (selectedItem.title != 'Other') {
+                                    await checkIfTribeExists(selectedItem.title);
+                                } else {
+                                    setFoundTribe(null)
+                                }
+
                             }}
 
                             renderButton={(selectedItem, isOpened) => {
@@ -548,12 +582,12 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                         />
 
                     </Block>}
-                    
-                  
-                   
+
+
+
                 </Block>
                 {
-                     !foundTribe && selectedTribe === "Other" ?
+                    !foundTribe && selectedTribe === "Other" ?
                         <>
                             <Block row center>
                                 <TextInput onChangeText={setNewTribe} error={errorTribeNext}
@@ -569,20 +603,16 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                         </> : null
                 }
                 {
-                     foundTribe ? topHeader():null
+                    foundTribe ? topHeader() : null
                 }
 
-                    { foundTribe  &&
-                        <Block middle margin={[20,0]}>
-                        <Button loading={isLoadingByName} buttonColor={COLORS.red}
-                            disabled={isLoadingByName} mode="contained"
-                            style={{ alignContent:""}}
-                            onPress={() => {
-                                setFoundTribe(null);
-                                setSelectedTribe(null);
-                            }}>Cancel</Button>
-                        </Block>
-                    }
+                {
+                    foundTribe ?
+                        ans == "no" ? <Text>NO</Text> :
+                            ans == "notsure" ? <Text>MAY BE</Text> : <Text>YES</Text> : null
+                }
+
+
 
                 {/* {
                     isLoadingByName ? <ActivityIndicator /> :
@@ -590,15 +620,29 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
 
                         selectedTribe != 'Other' ? foundTribeFunction() :
                             (selectedTribe == 'Other' && newTribeSearch != null) ? foundTribeFunction() : null
+                } */}
+
+                {
+                    foundTribeFunction()
                 }
 
                 {
-                    isLoadingByName ? null : tribeExists()
-                } */}
+                 tribeExists()
+                }
 
 
 
-
+                {foundTribe &&
+                    <Block middle margin={[20, 0]}>
+                        <Button loading={isLoadingByName} buttonColor={COLORS.red}
+                            disabled={isLoadingByName} mode="contained"
+                            style={{ alignContent: "" }}
+                            onPress={() => {
+                                setFoundTribe(null);
+                                setSelectedTribe(null);
+                            }}>Cancel</Button>
+                    </Block>
+                }
             </Block>
         </Block>
 
