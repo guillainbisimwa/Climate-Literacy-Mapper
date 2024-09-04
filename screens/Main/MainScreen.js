@@ -43,7 +43,7 @@ const MainScreen = ({ navigation }) => {
     const [ans, setAns] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
 
-    console.log("*********currentTribe tribeListBelongs---------", user);
+    console.log("*********currentTribe tribeListBelongs---------", currentUser);
 
     const tribes = tribeList.map(val => {
         return { title: val.tribe, icon: "square-rounded-outline" }
@@ -479,10 +479,9 @@ const MainScreen = ({ navigation }) => {
 
                 } else if (findTribeByBelongsId.rejected.match(result)) {
                     // Handle rejected login
-                    Toast.error(`Error: ${result.payload.message}`, 'top');
+                    ///Toast.error(`Error: ${result.payload.message}`, 'top');
                     console.log('');
-                    console.log('Error******:', result.payload);
-                    
+                    console.log('This user doesnt choose s tribe******:', result.payload);
                 }
             })
                 .catch((error) => {

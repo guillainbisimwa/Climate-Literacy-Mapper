@@ -15,7 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Toast } from "toastify-react-native";
 import { createTribe, fetchTribeByName, fetchTribes } from "@/redux/tribeSlice";
 
-const ClimateKnowledgeComponet = ({userId}) => {
+const ClimateKnowledgeComponet = ({ userId }) => {
     const dispatch = useDispatch();
 
     const scrollX = useRef(new Animated.Value(0)).current;
@@ -29,18 +29,20 @@ const ClimateKnowledgeComponet = ({userId}) => {
     const [loadPic, setLoadPic] = useState(false);
     const [ans, setAns] = useState('');
     const [foundTribe, setFoundTribe] = useState(null);
+    const [addCurrentTribe, setAddCurrentTribe] = useState(null);
+    
 
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            await dispatch(fetchTribes());
-          } catch (error) {
-            console.error('Error fetching tribes:', error);
-          }
+            try {
+                await dispatch(fetchTribes());
+            } catch (error) {
+                console.error('Error fetching tribes:', error);
+            }
         };
-      
+
         fetchData();
-      }, [dispatch]);
+    }, [dispatch]);
     const checkIfTribeExists = async (val) => {
         console.log("ok", val);
         setNewTribeSearch(val)
@@ -49,8 +51,8 @@ const ClimateKnowledgeComponet = ({userId}) => {
             dispatch(fetchTribeByName({ tribeName: val.trim() })).then((result) => {
                 if (fetchTribeByName.fulfilled.match(result)) {
                     // Handle successful login
-                    console.log('Successful:', result.payload);
-                    // setFoundTribe(result.payload)
+                    console.log('Successful____:', result.payload);
+                    setFoundTribe(result.payload)
 
                 } else if (fetchTribeByName.rejected.match(result)) {
                     // Handle rejected login
@@ -93,13 +95,13 @@ const ClimateKnowledgeComponet = ({userId}) => {
 
                     const obj = {
                         climate_know_exist: false,
-                        tribe:val.trim() ,
-                        belongs:[`${userId}`],
+                        tribe: val.trim(),
+                        belongs: [`${userId}`],
                         // climate_change_in_language,
                         // location,
                         // proof_link,
                         // images,
-                        owner:`${userId}`,
+                        owner: `${userId}`,
                     };
                     // console.log(" 000000000000",obj);
 
@@ -107,17 +109,17 @@ const ClimateKnowledgeComponet = ({userId}) => {
                         if (createTribe.fulfilled.match(result)) {
                             // Handle successful login
                             console.log('Successful:', result.payload);
-                            Toast.success(`Error: ${result.payload?.message}!`, 'top');
-        
-                            // setFoundTribe(result.payload)
-        
+                            Toast.success(`${result.payload?.message}!`, 'top');
+
+                            setFoundTribe(result.payload)
+
                         } else if (createTribe.rejected.match(result)) {
                             // Handle rejected login
                             Toast.error(`Error: ${result.payload?.message}`, 'top');
                             console.log('');
                             console.log('Error---******:', result.payload?.message);
-        
-                            // setFoundTribe(null)
+
+                            setFoundTribe(null)
                         }
                     })
                         .catch((error) => {
@@ -423,6 +425,9 @@ const ClimateKnowledgeComponet = ({userId}) => {
                 {renderImagesHeader()}
                 {renderScrollIndicator()}
             </Block>
+            {
+                isLoadingByName && <ActivityIndicator />
+            }
             <Block
                 padding={[20, 0]}
                 style={{
@@ -434,61 +439,73 @@ const ClimateKnowledgeComponet = ({userId}) => {
                     marginTop: -20,
                 }}
             >
-                <Text bold h3>Please select your tribe</Text>
-                <Block style={styles.selectDropdown}>
+                 {!foundTribe  &&<Text bold h3>Please select your tribe</Text>}
+                <Block row>
+                {!foundTribe  && <Block style={styles.selectDropdown}>
 
                     <SelectDropdown
-                        search
-                        /**
-                        * function callback when the search input text 
-                        * changes, this will automatically disable the 
-                        * dropdown's internal search to be implemented manually outside the component
-                        */
+                            search
+                            /**
+                            * function callback when the search input text 
+                            * changes, this will automatically disable the 
+                            * dropdown's internal search to be implemented manually outside the component
+                            */
 
-                        // onChangeSearchInputText={(val)=>{
-                        //     console.log("val", val);
-                        //     return val
-                        // }}
-                        searchPlaceHolder="Type: 'Other' If your tribe doesn't exist "
+                            // onChangeSearchInputText={(val)=>{
+                            //     console.log("val", val);
+                            //     return val
+                            // }}
+                            searchPlaceHolder="Type: 'Other' If your tribe doesn't exist "
 
-                        data={tribes}
-                        onSelect={async (selectedItem, index) => {
-                            console.log(selectedItem, "----", index);
-                            setSelectedTribe(selectedItem.title);
-                            setNewTribe(null);
-                            setNewTribeSearch(null)
-                            setErrorTribeNext(false);
-                            if (selectedItem.title != 'Other') await checkIfTribeExists(selectedItem.title);
+                            data={tribes}
+                            onSelect={async (selectedItem, index) => {
+                                console.log(selectedItem, "----", index);
+                                setSelectedTribe(selectedItem.title);
+                                setNewTribe(null);
+                                setNewTribeSearch(null)
+                                setErrorTribeNext(false);
+                                if (selectedItem.title != 'Other') await checkIfTribeExists(selectedItem.title);
+                            }}
 
-                        }}
+                            renderButton={(selectedItem, isOpened) => {
+                                return (
+                                    <View style={styles.dropdownButtonStyle}>
+                                        {selectedItem && (
+                                            <Icon name="square-rounded" nameq={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
+                                        )}
+                                        <Text style={styles.dropdownButtonTxtStyle}>
+                                            {(selectedItem && selectedItem.title) || 'Select your tribe'}
+                                        </Text>
+                                        <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
+                                    </View>
+                                );
+                            }}
+                            renderItem={(item, index, isSelected) => {
+                                return (
+                                    <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
+                                        <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
+                                        <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
+                                    </View>
+                                );
+                            }}
+                            showsVerticalScrollIndicator={false}
+                            dropdownStyle={styles.dropdownMenuStyle}
+                        />
 
-                        renderButton={(selectedItem, isOpened) => {
-                            return (
-                                <View style={styles.dropdownButtonStyle}>
-                                    {selectedItem && (
-                                        <Icon name="square-rounded" nameq={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
-                                    )}
-                                    <Text style={styles.dropdownButtonTxtStyle}>
-                                        {(selectedItem && selectedItem.title) || 'Select your tribe'}
-                                    </Text>
-                                    <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
-                                </View>
-                            );
-                        }}
-                        renderItem={(item, index, isSelected) => {
-                            return (
-                                <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
-                                    <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
-                                    <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-                                </View>
-                            );
-                        }}
-                        showsVerticalScrollIndicator={false}
-                        dropdownStyle={styles.dropdownMenuStyle}
-                    />
-
+                    </Block>}
+                    { foundTribe  &&
+                        <Block middle>
+                        <Button loading={isLoadingByName} buttonColor={COLORS.red}
+                            disabled={isLoadingByName} mode="contained"
+                            onPress={() => {
+                                setFoundTribe(null);
+                                setSelectedTribe(null);
+                            }}>Cancel</Button>
+                        </Block>
+                    }
+                  
+                   
                 </Block>
-                
                 {
                     selectedTribe === "Other" ?
                         <>
@@ -530,7 +547,8 @@ const ClimateKnowledgeComponet = ({userId}) => {
 
 const styles = StyleSheet.create({
     selectDropdown: {
-        marginBottom: 5,
+        flex: 1,
+        marginRight: 10,
         borderWidth: 1,
         borderRadius: 5,
         paddingHorizontal: 8,
