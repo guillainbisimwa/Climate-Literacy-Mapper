@@ -8,7 +8,7 @@ import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { ActivityIndicator, Button, Icon, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
+import { ActivityIndicator, Button, Icon, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
@@ -449,8 +449,46 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
 
                 </>:
                 foundTribe && foundTribe.climate_know_exist ?<>
-                <Text bold>What is climate change in your native language?</Text>
-                    <Text >{findMostVotedTranslate(foundTribe).value}</Text></>:null
+
+
+            <List.Section title="">
+                <List.Accordion
+                    title="What is climate change in your native language?"
+                    titleStyle={{fontWeight:"bold"}}
+                    descriptionStyle={{color:COLORS.darkgreen}}
+                    titleNumberOfLines={5}
+                    description={findMostVotedTranslate(foundTribe).value}
+                    left={props => <List.Icon {...props} icon="circle" />}>
+                    <Text light>     Vote for a best translation</Text>
+                        {
+                              foundTribe && foundTribe.climate_change_in_language && 
+                              foundTribe.climate_change_in_language && 
+                              foundTribe.climate_change_in_language.translate.map((val, key)=> {
+                                return <List.Item title={val.value}  key={key}
+                                onPress={()=>{
+                                    console.log(key);
+                                }}
+                                onLongPress={()=>{
+                                    console.log("lon",key);
+                                }}
+                                    style={{marginLeft:40}}
+                                    titleNumberOfLines={5}
+                                    left={props => <Text onPress={()=>{}} {...props}>{key+1}</Text>}
+                                    right={props => 
+                                    <Block center><Text light small>+{val.vote.length}</Text>
+                                    <List.Icon {...props} color={val.vote.includes(userId)?"red":"grey"}
+                                    icon="heart"  /></Block>} />
+                              })
+                        }
+                     
+                      
+                    <Button style={{marginLeft:50}} onPress={()=>{}} mode="outlined" >Add your translation</Button>
+                   
+                </List.Accordion>
+                
+                </List.Section>
+
+                    </>:null
             };
 
     const location = () => {
