@@ -234,6 +234,13 @@ const ClimateKnowledgeComponet = ({ userId }) => {
         );
     };
 
+    const isEmpty = (obj) => {
+        if (obj === null || obj === undefined) {
+          return true; // Or false depending on your use case
+        }
+        return Object.keys(obj).length === 0;
+      };
+
     const renderImagesHeader = () => {
 
         return (
@@ -247,7 +254,10 @@ const ClimateKnowledgeComponet = ({ userId }) => {
                 scrollEventThrottle={16}
             >
                 {
-                    images.length === 0 ?
+                  
+                        isEmpty(foundTribe)?
+
+
                         <ImageBackground
 
                             source={imagesConstants.noImage}
@@ -268,10 +278,10 @@ const ClimateKnowledgeComponet = ({ userId }) => {
 
 
 
-                        images?.map((image, index) => (
+                        foundTribe?.images?.map((image, index) => (
                             <ImageBackground
                                 key={index}
-                                source={{ uri: image }}
+                                source={{ uri: image.image }}
                                 resizeMode="cover"
                                 style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
                             >
@@ -538,17 +548,7 @@ const ClimateKnowledgeComponet = ({ userId }) => {
                         />
 
                     </Block>}
-                    { foundTribe  &&
-                        <Block middle>
-                        <Button loading={isLoadingByName} buttonColor={COLORS.red}
-                            disabled={isLoadingByName} mode="contained"
-                            style={{ alignContent:""}}
-                            onPress={() => {
-                                setFoundTribe(null);
-                                setSelectedTribe(null);
-                            }}>Cancel</Button>
-                        </Block>
-                    }
+                    
                   
                    
                 </Block>
@@ -571,6 +571,18 @@ const ClimateKnowledgeComponet = ({ userId }) => {
                 {
                      foundTribe ? topHeader():null
                 }
+
+                    { foundTribe  &&
+                        <Block middle margin={[20,0]}>
+                        <Button loading={isLoadingByName} buttonColor={COLORS.red}
+                            disabled={isLoadingByName} mode="contained"
+                            style={{ alignContent:""}}
+                            onPress={() => {
+                                setFoundTribe(null);
+                                setSelectedTribe(null);
+                            }}>Cancel</Button>
+                        </Block>
+                    }
 
                 {/* {
                     isLoadingByName ? <ActivityIndicator /> :
