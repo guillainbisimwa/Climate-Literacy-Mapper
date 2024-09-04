@@ -8,7 +8,7 @@ import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { ActivityIndicator, Button, Icon, SegmentedButtons, TextInput } from "react-native-paper";
+import { ActivityIndicator, Button, Icon, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
@@ -30,6 +30,8 @@ const ClimateKnowledgeComponet = ({ userId }) => {
     const [ans, setAns] = useState('');
     const [foundTribe, setFoundTribe] = useState(null);
     const [addCurrentTribe, setAddCurrentTribe] = useState(null);
+
+
     
 
     useEffect(() => {
@@ -43,6 +45,49 @@ const ClimateKnowledgeComponet = ({ userId }) => {
 
         fetchData();
     }, [dispatch]);
+
+    const countBelongsArrayLength = (data) => {
+        // Check if the input data is an object and has the 'belongs' property
+        if (data && typeof data === 'object' && Array.isArray(data.belongs)) {
+            // Return the length of the 'belongs' array
+            return data.belongs.length;
+        } else {
+            // Handle the case where the input data is not valid or does not have the 'belongs' property
+            return 0;
+        }
+    };
+    
+
+    const topHeader = () => {
+        return <>
+        <Text bold h3>MASSAI TRIBE</Text>
+                
+        <Block row space="between" margin={[10, 0, 0, 0]}>
+            <TouchableOpacity onPress={() => {
+                console.log('Images');
+            }}>
+                <Block row center style={styles.round}>
+                    <Ionicons name="image" color={COLORS.peach} size={20} />
+                    <Text style={{ marginLeft: 5 }} numberOfLines={1}>See images</Text>
+                </Block>
+            </TouchableOpacity>
+
+            <Block row center style={styles.round}>
+                <Ionicons name="people" color={COLORS.peach} size={20} />
+                <Text numberOfLines={1}>
+                    {countBelongsArrayLength(foundTribe)} PEOPLES INVOLVED</Text>
+            </Block>
+        </Block>
+
+        <Block center>
+            <ProgressBar
+                progress={0}
+                color={MD3Colors.error50}
+                style={{ width: SIZES.width - 40, height: SIZES.base, marginTop: 10 }}
+            />
+        </Block></>
+    }
+
     const checkIfTribeExists = async (val) => {
         console.log("ok", val);
         setNewTribeSearch(val)
@@ -497,6 +542,7 @@ const ClimateKnowledgeComponet = ({ userId }) => {
                         <Block middle>
                         <Button loading={isLoadingByName} buttonColor={COLORS.red}
                             disabled={isLoadingByName} mode="contained"
+                            style={{ alignContent:""}}
                             onPress={() => {
                                 setFoundTribe(null);
                                 setSelectedTribe(null);
@@ -507,7 +553,7 @@ const ClimateKnowledgeComponet = ({ userId }) => {
                    
                 </Block>
                 {
-                    selectedTribe === "Other" ?
+                     !foundTribe && selectedTribe === "Other" ?
                         <>
                             <Block row center>
                                 <TextInput onChangeText={setNewTribe} error={errorTribeNext}
@@ -521,6 +567,9 @@ const ClimateKnowledgeComponet = ({ userId }) => {
                             {errorByName && errorTribeNext ? <Text color={COLORS.red} >{errorByName}</Text> : null}
 
                         </> : null
+                }
+                {
+                     foundTribe ? topHeader():null
                 }
 
                 {/* {

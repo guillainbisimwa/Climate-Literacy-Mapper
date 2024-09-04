@@ -1034,11 +1034,15 @@ const MainScreen = ({ navigation }) => {
             <BottomSheetScrollView>
                 <Block>
 
-                    {
+                <ClimateKnowledgeComponet userId={currentUser} tribeListBelongs={tribeListBelongs} />
+
+
+                    {/* {
                         tribeListBelongs == null?
                         <ClimateKnowledgeComponet userId={currentUser} tribeListBelongs={tribeListBelongs} />:
+
                         <ClimateKnowledgeExist tribeListBelongs={tribeListBelongs} />
-                    }
+                    } */}
 
                 </Block>
             </BottomSheetScrollView>
