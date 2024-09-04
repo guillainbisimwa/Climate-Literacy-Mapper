@@ -15,7 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Toast } from "toastify-react-native";
 import { createTribe, fetchTribeByName, fetchTribes } from "@/redux/tribeSlice";
 
-const ClimateKnowledgeComponet = ({ userId }) => {
+const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
     const dispatch = useDispatch();
 
     const scrollX = useRef(new Animated.Value(0)).current;
@@ -60,11 +60,11 @@ const ClimateKnowledgeComponet = ({ userId }) => {
 
     const topHeader = () => {
         return <>
-        <Text bold h3>MASSAI TRIBE</Text>
+        <Text bold h3>{foundTribe?.tribe} TRIBE</Text>
                 
         <Block row space="between" margin={[10, 0, 0, 0]}>
             <TouchableOpacity onPress={() => {
-                console.log('Images');
+               onShowImages(foundTribe.images)
             }}>
                 <Block row center style={styles.round}>
                     <Ionicons name="image" color={COLORS.peach} size={20} />

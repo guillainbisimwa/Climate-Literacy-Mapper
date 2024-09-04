@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Block, Location, Proof, Text } from "../../components"
-import { ActivityIndicator, Avatar, Button, IconButton, List, SegmentedButtons, TextInput } from "react-native-paper";
+import { ActivityIndicator, Avatar, Button, Dialog, IconButton, List, SegmentedButtons, TextInput } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLORS, SIZES } from "@/constants";
-import { Animated, ImageBackground, TouchableOpacity, Image, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
+import { Animated, ImageBackground, TouchableOpacity, Image, ScrollView, StyleSheet, useWindowDimensions, View, FlatList } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -27,7 +27,7 @@ const MainScreen = ({ navigation }) => {
 
     const { user, error, success } = useSelector((state) => state.user);
     const { tribeList, isLoadingByName, errorByName, successByName, tribeByName, tribeListBelongs } = useSelector((state) => state.tribe);
-    const [images, setImages] = useState([]);
+    // const [images, setImages] = useState([]);
     const [loadPic, setLoadPic] = useState(false);
 
     const [selectedTribe, setSelectedTribe] = useState("");
@@ -44,6 +44,17 @@ const MainScreen = ({ navigation }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     console.log("*********currentTribe tribeListBelongs---------", currentUser);
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [images, setImages] = useState([]);
+
+    const showDialog = (imagesData) => {
+        setImages(imagesData);
+        setDialogVisible(true);
+    };
+
+    const hideDialog = () => setDialogVisible(false);
+
 
     const tribes = tribeList.map(val => {
         return { title: val.tribe, icon: "square-rounded-outline" }
@@ -462,43 +473,43 @@ const MainScreen = ({ navigation }) => {
 
     useEffect(() => {
         const getUserId = async () => {
-          try {
-            dispatch(fetchTribes());
-            
-            const value = await AsyncStorage.getItem('user');
-            if (value) {
-              const userLocal = JSON.parse(value);
-              console.log("userId:", userLocal.user.user.userId);
-              setCurrentUser(userLocal.user.user.userId)
-              
-              dispatch(findTribeByBelongsId({ id:  userLocal.user.user.userId })).then((result) => {
-                if (findTribeByBelongsId.fulfilled.match(result)) {
-                    // Handle successful login
-                    console.log('Successful:', result.payload);
-                    
+            try {
+                dispatch(fetchTribes());
 
-                } else if (findTribeByBelongsId.rejected.match(result)) {
-                    // Handle rejected login
-                    ///Toast.error(`Error: ${result.payload.message}`, 'top');
-                    console.log('');
-                    console.log('This user doesnt choose s tribe******:', result.payload);
+                const value = await AsyncStorage.getItem('user');
+                if (value) {
+                    const userLocal = JSON.parse(value);
+                    console.log("userId:", userLocal.user.user.userId);
+                    setCurrentUser(userLocal.user.user.userId)
+
+                    dispatch(findTribeByBelongsId({ id: userLocal.user.user.userId })).then((result) => {
+                        if (findTribeByBelongsId.fulfilled.match(result)) {
+                            // Handle successful login
+                            console.log('Successful:', result.payload);
+
+
+                        } else if (findTribeByBelongsId.rejected.match(result)) {
+                            // Handle rejected login
+                            ///Toast.error(`Error: ${result.payload.message}`, 'top');
+                            console.log('');
+                            console.log('This user doesnt choose s tribe******:', result.payload);
+                        }
+                    })
+                        .catch((error) => {
+                            // Handle any additional errors
+                            console.error('--------Error during fetching:', error);
+                            // Toast.error(`Error :, ${error}`, 'top');
+                        });
+                } else {
+                    console.log("User ID not found");
                 }
-            })
-                .catch((error) => {
-                    // Handle any additional errors
-                    console.error('--------Error during fetching:', error);
-                    // Toast.error(`Error :, ${error}`, 'top');
-                });
-            } else {
-              console.log("User ID not found");
+            } catch (error) {
+                console.error("Error retrieving user data", error);
             }
-          } catch (error) {
-            console.error("Error retrieving user data", error);
-          }
         };
-    
+
         getUserId();
-      }, [dispatch]);
+    }, [dispatch]);
 
 
 
@@ -1034,7 +1045,7 @@ const MainScreen = ({ navigation }) => {
             <BottomSheetScrollView>
                 <Block>
 
-                <ClimateKnowledgeComponet userId={currentUser} tribeListBelongs={tribeListBelongs} />
+                    <ClimateKnowledgeComponet onShowImages={showDialog} userId={currentUser} tribeListBelongs={tribeListBelongs} />
 
 
                     {/* {
@@ -1084,7 +1095,7 @@ const MainScreen = ({ navigation }) => {
 
     const foundTribe = () => {
         return true
-    }
+    };
 
     return <GestureHandlerRootView>
         <BottomSheetModalProvider>
@@ -1140,12 +1151,12 @@ const MainScreen = ({ navigation }) => {
                     </Block>
                     {
                         tribeListBelongs && <Block padding={[0, 20]} flex>
-                        <Text bold>What is climate change in your native language?</Text>
-                        <Text accent>MBURA</Text>
-                    </Block>
+                            <Text bold>What is climate change in your native language?</Text>
+                            <Text accent>MBURA</Text>
+                        </Block>
                     }
 
-                    
+
                     <Block>
                         <ClimateKnowledge openModal={openModalCK} />
                         <List.Item
@@ -1222,7 +1233,27 @@ const MainScreen = ({ navigation }) => {
             {
                 renderBottomCK()
             }
+
         </BottomSheetModalProvider>
+
+        <Dialog visible={dialogVisible} onDismiss={hideDialog}>
+            <Dialog.Title>Images</Dialog.Title>
+            <Dialog.Content style={styles.dialogContent}>
+                <FlatList
+                    data={images}
+                    keyExtractor={(item) => item.image}
+                    renderItem={({ item }) => (
+                        <Image
+                            source={{ uri: item.image }}
+                            style={styles.image}
+                        />
+                    )}
+                />
+            </Dialog.Content>
+            <Dialog.Actions>
+                <Button onPress={hideDialog}>Close</Button>
+            </Dialog.Actions>
+        </Dialog>
     </GestureHandlerRootView>
 };
 
@@ -1352,6 +1383,14 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         borderRadius: SIZES.radius * 2,
         overflow: "hidden"
+    },
+    image: {
+        width: '100%',
+        aspectRatio: 16 / 9, // Replace with the aspect ratio of your images
+        margin: 5,
+    },
+    dialogContent: {
+        height: SIZES.height * 0.5, // 50% of the screen height
     },
 });
 
