@@ -12,7 +12,7 @@ export const SubSlide = ({ subtitle, des, last, NextSlide, EnterApp }) => {
         {subtitle}
       </Text>
       <View>
-        <Text numberOfLines={4} style={styles.des}>
+        <Text numberOfLines={5} style={styles.des}>
           {des}
         </Text>
       </View>
@@ -35,14 +35,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   subTitle: {
-    fontSize: 20,
+    fontSize: 18,
     color: COLORS.blue,
     fontWeight: '500',
     marginBottom: 10,
   },
   des: {
     fontSize: 14,
-    lineHeight: 30,
+    // lineHeight: 30,
     color: COLORS.gray,
     textAlign: 'center',
   },
