@@ -8,8 +8,9 @@ import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { ActivityIndicator, Button, Icon, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
+import { ActivityIndicator, Button, Divider, Icon, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";
+import Map from "./Map";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import { Toast } from "toastify-react-native";
@@ -437,65 +438,64 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
                             },
                         ]}
                     /></Block> : null
-                    }
+    }
 
-            const tribeExists = () => {
-                return foundTribe && !foundTribe.climate_know_exist ?
-                <>
-                    
-                    <TextInput style={styles.textInput} 
-                    label={`What is climate change in ${selectedTribe} native language?`} 
+    const tribeExists = () => {
+        return foundTribe && !foundTribe.climate_know_exist ?
+            <Block margin={[10,0]}>
+
+                <TextInput style={styles.textInput}
+                    label={`What is climate change in ${selectedTribe} native language?`}
                     mode="outlined" keyboardType="default" />
 
-                </>:
-                foundTribe && foundTribe.climate_know_exist ?<>
+            </Block> :
+            foundTribe && foundTribe.climate_know_exist ? 
+            <Block  margin={[0,0,0,20]}>
 
 
-            <List.Section title="">
-                <List.Accordion
-                    title="What is climate change in your native language?"
-                    titleStyle={{fontWeight:"bold"}}
-                    descriptionStyle={{color:COLORS.darkgreen}}
-                    titleNumberOfLines={5}
-                    description={findMostVotedTranslate(foundTribe).value}
-                    left={props => <List.Icon {...props} icon="circle" />}>
-                    <Text light>     Vote for a best translation</Text>
+                <List.Section title="">
+                    <List.Accordion
+                        title="What is climate change in your native language?"
+                        titleStyle={{ fontWeight: "bold" }}
+                        descriptionStyle={{ color: COLORS.darkgreen }}
+                        titleNumberOfLines={5}
+                        description={findMostVotedTranslate(foundTribe).value}
+                        left={props => <List.Icon {...props} icon="circle" />}>
+                        <Text light>     Vote for a best translation</Text>
                         {
-                              foundTribe && foundTribe.climate_change_in_language && 
-                              foundTribe.climate_change_in_language && 
-                              foundTribe.climate_change_in_language.translate.map((val, key)=> {
-                                return <List.Item title={val.value}  key={key}
-                                onPress={()=>{
-                                    console.log(key);
-                                }}
-                                onLongPress={()=>{
-                                    console.log("lon",key);
-                                }}
-                                    style={{marginLeft:40}}
+                            foundTribe && foundTribe.climate_change_in_language &&
+                            foundTribe.climate_change_in_language &&
+                            foundTribe.climate_change_in_language.translate.map((val, key) => {
+                                return <List.Item title={val.value} key={key}
+                                    onPress={() => {
+                                        console.log(key);
+                                    }}
+                                    onLongPress={() => {
+                                        console.log("lon", key);
+                                    }}
+                                    style={{ marginLeft: 40 }}
                                     titleNumberOfLines={5}
-                                    left={props => <Text onPress={()=>{}} {...props}>{key+1}</Text>}
-                                    right={props => 
-                                    <Block center><Text light small>+{val.vote.length}</Text>
-                                    <List.Icon {...props} color={val.vote.includes(userId)?"red":"grey"}
-                                    icon="heart"  /></Block>} />
-                              })
+                                    left={props => <Text onPress={() => { }} {...props}>{key + 1}</Text>}
+                                    right={props =>
+                                        <Block center><Text light small>+{val.vote.length}</Text>
+                                            <List.Icon {...props} color={val.vote.includes(userId) ? "red" : "grey"}
+                                                icon="heart" /></Block>} />
+                            })
                         }
-                     
-                      
-                    <Button style={{marginLeft:50}} onPress={()=>{}} mode="outlined" >Add your translation</Button>
-                   
-                </List.Accordion>
-                
+
+
+                        <Button onPress={() => { }} mode="outlined" >Add your translation</Button>
+
+                    </List.Accordion>
+
                 </List.Section>
 
-                    </>:null
-            };
+            </Block> : null
+    };
 
-    const location = () => {
+    const addImageComponent = () => {
         return <>
-            <Location />
 
-            <Proof />
 
             {
                 renderImage()
@@ -520,25 +520,25 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages }) => {
     }
 
     // Function to find the most voted translate object, and if tied, the oldest one
-const findMostVotedTranslate = (data) => {
-    const { translate } = data?.climate_change_in_language;
-    
-    if (!translate || translate.length === 0) {
-        return null; // No translate objects present
-    }
-    
-    return translate.reduce((best, current) => {
-        // Compare votes length
-        if (current.vote.length > best.vote.length) {
-            return current;
+    const findMostVotedTranslate = (data) => {
+        const { translate } = data?.climate_change_in_language;
+
+        if (!translate || translate.length === 0) {
+            return null; // No translate objects present
         }
-        // If votes are equal, compare timestamp
-        if (current.vote.length === best.vote.length) {
-            return new Date(current.timestamp) < new Date(best.timestamp) ? current : best;
-        }
-        return best;
-    });
-};
+
+        return translate.reduce((best, current) => {
+            // Compare votes length
+            if (current.vote.length > best.vote.length) {
+                return current;
+            }
+            // If votes are equal, compare timestamp
+            if (current.vote.length === best.vote.length) {
+                return new Date(current.timestamp) < new Date(best.timestamp) ? current : best;
+            }
+            return best;
+        });
+    };
 
     return <ScrollView showsVerticalScrollIndicator={false} accessibilityElementsHidden={true}>
         <Block flex={1}>
@@ -644,11 +644,11 @@ const findMostVotedTranslate = (data) => {
                     foundTribe ? topHeader() : null
                 }
 
-                {
+                {/* {
                     foundTribe ?
                         ans == "no" ? <Text>NO</Text> :
                             ans == "notsure" ? <Text>MAY BE</Text> : <Text>YES</Text> : null
-                }
+                } */}
 
 
 
@@ -665,8 +665,42 @@ const findMostVotedTranslate = (data) => {
                 }
 
                 {
-                 tribeExists()
+                    tribeExists()
                 }
+                <Divider />
+                {
+                    foundTribe && foundTribe.climate_know_exist ?
+                        <>
+                            <Block row space="between"  margin={[15,0]}>
+                                
+                                <Block row middle center>
+                                    <Block>
+                                        <Ionicons name="location" color={COLORS.lightBlue} size={20} />
+                                        <Text>Loc</Text>
+                                    </Block>
+                                    <Block margin={[0, 0, 0, 20]}>
+                                        <Text bold>Link</Text>
+                                        <Text light>www</Text>
+                                    </Block>
+                                </Block>
+                                <TouchableOpacity onPress={() => { }}>
+                                    <Block center><Text light small>+1</Text>
+                                        <Ionicons name="heart" color={COLORS.red} size={20} />
+                                    </Block>
+                                </TouchableOpacity>
+                            </Block>
+
+                        </> : null}
+                <Location foundTribe={foundTribe} />
+                <Map />
+
+
+
+                <Proof />
+
+
+                {/* {addImageComponent()} */}
+
 
 
 

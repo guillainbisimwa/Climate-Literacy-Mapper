@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "@/constants";
 import { Menu, TextInput } from "react-native-paper";
 
-const Loaction = () => {
+const Loaction = ({foundTribe}) => {
     const [visibleMenu, setVisibleMenu] = useState(true);
     const [typeLocation, setTypeLocation] = useState(0);
     const [lat, setLat] = useState(null);
@@ -51,6 +51,7 @@ const Loaction = () => {
         </Menu>
 
         {
+             
             typeLocation == 1 ?
                 <Block row space="between" >
                     <TextInput style={styles.input} onChangeText={setLat} label="Latitude" mode="outlined" keyboardType="default" />
