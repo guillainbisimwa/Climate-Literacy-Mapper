@@ -671,31 +671,36 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                 {
                     foundTribe && foundTribe.climate_know_exist ?
                         <>
-                            <Block row space="between"  margin={[15,0]}>
+                        {
+                            foundTribe && foundTribe.location.map((val, key)=> {
+                                return <Block row key={key} space="between"  margin={[15,0]}>
                                 
                                 <Block row middle center>
-                                    <Block>
+                                    <Block center>
                                         <Ionicons name="location" color={COLORS.lightBlue} size={20} />
-                                        <Text>Loc</Text>
+                                        <Text light>1</Text>
                                     </Block>
                                     <Block margin={[0, 0, 0, 20]}>
-                                        <Text bold>Link</Text>
-                                        <Text light>www</Text>
+                                        <Text bold>Lat: {val.coordinates[0]}</Text>
+                                        <Text light>Long: {val.coordinates[1]}</Text>
                                     </Block>
                                 </Block>
-                                <TouchableOpacity onPress={() => {onShowMap() }}>
+                                <TouchableOpacity >
                                     <Block center><Text light small>+1</Text>
                                         <Ionicons name="heart" color={COLORS.red} size={20} />
                                     </Block>
                                 </TouchableOpacity>
                             </Block>
+                            }) 
+                        }
+                            
 
                         </> : null}
-                <Location foundTribe={foundTribe} />
-                {/* <Map /> */}
-
-
-
+                        <TouchableOpacity style={styles.btnLocation} onPress={() => {onShowMap() }}>
+                    <Ionicons name="location" size={30} color={COLORS.white} style={styles.icon} />
+                    <Text style={{ color: COLORS.white }}>Add the location of your tribe</Text>
+                </TouchableOpacity>
+               
                 <Proof />
 
 
@@ -831,6 +836,17 @@ const styles = StyleSheet.create({
     },
     notSureButton: {
         backgroundColor: "#FFDE4D",
+    },
+    btnLocation: {
+        backgroundColor: COLORS.gray,
+        padding: SIZES.base,
+        width: "100%",
+        borderRadius: SIZES.radius,
+        elevation: 2,
+        marginTop: SIZES.base * 1.8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: SIZES.base,
     },
 
 });
