@@ -2,7 +2,7 @@
   "expo": {
     "name": "Climate-Literacy-Mapper",
     "slug": "Climate-Literacy-Mapper",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "scheme": "clm",
@@ -22,7 +22,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.laobowa.mbura",
-      "versionCode": 1
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro",

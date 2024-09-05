@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { enableSreens } from 'react-native-screens';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import InitialLoader from '../screens/InitialLoader';

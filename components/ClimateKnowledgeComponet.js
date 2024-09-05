@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
-import { Animated, Image, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Animated, Image, ImageBackground, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Block from './Block';
 import Text from './Text';
 import Location from "./Location";
@@ -242,25 +242,41 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
     };
 
     const renderImagesHeader = () => {
-
         return (
             <ScrollView
                 horizontal
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}
-                onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-                    useNativeDriver: false,
-                })}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                    { useNativeDriver: false }
+                )}
+               
+                scrollEnabled
                 scrollEventThrottle={16}
             >
-                {
-
-                    isEmpty(foundTribe) ?
-
-
+                {isEmpty(foundTribe) ? (
+                    <ImageBackground
+                        source={imagesConstants.noImage}
+                        resizeMode="cover"
+                        style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
+                    >
+                        <LinearGradient
+                            colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                height: 170,
+                            }}
+                        />
+                    </ImageBackground>
+                ) : (
+                    foundTribe?.images?.map((image, index) => (
                         <ImageBackground
-
-                            source={imagesConstants.noImage}
+                            key={index}
+                            source={{ uri: image.image }}
                             resizeMode="cover"
                             style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
                         >
@@ -273,31 +289,10 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                                     top: 0,
                                     height: 170,
                                 }}
-                            ></LinearGradient>
-                        </ImageBackground> :
-
-
-
-                        foundTribe?.images?.map((image, index) => (
-                            <ImageBackground
-                                key={index}
-                                source={{ uri: image.image }}
-                                resizeMode="cover"
-                                style={{ width: SIZES.width, height: 170, justifyContent: 'flex-end' }}
-                            >
-                                <LinearGradient
-                                    colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.9)']}
-                                    style={{
-                                        position: 'absolute',
-                                        left: 0,
-                                        right: 0,
-                                        top: 0,
-                                        height: 170,
-                                    }}
-                                ></LinearGradient>
-                            </ImageBackground>
-                        ))
-                }
+                            />
+                        </ImageBackground>
+                    ))
+                )}
             </ScrollView>
         );
     };
@@ -556,7 +551,7 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                     marginHorizontal: '5%',
                     // width: '90%',
                     borderRadius: 10,
-                    elevation: 2,
+                    // elevation: 2,
                     marginTop: -20,
                 }}
             >
