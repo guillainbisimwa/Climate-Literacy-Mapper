@@ -357,8 +357,8 @@ const Map = () => {
           <Circle
             center={circle.center}
             radius={circle.radius}
-            strokeColor="rgba(0,150,0,0.8)" // Circle border color (green)
-            fillColor="rgba(0,150,0,0.3)" // Circle fill color (semi-transparent green)
+            strokeColor="rgba(150,0,0,0.8)" // Circle border color (green)
+            fillColor="rgba(150,0,0,0.4)" // Circle fill color (semi-transparent green)
           />
         )}
       </MapView>
@@ -374,14 +374,14 @@ const Map = () => {
 
       {/* Slider for adjusting the circle radius */}
       <View style={styles.sliderContainer}>
-        <Block row >
+        <Block row space="between" >
         <Text>Adjust Radius:</Text>
         <Text>{(radius / 1000).toFixed(2)} km</Text>
         </Block>
         <Slider
           minimumValue={80000} // Minimum radius (50 km)
           maximumValue={800000} // Maximum radius (500 km)
-          step={10000} // Increment of 10 km
+          step={1000} // Increment of 10 km
           value={radius}
           onValueChange={handleRadiusChange}
         />
@@ -394,7 +394,7 @@ const Map = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 400
+    //height: 400
   },
   map: {
     flex: 1,

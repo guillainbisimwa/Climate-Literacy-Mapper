@@ -20,6 +20,7 @@ import { LinearGradient } from "react-native-svg";
 import ClimateKnowledgeComponet from '../../components/ClimateKnowledgeComponet';
 import ClimateKnowledgeExist from '../../components/ClimateKnowledgeExist';
 import { useFocusEffect } from "@react-navigation/native";
+import Map from "@/components/Map";
 
 
 const MainScreen = ({ navigation }) => {
@@ -45,7 +46,9 @@ const MainScreen = ({ navigation }) => {
 
     console.log("*********currentTribe tribeListBelongs---------", currentUser);
 
+    const [dialogVisibleMap, setDialogVisibleMap] = useState(false);
     const [dialogVisible, setDialogVisible] = useState(false);
+
     const [images, setImages] = useState([]);
 
     const showDialog = (imagesData) => {
@@ -54,6 +57,13 @@ const MainScreen = ({ navigation }) => {
     };
 
     const hideDialog = () => setDialogVisible(false);
+
+    const showDialogMap = () => {
+        // setImages(imagesData);
+        setDialogVisibleMap(true);
+    };
+
+    const hideDialogMap = () => setDialogVisibleMap(false);
 
 
     const tribes = tribeList.map(val => {
@@ -1045,7 +1055,7 @@ const MainScreen = ({ navigation }) => {
             <BottomSheetScrollView>
                 <Block>
 
-                    <ClimateKnowledgeComponet onShowImages={showDialog} userId={currentUser} tribeListBelongs={tribeListBelongs} />
+                    <ClimateKnowledgeComponet onShowImages={showDialog} onShowMap={showDialogMap}  userId={currentUser} tribeListBelongs={tribeListBelongs} />
 
 
                     {/* {
@@ -1252,6 +1262,16 @@ const MainScreen = ({ navigation }) => {
             </Dialog.Content>
             <Dialog.Actions>
                 <Button onPress={hideDialog}>Close</Button>
+            </Dialog.Actions>
+        </Dialog>
+
+        <Dialog visible={dialogVisibleMap} onDismiss={hideDialogMap}>
+            <Dialog.Title>MAP</Dialog.Title>
+            <Dialog.Content style={styles.dialogContent}>
+                <Map />
+            </Dialog.Content>
+            <Dialog.Actions>
+                <Button onPress={hideDialogMap}>Close</Button>
             </Dialog.Actions>
         </Dialog>
     </GestureHandlerRootView>
