@@ -5,7 +5,7 @@ import Slider from '@react-native-community/slider';
 import Block from './Block';
 
 // Custom map style to show only countries (no rivers, roads, etc.)
-const mapStyle2= [
+const mapStyle= [
     {
       "elementType": "geometry",
       "stylers": [
@@ -294,7 +294,7 @@ const mapStyle2= [
     }
   ];
   
-const mapStyle = [
+const mapStyle2 = [
   {
     elementType: 'geometry',
     stylers: [{ color: '#ebe3cd' }],
@@ -346,11 +346,11 @@ const Map = () => {
         style={styles.map}
         initialRegion={{
           latitude: -1.2921, // Centered in Africa (Kenya as an example)
-          longitude: 36.8219,
-          latitudeDelta: 10.0, // Initial zoom to show a larger region
+          longitude: 16.8219,
+          latitudeDelta: 90.0, // Initial zoom to show a larger region
           longitudeDelta: 10.0,
         }}
-        customMapStyle={mapStyle2} // Apply custom style for countries only
+        // customMapStyle={mapStyle2} // Apply custom style for countries only
         onPress={handleMapPress} // User taps to set the circle
       >
         {circle && (

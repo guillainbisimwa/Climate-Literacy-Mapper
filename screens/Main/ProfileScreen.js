@@ -48,7 +48,7 @@ const ProfileScreen = ({ navigation }) => {
         navigation.navigate('Login');
     };
 
-    return <Block flex center middle>
+    return <Block flex={1} center middle>
        
         <Button mode="contained" onPress={handleLogout}  >LOGOUT</Button>
 

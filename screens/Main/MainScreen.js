@@ -1111,7 +1111,7 @@ const MainScreen = ({ navigation }) => {
         <BottomSheetModalProvider>
             <Container position="bottom" style={{ width: '100%' }} duration={6000} />
 
-            <Block flex style={{ position: "relative", }}>
+            <Block  style={{ position: "relative", }}>
 
                 <Block paddingBottom={60} padding={30} middle row space="between" color={COLORS.primary}>
                     <Block>
@@ -1120,10 +1120,14 @@ const MainScreen = ({ navigation }) => {
                     </Block>
                     <Avatar.Icon size={54} icon="account-circle" />
                 </Block>
-                <Block center padding={[30, 10, 30, 20]} row
+                <Block margin={[0,20]}>
+                <Block center padding={[30, 10, 30, 20]} row middle
                     space="between" color={COLORS.white} card shadow style={{
-                        width: '90%',
-                        position: "relative", left: '2.5%', top: -30
+                         width: '100%',
+                        // position: "relative", 
+                        // left: '2.5%', 
+                        paddingHorizontal: 20,
+                        top: -30
                     }}
                 >
                     <Block>
@@ -1144,7 +1148,10 @@ const MainScreen = ({ navigation }) => {
 
 
                 </Block>
-                <ScrollView style={{ marginTop: -25 }}>
+                </Block>
+                
+            </Block>
+            <ScrollView style={{ marginTop: -25, }}>
                     <Block margin={20} padding={40} card shadow color={COLORS.yellow} >
                         <Text center bold>
                             Do you know people from other tribes that would like to participate in this exercise?
@@ -1160,7 +1167,7 @@ const MainScreen = ({ navigation }) => {
                         />
                     </Block>
                     {
-                        tribeListBelongs && <Block padding={[0, 20]} flex>
+                        tribeListBelongs && <Block padding={[0, 20]} >
                             <Text bold>What is climate change in your native language?</Text>
                             <Text accent>MBURA</Text>
                         </Block>
@@ -1236,7 +1243,6 @@ const MainScreen = ({ navigation }) => {
 
                     </Block>
                 </ScrollView>
-            </Block>
             {
                 renderBottom()
             }
