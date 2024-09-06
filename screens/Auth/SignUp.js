@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, Pressable, TouchableOpacity, ScrollViewBase } from 'react-native'
+import { View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, Pressable, TouchableOpacity, ScrollViewBase, Alert } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from '@react-navigation/native';
 import Container, { Toast } from 'toastify-react-native';
@@ -13,9 +13,9 @@ import { Button } from 'react-native-paper';
 import { loginUser, signUpUser } from '@/redux/userSlice';
 
 
-const hasErrorKey = (obj) => {
-    return obj && typeof obj === 'object' && 'error' in obj;
-}
+// const hasErrorKey = (obj) => {
+//     return obj && typeof obj === 'object' && 'error' in obj;
+// }
 
 
 
@@ -38,7 +38,7 @@ const SignUp = ({ navigation }) => {
     const getData = async () => {
         const value = await AsyncStorage.getItem('userToken');
         console.log(value, "VALUE SIGNUP", user);
-        if (value != null) {
+        if (value !==null) {
             navigation.navigate("MainStack")
             // navigation.reset({
             //     index: 0,
@@ -72,7 +72,7 @@ const SignUp = ({ navigation }) => {
                     Toast.error('Incorrect phone number', 'top')
                     return
                 }
-                if (password != confirmPassword) {
+                if (password !==confirmPassword) {
                     setPasswordError(true);
                     Toast.error("Password doesn't match", 'top')
                     return

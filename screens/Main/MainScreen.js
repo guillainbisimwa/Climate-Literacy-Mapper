@@ -16,7 +16,7 @@ import Container, { Toast } from "toastify-react-native";
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ClimateKnowledge from "./ClimateKnowledge";
-import { LinearGradient } from "react-native-svg";
+// import { LinearGradient } from "react-native-svg";
 import ClimateKnowledgeComponet from '../../components/ClimateKnowledgeComponet';
 import ClimateKnowledgeExist from '../../components/ClimateKnowledgeExist';
 import { useFocusEffect } from "@react-navigation/native";
@@ -757,7 +757,7 @@ const MainScreen = ({ navigation }) => {
 
     const info = () => Toast.error(`You cannot exceed 3 pictures`, 'top');
 
-    const renderBottom = () => {
+    const RenderBottom = () => {
         const { width, height } = useWindowDimensions();
         const scrollX = useRef(new Animated.Value(0)).current;
         const animatedCurrent = useRef(Animated.divide(scrollX, width)).current;
@@ -769,10 +769,10 @@ const MainScreen = ({ navigation }) => {
             const nextPageIndex = Math.min(currentPageIndex + 1, pages.length - 1);
             // console.log("currentPageIndex", currentPageIndex);
             // console.log("selectedTribe", selectedTribe);
-            if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() === "") {
+            if (currentPageIndex===0 && selectedTribe==="Other" && newTribe.trim() === "") {
                 setNewTribeNext(true)
             }
-            else if (currentPageIndex == 0 && selectedTribe == "Other" && newTribe.trim() !== "") {
+            else if (currentPageIndex===0 && selectedTribe==="Other" && newTribe.trim() !== "") {
 
                 // check if tribe is already exists
                 dispatch(fetchTribeByName({ tribeName: newTribe.trim() })).then((result) => {
@@ -794,10 +794,10 @@ const MainScreen = ({ navigation }) => {
 
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
 
-            } else if (currentPageIndex == 0 && selectedTribe.length !== 0) {
+            } else if (currentPageIndex===0 && selectedTribe.length !== 0) {
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
             }
-            else if (currentPageIndex == 1 && (selectedTribe.length !== 0 || newTribe.trim() != "")) {
+            else if (currentPageIndex===1 && (selectedTribe.length !== 0 || newTribe.trim() !=="")) {
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
             }
             else {
@@ -815,7 +815,7 @@ const MainScreen = ({ navigation }) => {
             ref={bottomSheet}
             index={0}
             backdropComponent={BackdropElement}
-            snapPoints={Math.floor(scrollX._value / width) == 0 ? snapPoints90 : snapPoints}
+            snapPoints={Math.floor(scrollX._value / width)===0 ? snapPoints90 : snapPoints}
             onDismiss={() => setOpen(false)}
         >
 
@@ -857,7 +857,7 @@ const MainScreen = ({ navigation }) => {
                             {pages.map((page, index) => (
                                 <Block key={index} style={[styles.page, { width, height }]}>
                                     {
-                                        index == 0 ?
+                                        index===0 ?
                                             <>
                                                 {/* <Text bold h3>Please select your tribe</Text> */}
                                                 <Block style={styles.selectDropdown}>
@@ -925,7 +925,7 @@ const MainScreen = ({ navigation }) => {
                                             <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined"  keyboardType="default" /> */}
 
                                             </> :
-                                            index == 1 ?
+                                            index===1 ?
                                                 !foundTribe() ?
                                                     <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
                                                         <SegmentedButtons
@@ -962,7 +962,7 @@ const MainScreen = ({ navigation }) => {
 
                                                     </>
                                                 :
-                                                index == 2 ? <>
+                                                index===2 ? <>
 
                                                     {/* climate_change_in_lang
                                            translate: 
@@ -1005,10 +1005,10 @@ const MainScreen = ({ navigation }) => {
                                                 </> : null
                                     }
                                     <Block padding={[30, 0, 0, 0]} row space="between" >
-                                        <Button disabled={index == 0 ? true : false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
+                                        <Button disabled={index===0 ? true : false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
                                             <Text>Previous</Text>
                                         </Button>
-                                        <Button disabled={index == pages.length - 1 ? true : false} mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
+                                        <Button disabled={index===pages.length - 1 ? true : false} mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
                                             <Text>Next</Text>
                                         </Button>
                                     </Block>
@@ -1026,7 +1026,7 @@ const MainScreen = ({ navigation }) => {
 
 
 
-    const renderBottomCK = () => {
+    const RenderBottomCK = () => {
 
         return <BottomSheetModal
             ref={bottomSheetCK}
@@ -1059,7 +1059,7 @@ const MainScreen = ({ navigation }) => {
 
 
                     {/* {
-                        tribeListBelongs == null?
+                        tribeListBelongs===null?
                         <ClimateKnowledgeComponet userId={currentUser} tribeListBelongs={tribeListBelongs} />:
 
                         <ClimateKnowledgeExist tribeListBelongs={tribeListBelongs} />
@@ -1080,8 +1080,8 @@ const MainScreen = ({ navigation }) => {
             // Toast.warn("Verifier votre internet!", 'top');
 
             Toast.error("An error has occurred", 'top');
-            setValid(false);
-            setPasswordError(true)
+            // setValid(false);
+            // setPasswordError(true)
         }
     }, []);
 
@@ -1089,7 +1089,7 @@ const MainScreen = ({ navigation }) => {
         try {
             const value = await AsyncStorage.getItem('user');
             // console.log("value main", value)
-            if (value == null) {
+            if (value===null) {
                 console.log(navigation);
 
                 navigation.reset({
@@ -1209,10 +1209,10 @@ const MainScreen = ({ navigation }) => {
                                                 openModal();
                                             }}
                                             title={
-                                                key == "preLesson" ? "Pre-lesson questions" :
-                                                    key == "localChallenges" ? "Local challenges" :
-                                                        key == "mindfullExercises" ? "Mindfulness exercises" :
-                                                            key == "rle" ? " Real-life existing examples" : key
+                                                key==="preLesson" ? "Pre-lesson questions" :
+                                                    key==="localChallenges" ? "Local challenges" :
+                                                        key==="mindfullExercises" ? "Mindfulness exercises" :
+                                                            key==="rle" ? " Real-life existing examples" : key
 
 
                                             }
@@ -1223,17 +1223,17 @@ const MainScreen = ({ navigation }) => {
                                             description="2/3 questions"
                                             left={props => <List.Icon {...props}
                                                 icon={
-                                                    key == "preLesson" ? "apps" :
-                                                        key == "localChallenges" ? "offer" :
-                                                            key == "mindfullExercises" ? "odnoklassniki" :
-                                                                key == "rle" ? "run" : key
+                                                    key==="preLesson" ? "apps" :
+                                                        key==="localChallenges" ? "offer" :
+                                                            key==="mindfullExercises" ? "odnoklassniki" :
+                                                                key==="rle" ? "run" : key
 
                                                 }
                                                 color={
-                                                    key == "preLesson" ? "chocolate" :
-                                                        key == "localChallenges" ? "blue" :
-                                                            key == "mindfullExercises" ? "green" :
-                                                                key == "rle" ? "magenta" : key
+                                                    key==="preLesson" ? "chocolate" :
+                                                        key==="localChallenges" ? "blue" :
+                                                            key==="mindfullExercises" ? "green" :
+                                                                key==="rle" ? "magenta" : key
                                                 }
                                             />}
                                             right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
@@ -1244,10 +1244,10 @@ const MainScreen = ({ navigation }) => {
                     </Block>
                 </ScrollView>
             {
-                renderBottom()
+                RenderBottom()
             }
             {
-                renderBottomCK()
+                RenderBottomCK()
             }
 
         </BottomSheetModalProvider>

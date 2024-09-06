@@ -4,6 +4,7 @@ import { logoutUser } from "@/redux/authReducer";
 import { Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
+import { Toast } from "toastify-react-native";
 
 const ProfileScreen = ({ navigation }) => {
     const { error, isLoading, success, user } = useSelector((state) => state.user);
@@ -17,8 +18,8 @@ const ProfileScreen = ({ navigation }) => {
             // Toast.warn("Verifier votre internet!", 'top');
 
             Toast.error("An error has occurred", 'top');
-            setValid(false);
-            setPasswordError(true)
+            // setValid(false);
+            // setPasswordError(true)
 
         }
     }, []);
@@ -27,7 +28,7 @@ const ProfileScreen = ({ navigation }) => {
         try {
             const value = await AsyncStorage.getItem('user');
             console.log("value main", value)
-            if (value == null) {
+            if (value===null) {
                 console.log(navigation);
 
                 navigation.reset({

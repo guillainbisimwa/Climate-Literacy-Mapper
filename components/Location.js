@@ -52,15 +52,15 @@ const Loaction = ({foundTribe}) => {
 
         {
              
-            typeLocation == 1 ?
+            typeLocation===1 ?
                 <Block row space="between" >
                     <TextInput style={styles.input} onChangeText={setLat} label="Latitude" mode="outlined" keyboardType="default" />
                     <TextInput style={styles.input} onChangeText={setLong} label="Longitude" mode="outlined" keyboardType="default" />
                 </Block> :
-                typeLocation == 2 ?
+                typeLocation===2 ?
                     <TextInput onChangeText={setNameTribe} label="Name of the location" mode="outlined" keyboardType="default" />
                     :
-                    typeLocation == 3 ?
+                    typeLocation===3 ?
                         <TextInput onChangeText={setLinkTribe} label="A link if you know how to share it"
                             mode="outlined" keyboardType="url" />
                         : null

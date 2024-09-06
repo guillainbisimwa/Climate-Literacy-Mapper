@@ -581,7 +581,7 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                                 setNewTribeSearch(null)
                                 setErrorTribeNext(false);
 
-                                if (selectedItem.title != 'Other') {
+                                if (selectedItem.title !=='Other') {
                                     await checkIfTribeExists(selectedItem.title);
                                 } else {
                                     setFoundTribe(null)
@@ -641,8 +641,8 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
 
                 {/* {
                     foundTribe ?
-                        ans == "no" ? <Text>NO</Text> :
-                            ans == "notsure" ? <Text>MAY BE</Text> : <Text>YES</Text> : null
+                        ans==="no" ? <Text>NO</Text> :
+                            ans==="notsure" ? <Text>MAY BE</Text> : <Text>YES</Text> : null
                 } */}
 
 
@@ -651,8 +651,8 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                     isLoadingByName ? <ActivityIndicator /> :
 
 
-                        selectedTribe != 'Other' ? foundTribeFunction() :
-                            (selectedTribe == 'Other' && newTribeSearch != null) ? foundTribeFunction() : null
+                        selectedTribe !=='Other' ? foundTribeFunction() :
+                            (selectedTribe==='Other' && newTribeSearch !==null) ? foundTribeFunction() : null
                 } */}
 
                 {

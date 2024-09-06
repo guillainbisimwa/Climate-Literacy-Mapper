@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        // paddingHorizontal: 20,
     },
     scrollContainer: {
         flexGrow: 1,
@@ -260,9 +261,6 @@ const styles = StyleSheet.create({
     formCon: {
         flexDirection: 'column',
         justifyContent: 'space-around',
-    },
-    container: {
-        paddingHorizontal: 20,
     },
     loginLblCon: {
         position: 'relative',
