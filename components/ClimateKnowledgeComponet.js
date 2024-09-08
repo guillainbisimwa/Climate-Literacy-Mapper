@@ -699,10 +699,7 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                 <Proof />
 
 
-                {/* {addImageComponent()} */}
-
-
-
+                {addImageComponent()}
 
                 {foundTribe &&
                     <Block middle margin={[20, 0]}>

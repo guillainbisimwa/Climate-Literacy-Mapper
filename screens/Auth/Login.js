@@ -143,7 +143,7 @@ const Login = ({ navigation }) => {
                     <View style={styles.formCon}>
                         <View style={styles.textBoxCon}>
                             <View style={styles.at}>
-                                <SvgIcon icon={'phone'} width={20} height={20} />
+                                <SvgIcon icon={'phone'} width={10} height={10} />
                             </View>
                             <View style={styles.textCon}>
                                 <PhoneInput
