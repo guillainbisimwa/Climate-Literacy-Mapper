@@ -3,14 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { Animated, Image, ImageBackground, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Block from './Block';
 import Text from './Text';
-import Location from "./Location";
 import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator, Button, Divider, Icon, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";
-import Map from "./Map";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import { Toast } from "toastify-react-native";
@@ -30,8 +28,6 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
     const [loadPic, setLoadPic] = useState(false);
     const [ans, setAns] = useState(null);
     const [foundTribe, setFoundTribe] = useState(null);
-    const [isClimateExist, setIsClimateExist] = useState(null);
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -251,7 +247,7 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                     [{ nativeEvent: { contentOffset: { x: scrollX } } }],
                     { useNativeDriver: false }
                 )}
-               
+
                 scrollEnabled
                 scrollEventThrottle={16}
             >
@@ -437,55 +433,55 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
 
     const tribeExists = () => {
         return foundTribe && !foundTribe.climate_know_exist ?
-            <Block margin={[10,0]}>
+            <Block margin={[10, 0]}>
 
                 <TextInput style={styles.textInput}
                     label={`What is climate change in ${selectedTribe} native language?`}
                     mode="outlined" keyboardType="default" />
 
             </Block> :
-            foundTribe && foundTribe.climate_know_exist ? 
-            <Block  margin={[0,0,0,20]}>
+            foundTribe && foundTribe.climate_know_exist ?
+                <Block margin={[0, 0, 0, 20]}>
 
 
-                <List.Section title="">
-                    <List.Accordion
-                        title="What is climate change in your native language?"
-                        titleStyle={{ fontWeight: "bold" }}
-                        descriptionStyle={{ color: COLORS.darkgreen }}
-                        titleNumberOfLines={5}
-                        description={findMostVotedTranslate(foundTribe).value}
-                        left={props => <List.Icon {...props} icon="circle" />}>
-                        <Text light>     Vote for a best translation</Text>
-                        {
-                            foundTribe && foundTribe.climate_change_in_language &&
-                            foundTribe.climate_change_in_language &&
-                            foundTribe.climate_change_in_language.translate.map((val, key) => {
-                                return <List.Item title={val.value} key={key}
-                                    onPress={() => {
-                                        console.log(key);
-                                    }}
-                                    onLongPress={() => {
-                                        console.log("lon", key);
-                                    }}
-                                    style={{ marginLeft: 40 }}
-                                    titleNumberOfLines={5}
-                                    left={props => <Text onPress={() => { }} {...props}>{key + 1}</Text>}
-                                    right={props =>
-                                        <Block center><Text light small>+{val.vote.length}</Text>
-                                            <List.Icon {...props} color={val.vote.includes(userId) ? "red" : "grey"}
-                                                icon="heart" /></Block>} />
-                            })
-                        }
+                    <List.Section title="">
+                        <List.Accordion
+                            title="What is climate change in your native language?"
+                            titleStyle={{ fontWeight: "bold" }}
+                            descriptionStyle={{ color: COLORS.darkgreen }}
+                            titleNumberOfLines={5}
+                            description={findMostVotedTranslate(foundTribe).value}
+                            left={props => <List.Icon {...props} icon="circle" />}>
+                            <Text light>     Vote for a best translation</Text>
+                            {
+                                foundTribe && foundTribe.climate_change_in_language &&
+                                foundTribe.climate_change_in_language &&
+                                foundTribe.climate_change_in_language.translate.map((val, key) => {
+                                    return <List.Item title={val.value} key={key}
+                                        onPress={() => {
+                                            console.log(key);
+                                        }}
+                                        onLongPress={() => {
+                                            console.log("lon", key);
+                                        }}
+                                        style={{ marginLeft: 40 }}
+                                        titleNumberOfLines={5}
+                                        left={props => <Text onPress={() => { }} {...props}>{key + 1}</Text>}
+                                        right={props =>
+                                            <Block center><Text light small>+{val.vote.length}</Text>
+                                                <List.Icon {...props} color={val.vote.includes(userId) ? "red" : "grey"}
+                                                    icon="heart" /></Block>} />
+                                })
+                            }
 
 
-                        <Button onPress={() => { }} mode="outlined" >Add your translation</Button>
+                            <Button onPress={() => { }} mode="outlined" >Add your translation</Button>
 
-                    </List.Accordion>
+                        </List.Accordion>
 
-                </List.Section>
+                    </List.Section>
 
-            </Block> : null
+                </Block> : null
     };
 
     const addImageComponent = () => {
@@ -581,7 +577,7 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                                 setNewTribeSearch(null)
                                 setErrorTribeNext(false);
 
-                                if (selectedItem.title !=='Other') {
+                                if (selectedItem.title !== 'Other') {
                                     await checkIfTribeExists(selectedItem.title);
                                 } else {
                                     setFoundTribe(null)
@@ -666,36 +662,36 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                 {
                     foundTribe && foundTribe.climate_know_exist ?
                         <>
-                        {
-                            foundTribe && foundTribe.location.map((val, key)=> {
-                                return <Block row key={key} space="between"  margin={[15,0]}>
-                                
-                                <Block row middle center>
-                                    <Block center>
-                                        <Ionicons name="location" color={COLORS.lightBlue} size={20} />
-                                        <Text light>1</Text>
+                            {
+                                foundTribe && foundTribe.location.map((val, key) => {
+                                    return <Block row key={key} space="between" margin={[15, 0]}>
+
+                                        <Block row middle center>
+                                            <Block center>
+                                                <Ionicons name="location" color={COLORS.lightBlue} size={20} />
+                                                <Text light>1</Text>
+                                            </Block>
+                                            <Block margin={[0, 0, 0, 20]}>
+                                                <Text bold>Lat: {val.coordinates[0]}</Text>
+                                                <Text light>Long: {val.coordinates[1]}</Text>
+                                            </Block>
+                                        </Block>
+                                        <TouchableOpacity >
+                                            <Block center><Text light small>+1</Text>
+                                                <Ionicons name="heart" color={COLORS.red} size={20} />
+                                            </Block>
+                                        </TouchableOpacity>
                                     </Block>
-                                    <Block margin={[0, 0, 0, 20]}>
-                                        <Text bold>Lat: {val.coordinates[0]}</Text>
-                                        <Text light>Long: {val.coordinates[1]}</Text>
-                                    </Block>
-                                </Block>
-                                <TouchableOpacity >
-                                    <Block center><Text light small>+1</Text>
-                                        <Ionicons name="heart" color={COLORS.red} size={20} />
-                                    </Block>
-                                </TouchableOpacity>
-                            </Block>
-                            }) 
-                        }
-                            
+                                })
+                            }
+
 
                         </> : null}
-                        <TouchableOpacity style={styles.btnLocation} onPress={() => {onShowMap() }}>
+                <TouchableOpacity style={styles.btnLocation} onPress={() => { onShowMap() }}>
                     <Ionicons name="location" size={30} color={COLORS.white} style={styles.icon} />
                     <Text style={{ color: COLORS.white }}>Add the location of your tribe</Text>
                 </TouchableOpacity>
-               
+
                 <Proof />
 
 
