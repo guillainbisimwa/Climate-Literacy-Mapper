@@ -56,6 +56,16 @@ Now that we have set up our build profile and app signing, running a build for i
 
 `eas build --profile preview --platform all`
 
+Then, run the following command to create the development build on an iOS Simulator:
+
+`eas build --profile development-simulator --platform ios`
+
+Installing build on the simulator
+`eas build:run -p ios`
+
+Running the latest build
+`eas build:run -p ios --latest`
+
 ## Publish an update
 
 Once the update is built and uploaded to EAS and the command completes, force close and reopen your app up to two times to download and view the update.
