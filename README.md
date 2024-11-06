@@ -59,6 +59,8 @@ Now that we have set up our build profile and app signing, running a build for i
 `eas build --profile staging --platform android`
 `eas build --profile simulator --platform android`
 
+npx expo run:android
+npx expo start --dev-client
 
 Then, run the following command to create the development build on an iOS Simulator:
 
