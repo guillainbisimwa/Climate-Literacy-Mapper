@@ -56,6 +56,10 @@ Now that we have set up our build profile and app signing, running a build for i
 
 `eas build --profile preview --platform all`
 
+`eas build --profile staging --platform android`
+`eas build --profile simulator --platform android`
+
+
 Then, run the following command to create the development build on an iOS Simulator:
 
 `eas build --profile development-simulator --platform ios`

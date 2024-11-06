@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Climate-Literacy-Mapper",
-    "slug": "Climate-Literacy-Mapper",
+    "slug": "climate-literacy-mapper",
     "version": "1.3.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",

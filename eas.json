@@ -1,39 +1,56 @@
 {
-  "cli": {
-    "version": ">= 8.0.0",
-    "appVersionSource": "local",
-    "requireCommit": true 
-  },
   "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium"
+    "base": {
+      "node": "20.9.0",
+      "env": {
+        "APP_ENV": "production"
       },
-      "channel": "development"
+      "ios": {
+        "image": "latest",
+        "resourceClass": "m1-medium",
+        "env": {
+          "PLATFORM": "ios"
+        }
+      },
+      "android": {
+        "image": "default",
+        "env": {
+          "PLATFORM": "android"
+        }
+      },
+      "channel": "base"
     },
-    "preview": {
+    "development": {
+      "extends": "base",
+      "channel": "development",
       "distribution": "internal",
-      "channel": "preview"
+      "env": {
+        "APP_ENV": "dev"
+      },
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "simulator": true,
+        "buildConfiguration": "Debug"
+      }
+    },
+    "staging": {
+      "extends": "base",
+      "channel": "staging",
+      "distribution": "internal",
+      "env": {
+        "APP_ENV": "stg"
+      },
+      "ios": {
+        "enterpriseProvisioning": "universal"
+      }
     },
     "production": {
+      "extends": "base",
+      "channel": "production",
       "env": {
-        "EAS_BUILD_DISABLE_NPM_CACHE": "1",
-         "EAS_BUILD_DISABLE_MAVEN_CACHE": "1"
-      },
-      "ios": {
-        "resourceClass": "m-medium"
-      },
-      "node": "18.17.1",
-      "releaseChannel": "production",
-      "channel": "production"
-    },
-    "development-simulator": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "simulator": true
+        "APP_ENV": "prod"
       }
     }
   },
