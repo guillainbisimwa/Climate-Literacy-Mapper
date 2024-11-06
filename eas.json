@@ -3,7 +3,8 @@
     "base": {
       "node": "20.9.0",
       "env": {
-        "APP_ENV": "production"
+        "APP_ENV": "production",
+        "JAVA_VERSION": "17"
       },
       "ios": {
         "image": "latest",
