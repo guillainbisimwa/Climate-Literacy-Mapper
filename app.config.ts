@@ -4,25 +4,25 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   const envConfig: ExpoConfig = {
     ...config,
     slug: "climate-literacy-mapper" ?? '',
-    name: process.env.EXPO_PUBLIC_NAME ?? '',
+    name: "Climate-Literacy-Mapper" ?? '',
     ios: {
       ...config.ios,
-      bundleIdentifier: process.env.EXPO_PUBLIC_IOS_BUNDLE_IDENTIFIER,
+      bundleIdentifier: "com.laobowa.mbura",
       buildNumber: '1',
     },
     android: {
       ...config.android,
-      package: process.env.EXPO_PUBLIC_IOS_ANDROID_PACKAGE,
+      package: "com.laobowa.mbura",
       versionCode: 1,
     },
     updates: {
-      url: `https://u.expo.dev/${process.env.EXPO_PUBLIC_PROJECT_ID}`,
+      url: `https://u.expo.dev/23cb8246-3c86-4f0b-ae08-6d6ff30f355d`,
     },
     extra: {
       ...config.extra,
-      eas: { projectId: process.env.EXPO_PUBLIC_PROJECT_ID },
-      ENV: process.env.EXPO_PUBLIC_ENV,
-      API_URL: process.env.EXPO_PUBLIC_API_URL,
+      eas: { projectId:"23cb8246-3c86-4f0b-ae08-6d6ff30f355d" },
+      ENV: "development",
+      API_URL: "https://example.com",
     },
   };
   return envConfig;

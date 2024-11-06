@@ -7,6 +7,7 @@
     "icon": "./assets/images/logo.png",
     "scheme": "clm",
     "userInterfaceStyle": "automatic",
+    "owner": "guillain",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -55,14 +56,14 @@
         "origin": false
       },
       "eas": {
-        "projectId": "1ea9eb60-9df2-4fc6-8600-699253490c0b"
+        "projectId": "23cb8246-3c86-4f0b-ae08-6d6ff30f355d"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/1ea9eb60-9df2-4fc6-8600-699253490c0b"
+      "url": "https://u.expo.dev/23cb8246-3c86-4f0b-ae08-6d6ff30f355d"
     }
   }
 }
