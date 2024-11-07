@@ -38,7 +38,7 @@ const SignUp = ({ navigation }) => {
     const getData = async () => {
         const value = await AsyncStorage.getItem('userToken');
         console.log(value, "VALUE SIGNUP", user);
-        if (value !==null) {
+        if (value !== null) {
             navigation.navigate("MainStack")
             // navigation.reset({
             //     index: 0,
@@ -72,7 +72,7 @@ const SignUp = ({ navigation }) => {
                     Toast.error('Incorrect phone number', 'top')
                     return
                 }
-                if (password !==confirmPassword) {
+                if (password !== confirmPassword) {
                     setPasswordError(true);
                     Toast.error("Password doesn't match", 'top')
                     return
