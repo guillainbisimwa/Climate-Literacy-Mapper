@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Animated, StyleSheet, Dimensions, StatusBar,Platform } from 'react-native';
+import { View, Text, Animated, StyleSheet, Dimensions, StatusBar, Platform } from 'react-native';
 import slides from '../IntroSlides';
 //PropTypes check
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ export const Ticker = ({ scrollX }) => {
   const inputRange = [0, width, width * 2];
   const translateY = scrollX.interpolate({
     inputRange,
-    outputRange: [0, -TICKER_HEIGHT - 12, -TICKER_HEIGHT *2.3 ],
+    outputRange: [0, -TICKER_HEIGHT - 12, -TICKER_HEIGHT * 2.3],
   });
   return (
     <View style={styles.tickerContainer}>
