@@ -8,7 +8,7 @@ import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
 
 
-const ResetPassword = ({navigation}) => {
+const ResetPassword = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userLoggedIn, setUserLoggedIn] = useState(false);
