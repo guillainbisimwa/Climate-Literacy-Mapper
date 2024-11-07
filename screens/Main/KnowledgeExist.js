@@ -4,7 +4,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 
 
-const KnowledgeExist = () =>{
+const KnowledgeExist = () => {
 
 
     const bottomSheet = useRef(null);
