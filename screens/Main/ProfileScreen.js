@@ -28,7 +28,7 @@ const ProfileScreen = ({ navigation }) => {
         try {
             const value = await AsyncStorage.getItem('user');
             console.log("value main", value)
-            if (value===null) {
+            if (value === null) {
                 console.log(navigation);
 
                 navigation.reset({
@@ -50,7 +50,7 @@ const ProfileScreen = ({ navigation }) => {
     };
 
     return <Block flex={1} center middle>
-       
+
         <Button mode="contained" onPress={handleLogout}  >LOGOUT</Button>
 
     </Block>

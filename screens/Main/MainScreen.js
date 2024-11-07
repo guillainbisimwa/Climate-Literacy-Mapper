@@ -769,10 +769,10 @@ const MainScreen = ({ navigation }) => {
             const nextPageIndex = Math.min(currentPageIndex + 1, pages.length - 1);
             // console.log("currentPageIndex", currentPageIndex);
             // console.log("selectedTribe", selectedTribe);
-            if (currentPageIndex===0 && selectedTribe==="Other" && newTribe.trim() === "") {
+            if (currentPageIndex === 0 && selectedTribe === "Other" && newTribe.trim() === "") {
                 setNewTribeNext(true)
             }
-            else if (currentPageIndex===0 && selectedTribe==="Other" && newTribe.trim() !== "") {
+            else if (currentPageIndex === 0 && selectedTribe === "Other" && newTribe.trim() !== "") {
 
                 // check if tribe is already exists
                 dispatch(fetchTribeByName({ tribeName: newTribe.trim() })).then((result) => {
@@ -794,10 +794,10 @@ const MainScreen = ({ navigation }) => {
 
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
 
-            } else if (currentPageIndex===0 && selectedTribe.length !== 0) {
+            } else if (currentPageIndex === 0 && selectedTribe.length !== 0) {
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
             }
-            else if (currentPageIndex===1 && (selectedTribe.length !== 0 || newTribe.trim() !=="")) {
+            else if (currentPageIndex === 1 && (selectedTribe.length !== 0 || newTribe.trim() !== "")) {
                 scrollViewRef.current.scrollTo({ x: nextPageIndex * width, animated: true });
             }
             else {
@@ -815,7 +815,7 @@ const MainScreen = ({ navigation }) => {
             ref={bottomSheet}
             index={0}
             backdropComponent={BackdropElement}
-            snapPoints={Math.floor(scrollX._value / width)===0 ? snapPoints90 : snapPoints}
+            snapPoints={Math.floor(scrollX._value / width) === 0 ? snapPoints90 : snapPoints}
             onDismiss={() => setOpen(false)}
         >
 
@@ -857,7 +857,7 @@ const MainScreen = ({ navigation }) => {
                             {pages.map((page, index) => (
                                 <Block key={index} style={[styles.page, { width, height }]}>
                                     {
-                                        index===0 ?
+                                        index === 0 ?
                                             <>
                                                 {/* <Text bold h3>Please select your tribe</Text> */}
                                                 <Block style={styles.selectDropdown}>
@@ -925,7 +925,7 @@ const MainScreen = ({ navigation }) => {
                                             <TextInput style={styles.textInput} label="What is climate change in your native language" mode="outlined"  keyboardType="default" /> */}
 
                                             </> :
-                                            index===1 ?
+                                            index === 1 ?
                                                 !foundTribe() ?
                                                     <><Text bold h3>Is Climate knowledge exists in your local language?</Text>
                                                         <SegmentedButtons
@@ -962,7 +962,7 @@ const MainScreen = ({ navigation }) => {
 
                                                     </>
                                                 :
-                                                index===2 ? <>
+                                                index === 2 ? <>
 
                                                     {/* climate_change_in_lang
                                            translate: 
@@ -1005,10 +1005,10 @@ const MainScreen = ({ navigation }) => {
                                                 </> : null
                                     }
                                     <Block padding={[30, 0, 0, 0]} row space="between" >
-                                        <Button disabled={index===0 ? true : false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
+                                        <Button disabled={index === 0 ? true : false} mode="contained-tonal" onPress={goToPreviousPage} style={styles.button}>
                                             <Text>Previous</Text>
                                         </Button>
-                                        <Button disabled={index===pages.length - 1 ? true : false} mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
+                                        <Button disabled={index === pages.length - 1 ? true : false} mode="contained-tonal" onPress={goToNextPage} style={styles.button}>
                                             <Text>Next</Text>
                                         </Button>
                                     </Block>
@@ -1055,7 +1055,7 @@ const MainScreen = ({ navigation }) => {
             <BottomSheetScrollView>
                 <Block>
 
-                    <ClimateKnowledgeComponet onShowImages={showDialog} onShowMap={showDialogMap}  userId={currentUser} tribeListBelongs={tribeListBelongs} />
+                    <ClimateKnowledgeComponet onShowImages={showDialog} onShowMap={showDialogMap} userId={currentUser} tribeListBelongs={tribeListBelongs} />
 
 
                     {/* {
@@ -1089,7 +1089,7 @@ const MainScreen = ({ navigation }) => {
         try {
             const value = await AsyncStorage.getItem('user');
             // console.log("value main", value)
-            if (value===null) {
+            if (value === null) {
                 console.log(navigation);
 
                 navigation.reset({
@@ -1111,7 +1111,7 @@ const MainScreen = ({ navigation }) => {
         <BottomSheetModalProvider>
             <Container position="bottom" style={{ width: '100%' }} duration={6000} />
 
-            <Block  style={{ position: "relative", }}>
+            <Block style={{ position: "relative", }}>
 
                 <Block paddingBottom={60} padding={30} middle row space="between" color={COLORS.primary}>
                     <Block>
@@ -1120,129 +1120,129 @@ const MainScreen = ({ navigation }) => {
                     </Block>
                     <Avatar.Icon size={54} icon="account-circle" />
                 </Block>
-                <Block margin={[0,20]}>
-                <Block center padding={[30, 10, 30, 20]} row middle
-                    space="between" color={COLORS.white} card shadow style={{
-                         width: '100%',
-                        // position: "relative", 
-                        // left: '2.5%', 
-                        paddingHorizontal: 20,
-                        top: -30
-                    }}
-                >
-                    <Block>
-                        <Text gray>
-                            Your current level
-                        </Text>
-                        <Text bold h3>Climate Literacy Mapper</Text>
-                    </Block>
-                    <PieChart
-                        donut
-                        radius={30}
-                        innerRadius={25}
-                        data={pieData}
-                        centerLabelComponent={() => {
-                            return <Text style={{ fontSize: 15 }}>70%</Text>;
+                <Block margin={[0, 20]}>
+                    <Block center padding={[30, 10, 30, 20]} row middle
+                        space="between" color={COLORS.white} card shadow style={{
+                            width: '100%',
+                            // position: "relative", 
+                            // left: '2.5%', 
+                            paddingHorizontal: 20,
+                            top: -30
                         }}
-                    />
+                    >
+                        <Block>
+                            <Text gray>
+                                Your current level
+                            </Text>
+                            <Text bold h3>Climate Literacy Mapper</Text>
+                        </Block>
+                        <PieChart
+                            donut
+                            radius={30}
+                            innerRadius={25}
+                            data={pieData}
+                            centerLabelComponent={() => {
+                                return <Text style={{ fontSize: 15 }}>70%</Text>;
+                            }}
+                        />
 
 
+                    </Block>
                 </Block>
-                </Block>
-                
+
             </Block>
             <ScrollView style={{ marginTop: -25, }}>
-                    <Block margin={20} padding={40} card shadow color={COLORS.yellow} >
-                        <Text center bold>
-                            Do you know people from other tribes that would like to participate in this exercise?
-                        </Text>
-                        <Button style={{ marginTop: 15 }} mode="outlined" >Invite a friend</Button>
-                        <Image
-                            source={{ uri: 'https://deep-image.ai/_next/static/media/app-info-deepimage.a6eea05d.webp' }}
-                            style={[styles.profileImage, styles.profileImageLeft]}
-                        />
-                        <Image
-                            source={{ uri: 'https://deep-image.ai/_next/static/media/app-info-deepimage.a6eea05d.webp' }}
-                            style={[styles.profileImage, styles.profileImageBottomRight]}
-                        />
+                <Block margin={20} padding={40} card shadow color={COLORS.yellow} >
+                    <Text center bold>
+                        Do you know people from other tribes that would like to participate in this exercise?
+                    </Text>
+                    <Button style={{ marginTop: 15 }} mode="outlined" >Invite a friend</Button>
+                    <Image
+                        source={{ uri: 'https://deep-image.ai/_next/static/media/app-info-deepimage.a6eea05d.webp' }}
+                        style={[styles.profileImage, styles.profileImageLeft]}
+                    />
+                    <Image
+                        source={{ uri: 'https://deep-image.ai/_next/static/media/app-info-deepimage.a6eea05d.webp' }}
+                        style={[styles.profileImage, styles.profileImageBottomRight]}
+                    />
+                </Block>
+                {
+                    tribeListBelongs && <Block padding={[0, 20]} >
+                        <Text bold>What is climate change in your native language?</Text>
+                        <Text accent>MBURA</Text>
                     </Block>
+                }
+
+
+                <Block>
+                    <ClimateKnowledge openModal={openModalCK} />
+                    <List.Item
+                        onPress={() => {
+                            console.log("ok");
+
+                            openModal();
+                        }}
+                        title="Climate knowledge"
+                        titleStyle={{
+                            fontWeight: "bold"
+                        }}
+                        description="2/3 questions"
+                        left={props => <List.Icon {...props}
+                            icon="plus"
+                            color="red"
+                        />}
+                        right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
+                    />
                     {
-                        tribeListBelongs && <Block padding={[0, 20]} >
-                            <Text bold>What is climate change in your native language?</Text>
-                            <Text accent>MBURA</Text>
-                        </Block>
-                    }
+
+                        translations.map(item => {
+                            return Object.keys(item)
+                                .filter(key => key !== "tribe" && key !== "_id" && key !== "status"
+                                    && key !== "__v" && key !== "ststus" && key !== "timestamp")
+                                .map((key, val) => {
+                                    // console.log("----------", item[key]);
+
+                                    return <List.Item
+                                        onPress={() => {
+                                            console.log("ok");
+
+                                            openModal();
+                                        }}
+                                        title={
+                                            key === "preLesson" ? "Pre-lesson questions" :
+                                                key === "localChallenges" ? "Local challenges" :
+                                                    key === "mindfullExercises" ? "Mindfulness exercises" :
+                                                        key === "rle" ? " Real-life existing examples" : key
 
 
-                    <Block>
-                        <ClimateKnowledge openModal={openModalCK} />
-                        <List.Item
-                            onPress={() => {
-                                console.log("ok");
-
-                                openModal();
-                            }}
-                            title="Climate knowledge"
-                            titleStyle={{
-                                fontWeight: "bold"
-                            }}
-                            description="2/3 questions"
-                            left={props => <List.Icon {...props}
-                                icon="plus"
-                                color="red"
-                            />}
-                            right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
-                        />
-                        {
-
-                            translations.map(item => {
-                                return Object.keys(item)
-                                    .filter(key => key !== "tribe" && key !== "_id" && key !== "status"
-                                        && key !== "__v" && key !== "ststus" && key !== "timestamp")
-                                    .map((key, val) => {
-                                        // console.log("----------", item[key]);
-
-                                        return <List.Item
-                                            onPress={() => {
-                                                console.log("ok");
-
-                                                openModal();
-                                            }}
-                                            title={
-                                                key==="preLesson" ? "Pre-lesson questions" :
-                                                    key==="localChallenges" ? "Local challenges" :
-                                                        key==="mindfullExercises" ? "Mindfulness exercises" :
-                                                            key==="rle" ? " Real-life existing examples" : key
-
+                                        }
+                                        titleStyle={{
+                                            fontWeight: "bold"
+                                        }}
+                                        key={key}
+                                        description="2/3 questions"
+                                        left={props => <List.Icon {...props}
+                                            icon={
+                                                key === "preLesson" ? "apps" :
+                                                    key === "localChallenges" ? "offer" :
+                                                        key === "mindfullExercises" ? "odnoklassniki" :
+                                                            key === "rle" ? "run" : key
 
                                             }
-                                            titleStyle={{
-                                                fontWeight: "bold"
-                                            }}
-                                            key={key}
-                                            description="2/3 questions"
-                                            left={props => <List.Icon {...props}
-                                                icon={
-                                                    key==="preLesson" ? "apps" :
-                                                        key==="localChallenges" ? "offer" :
-                                                            key==="mindfullExercises" ? "odnoklassniki" :
-                                                                key==="rle" ? "run" : key
+                                            color={
+                                                key === "preLesson" ? "chocolate" :
+                                                    key === "localChallenges" ? "blue" :
+                                                        key === "mindfullExercises" ? "green" :
+                                                            key === "rle" ? "magenta" : key
+                                            }
+                                        />}
+                                        right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
+                                    />
+                                });
+                        })}
 
-                                                }
-                                                color={
-                                                    key==="preLesson" ? "chocolate" :
-                                                        key==="localChallenges" ? "blue" :
-                                                            key==="mindfullExercises" ? "green" :
-                                                                key==="rle" ? "magenta" : key
-                                                }
-                                            />}
-                                            right={props => <List.Icon {...props} icon="arrow-right" color="grey" />}
-                                        />
-                                    });
-                            })}
-
-                    </Block>
-                </ScrollView>
+                </Block>
+            </ScrollView>
             {
                 RenderBottom()
             }
