@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "@/constants";
 import { Menu, TextInput } from "react-native-paper";
 
-const Loaction = ({foundTribe}) => {
+const Loaction = ({ foundTribe }) => {
     const [visibleMenu, setVisibleMenu] = useState(true);
     const [typeLocation, setTypeLocation] = useState(0);
     const [lat, setLat] = useState(null);
@@ -51,16 +51,16 @@ const Loaction = ({foundTribe}) => {
         </Menu>
 
         {
-             
-            typeLocation===1 ?
+
+            typeLocation === 1 ?
                 <Block row space="between" >
                     <TextInput style={styles.input} onChangeText={setLat} label="Latitude" mode="outlined" keyboardType="default" />
                     <TextInput style={styles.input} onChangeText={setLong} label="Longitude" mode="outlined" keyboardType="default" />
                 </Block> :
-                typeLocation===2 ?
+                typeLocation === 2 ?
                     <TextInput onChangeText={setNameTribe} label="Name of the location" mode="outlined" keyboardType="default" />
                     :
-                    typeLocation===3 ?
+                    typeLocation === 3 ?
                         <TextInput onChangeText={setLinkTribe} label="A link if you know how to share it"
                             mode="outlined" keyboardType="url" />
                         : null

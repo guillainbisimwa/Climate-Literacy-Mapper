@@ -187,7 +187,7 @@ const userSlice = createSlice({
         AsyncStorage.setItem('user', JSON.stringify({ user: action.payload }));
       })
       .addCase(loginUser.rejected, (state, action) => {
-        console.log('loginUser.rejected',action.payload )
+        console.log('loginUser.rejected', action.payload)
 
         state.isLoading = false;
         state.error = action.payload;
@@ -210,7 +210,7 @@ const userSlice = createSlice({
       })
       .addCase(signUpUser.rejected, (state, action) => {
         console.log("bree *************** ", action.payload);
-        
+
         state.isLoadingSignUp = false;
         state.errorSignUp = action.payload;
         state.successSignUp = false

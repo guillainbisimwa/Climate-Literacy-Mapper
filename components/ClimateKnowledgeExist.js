@@ -15,7 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Toast } from "toastify-react-native";
 import { fetchTribeByName } from "@/redux/tribeSlice";
 
-const ClimateKnowledgeExist = ({tribeListBelongs}) => {
+const ClimateKnowledgeExist = ({ tribeListBelongs }) => {
     const dispatch = useDispatch();
 
     const scrollX = useRef(new Animated.Value(0)).current;
@@ -367,75 +367,75 @@ const ClimateKnowledgeExist = ({tribeListBelongs}) => {
             <List.Section title="">
                 <List.Accordion
                     title="What is climate change in your native language?"
-                    titleStyle={{fontWeight:"bold"}}
-                    descriptionStyle={{color:COLORS.darkgreen}}
+                    titleStyle={{ fontWeight: "bold" }}
+                    descriptionStyle={{ color: COLORS.darkgreen }}
                     titleNumberOfLines={5}
                     description="Hali ya mazingira Hali ya mazira Hali ya mzingira li ya ingira"
                     left={props => <List.Icon {...props} icon="circle" />}>
-                         <Text>Vote a best translation</Text>
-                    <List.Item title="Hali ya mazingira" 
-                    onPress={()=>{}}
-                      left={props => <Text  onPress={()=>{}} {...props}>1</Text>}
-                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="red" />} />
-                      <List.Item title="Hali ya mazingira" 
-                    onPress={()=>{}}
-                      left={props => <Text  onPress={()=>{}} {...props}>2</Text>}
-                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
-                      <List.Item title="Hali ya mazingira" 
-                    onPress={()=>{}}
-                      left={props => <Text  onPress={()=>{}} {...props}>3</Text>}
-                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
+                    <Text>Vote a best translation</Text>
+                    <List.Item title="Hali ya mazingira"
+                        onPress={() => { }}
+                        left={props => <Text onPress={() => { }} {...props}>1</Text>}
+                        right={props => <List.Icon onPress={() => { }} {...props} icon="heart" color="red" />} />
+                    <List.Item title="Hali ya mazingira"
+                        onPress={() => { }}
+                        left={props => <Text onPress={() => { }} {...props}>2</Text>}
+                        right={props => <List.Icon onPress={() => { }} {...props} icon="heart" color="grey" />} />
+                    <List.Item title="Hali ya mazingira"
+                        onPress={() => { }}
+                        left={props => <Text onPress={() => { }} {...props}>3</Text>}
+                        right={props => <List.Icon onPress={() => { }} {...props} icon="heart" color="grey" />} />
                     <Button mode="contained" >Add your translation</Button>
-                   
+
                 </List.Accordion>
 
                 <List.Accordion
                     title="What is climate change in your native language?"
-                    titleStyle={{fontWeight:"bold"}}
-                    descriptionStyle={{color:COLORS.darkgreen}}
+                    titleStyle={{ fontWeight: "bold" }}
+                    descriptionStyle={{ color: COLORS.darkgreen }}
                     titleNumberOfLines={5}
                     description="Hali ya mazingira Hali ya mazira Hali ya mzingira li ya ingira"
                     left={props => <List.Icon {...props} icon="circle" />}>
-                         <Text>Vote a best translation</Text>
-                    <List.Item title="Hali ya mazingira" 
-                    onPress={()=>{}}
-                      left={props => <Text  onPress={()=>{}} {...props}>1</Text>}
-                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="red" />} />
-                      <List.Item title="Hali ya mazingira" 
-                    onPress={()=>{}}
-                      left={props => <Text  onPress={()=>{}} {...props}>2</Text>}
-                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
-                      <List.Item title="Hali ya mazingira" 
-                    onPress={()=>{}}
-                      left={props => <Text  onPress={()=>{}} {...props}>3</Text>}
-                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
+                    <Text>Vote a best translation</Text>
+                    <List.Item title="Hali ya mazingira"
+                        onPress={() => { }}
+                        left={props => <Text onPress={() => { }} {...props}>1</Text>}
+                        right={props => <List.Icon onPress={() => { }} {...props} icon="heart" color="red" />} />
+                    <List.Item title="Hali ya mazingira"
+                        onPress={() => { }}
+                        left={props => <Text onPress={() => { }} {...props}>2</Text>}
+                        right={props => <List.Icon onPress={() => { }} {...props} icon="heart" color="grey" />} />
+                    <List.Item title="Hali ya mazingira"
+                        onPress={() => { }}
+                        left={props => <Text onPress={() => { }} {...props}>3</Text>}
+                        right={props => <List.Icon onPress={() => { }} {...props} icon="heart" color="grey" />} />
                     <Button mode="contained" >Add your translation</Button>
-                   
+
                 </List.Accordion>
 
                 <List.Accordion
                     title="What is climate change in your native language?"
-                    titleStyle={{fontWeight:"bold"}}
-                    descriptionStyle={{color:COLORS.darkgreen}}
+                    titleStyle={{ fontWeight: "bold" }}
+                    descriptionStyle={{ color: COLORS.darkgreen }}
                     titleNumberOfLines={5}
                     description="Hali ya mazingira Hali ya mazira Hali ya mzingira li ya ingira"
                     left={props => <List.Icon {...props} icon="circle" />}>
-                         <Text>Vote a best translation</Text>
-                    <List.Item title="Hali ya mazingira" 
-                    onPress={()=>{}}
-                      left={props => <Text  onPress={()=>{}} {...props}>1</Text>}
-                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="red" />} />
-                      <List.Item title="Hali ya mazingira Kti ya africa mzima, na amerika pia" 
-                      titleNumberOfLines={5}
-                    onPress={()=>{}}
-                      left={props => <Text  onPress={()=>{}} {...props}>2</Text>}
-                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
-                      <List.Item title="Hali ya mazingira" 
-                    onPress={()=>{}}
-                      left={props => <Text  onPress={()=>{}} {...props}>3</Text>}
-                      right={props => <List.Icon  onPress={()=>{}} {...props} icon="heart" color="grey" />} />
+                    <Text>Vote a best translation</Text>
+                    <List.Item title="Hali ya mazingira"
+                        onPress={() => { }}
+                        left={props => <Text onPress={() => { }} {...props}>1</Text>}
+                        right={props => <List.Icon onPress={() => { }} {...props} icon="heart" color="red" />} />
+                    <List.Item title="Hali ya mazingira Kti ya africa mzima, na amerika pia"
+                        titleNumberOfLines={5}
+                        onPress={() => { }}
+                        left={props => <Text onPress={() => { }} {...props}>2</Text>}
+                        right={props => <List.Icon onPress={() => { }} {...props} icon="heart" color="grey" />} />
+                    <List.Item title="Hali ya mazingira"
+                        onPress={() => { }}
+                        left={props => <Text onPress={() => { }} {...props}>3</Text>}
+                        right={props => <List.Icon onPress={() => { }} {...props} icon="heart" color="grey" />} />
                     <Button mode="contained" >Add your translation</Button>
-                   
+
                 </List.Accordion>
             </List.Section>
 
@@ -468,32 +468,32 @@ const ClimateKnowledgeExist = ({tribeListBelongs}) => {
 
     const topHeader = () => {
         return <>
-        <Text bold h3>MASSAI TRIBE</Text>
-                
-        <Block row space="between" margin={[10, 0, 0, 0]}>
-            <TouchableOpacity onPress={() => {
-                console.log('Images');
-            }}>
+            <Text bold h3>MASSAI TRIBE</Text>
+
+            <Block row space="between" margin={[10, 0, 0, 0]}>
+                <TouchableOpacity onPress={() => {
+                    console.log('Images');
+                }}>
+                    <Block row center style={styles.round}>
+                        <Ionicons name="image" color={COLORS.peach} size={20} />
+                        <Text style={{ marginLeft: 5 }} numberOfLines={1}>See images</Text>
+                    </Block>
+                </TouchableOpacity>
+
                 <Block row center style={styles.round}>
-                    <Ionicons name="image" color={COLORS.peach} size={20} />
-                    <Text style={{ marginLeft: 5 }} numberOfLines={1}>See images</Text>
+                    <Ionicons name="people" color={COLORS.peach} size={20} />
+                    <Text numberOfLines={1}>
+                        124 PEOPLES INVOLVED</Text>
                 </Block>
-            </TouchableOpacity>
-
-            <Block row center style={styles.round}>
-                <Ionicons name="people" color={COLORS.peach} size={20} />
-                <Text numberOfLines={1}>
-                    124 PEOPLES INVOLVED</Text>
             </Block>
-        </Block>
 
-        <Block center>
-            <ProgressBar
-                progress={0}
-                color={MD3Colors.error50}
-                style={{ width: SIZES.width - 40, height: SIZES.base, marginTop: 10 }}
-            />
-        </Block></>
+            <Block center>
+                <ProgressBar
+                    progress={0}
+                    color={MD3Colors.error50}
+                    style={{ width: SIZES.width - 40, height: SIZES.base, marginTop: 10 }}
+                />
+            </Block></>
     }
 
 
@@ -516,10 +516,10 @@ const ClimateKnowledgeExist = ({tribeListBelongs}) => {
                 }}
             >
 
-                
+
                 {/* { topHeader()} */}
 
-               
+
                 {/* {foundTribeFunction()} */}
 
                 <Divider />

@@ -19,7 +19,7 @@ export const fetchTribes = createAsyncThunk(
 
 export const findTribeByBelongsId = createAsyncThunk(
   "tribe/findTribeByBelongsId",
-  async ({id} , { rejectWithValue }) => {
+  async ({ id }, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}api/tribe/belongs/${id}`);
       return response.data;
@@ -70,11 +70,11 @@ export const createTribe = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     console.log("##################",
       obj
-     );
+    );
     try {
       const response = await axios.post(BASE_URL + 'api/tribe', obj);
 
-    
+
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -297,7 +297,7 @@ const tribeSlice = createSlice({
         state.successEdit = false
       });
 
-      builder
+    builder
       .addCase(fetchTribeByName.pending, (state) => {
         state.isLoadingByName = true;
         state.errorByName = null;
@@ -315,7 +315,7 @@ const tribeSlice = createSlice({
         state.successByName = false
       });
 
-      builder
+    builder
       .addCase(findTribeByBelongsId.pending, (state) => {
         state.isLoadingBelongs = true;
         state.errorBelongs = null;
