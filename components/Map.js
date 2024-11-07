@@ -64,8 +64,8 @@ const Map = () => {
       {/* Slider for adjusting the circle radius */}
       <View style={styles.sliderContainer}>
         <Block row space="between" >
-        <Text>Adjust Radius:</Text>
-        <Text>{(radius / 1000).toFixed(2)} km</Text>
+          <Text>Adjust Radius:</Text>
+          <Text>{(radius / 1000).toFixed(2)} km</Text>
         </Block>
         <Slider
           minimumValue={80000} // Minimum radius (50 km)
@@ -74,7 +74,7 @@ const Map = () => {
           value={radius}
           onValueChange={handleRadiusChange}
         />
-       
+
       </View>
     </View>
   );

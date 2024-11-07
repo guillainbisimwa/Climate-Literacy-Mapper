@@ -7,7 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants";
 
 const Proof = () => {
-     //     *
+    //     *
     // Share proof of climate competence in your local language.
     // Eg., a link to news articles, images or posters, TV segment, radio segments, interview or community recordings, documentaries, speeches or presentations
     // OR any other locally available material.
@@ -30,7 +30,7 @@ const Proof = () => {
         <Block padding={[20, 0, 0, 0]}>
             <Text light>Share proof of climate competence in your local language.</Text>
             <Text>Eg., a link to news articles, images or posters, TV segment, radio segments, interview or community recordings, documentaries, speeches or presentations.</Text>
-            
+
             {
                 proofList.map((item, index) => (
                     <Block key={item.id} row>
