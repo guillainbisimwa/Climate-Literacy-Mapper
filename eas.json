@@ -1,17 +1,10 @@
 {
   "build": {
     "base": {
-      "node": "20.9.0",
+      "node": "20.15.1",
       "env": {
-        "APP_ENV": "production",
-        "JAVA_VERSION": "17"
-      },
-      "ios": {
-        "image": "latest",
-        "resourceClass": "m1-medium",
-        "env": {
-          "PLATFORM": "ios"
-        }
+        "JAVA_VERSION": "17",
+        "APP_ENV": "production"
       },
       "android": {
         "image": "default",
@@ -19,43 +12,42 @@
           "PLATFORM": "android"
         }
       },
-      "channel": "base"
+      "ios": {
+        "image": "latest",
+        "env": {
+          "PLATFORM": "ios"
+        }
+      }
     },
     "development": {
       "extends": "base",
-      "channel": "development",
-      "distribution": "internal",
+      "developmentClient": true,
       "env": {
-        "APP_ENV": "dev"
+        "ENVIRONMENT": "development"
       },
       "android": {
-        "gradleCommand": ":app:assembleDebug"
+        "distribution": "internal",
+        "withoutCredentials": true
       },
       "ios": {
-        "simulator": true,
-        "buildConfiguration": "Debug"
+        "simulator": true
       }
     },
     "staging": {
       "extends": "base",
-      "channel": "staging",
-      "distribution": "internal",
       "env": {
-        "APP_ENV": "stg"
+        "ENVIRONMENT": "staging"
       },
-      "ios": {
-        "enterpriseProvisioning": "universal"
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
       }
     },
     "production": {
       "extends": "base",
-      "channel": "production",
       "env": {
-        "APP_ENV": "prod"
+        "ENVIRONMENT": "production"
       }
     }
-  },
-  "submit": {
-    "production": {}
   }
 }
