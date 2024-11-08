@@ -7,7 +7,7 @@
         "APP_ENV": "production"
       },
       "android": {
-        "image": "default",
+        "image": "latest",
         "env": {
           "PLATFORM": "android"
         }
