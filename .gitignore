@@ -21,4 +21,5 @@ expo-env.d.ts
 .env
 /android2
 /vandroid2
+/android
 /ios

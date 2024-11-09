@@ -113,3 +113,13 @@ Sign up for the rooted connections course:  -->
 watchman watch-del-all && rm -f podfile.lock && rm -rf node_modules && yarn && yarn start --reset-cache 
 -->
 
+ // "eas": {
+      //   "projectId": "23cb8246-3c86-4f0b-ae08-6d6ff30f355d"
+      // }
+
+      "updates": {
+      "url": "https://u.expo.dev/23cb8246-3c86-4f0b-ae08-6d6ff30f355d",
+      "requestHeaders": {
+        "expo-channel-name": "staging"
+      }
+    }
