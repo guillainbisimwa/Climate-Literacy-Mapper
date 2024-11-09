@@ -65,7 +65,7 @@ npx expo start --dev-client
 Then, run the following command to create the development build on an iOS Simulator:
 
 `eas build --profile development-simulator --platform ios`
-`eas build --profile production-simulator --platform ios`
+`eas build --profile production --platform android`
 
 Installing build on the simulator
 `eas build:run -p ios`

@@ -20,4 +20,5 @@ expo-env.d.ts
 # @end expo-cli
 .env
 /android2
+/vandroid2
 /ios

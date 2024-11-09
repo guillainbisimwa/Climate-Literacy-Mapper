@@ -1,59 +1,19 @@
 {
   "build": {
-    "base": {
-      "node": "20.15.1",
-      "env": {
-        "JAVA_VERSION": "17"
-      },
-      "android": {
-        "image": "latest"
-      },
-      "ios": {
-        "image": "latest",
-        "env": {
-          "PLATFORM": "ios"
-        }
-      }
-    },
     "development": {
-      "extends": "base",
-      "channel": "development",
       "developmentClient": true,
-      "env": {
-        "ENVIRONMENT": "development"
-      },
-      "android": {
-        "distribution": "internal",
-        "withoutCredentials": true,
-        "buildType": "apk"
-      },
-      "ios": {
-        "simulator": true
-      }
+      "distribution": "internal"
     },
-    "staging": {
-      "extends": "base",
-      "channel": "preview",
-      "env": {
-        "ENVIRONMENT": "staging"
-      },
-      "android": {
-        "distribution": "internal",
-        "buildType": "apk"
-      },
-      "ios": {
-        "distribution": "internal"
-      }
+    "preview": {
+      "distribution": "internal",
+      "channel": "preview"
+
     },
     "production": {
-      "extends": "base",
-      "channel": "production",
-      "env": {
-        "ENVIRONMENT": "production"
-      },
-      "android": {
-        "buildType": "app-bundle"
-      }
+      "channel": "production"
     }
+  },
+  "submit": {
+    "production": {}
   }
 }
