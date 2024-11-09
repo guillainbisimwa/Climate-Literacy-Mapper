@@ -57,7 +57,7 @@ Now that we have set up our build profile and app signing, running a build for i
 `eas build --profile preview --platform all`
 
 `eas build --profile staging --platform android`
-`eas build --profile simulator --platform android`
+`eas build --profile production --platform android`
 
 npx expo run:android
 npx expo start --dev-client
@@ -65,6 +65,7 @@ npx expo start --dev-client
 Then, run the following command to create the development build on an iOS Simulator:
 
 `eas build --profile development-simulator --platform ios`
+`eas build --profile production-simulator --platform ios`
 
 Installing build on the simulator
 `eas build:run -p ios`

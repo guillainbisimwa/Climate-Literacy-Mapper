@@ -3,14 +3,10 @@
     "base": {
       "node": "20.15.1",
       "env": {
-        "JAVA_VERSION": "17",
-        "APP_ENV": "production"
+        "JAVA_VERSION": "17"
       },
       "android": {
-        "image": "latest",
-        "env": {
-          "PLATFORM": "android"
-        }
+        "image": "latest"
       },
       "ios": {
         "image": "latest",
@@ -21,13 +17,15 @@
     },
     "development": {
       "extends": "base",
+      "channel": "development",
       "developmentClient": true,
       "env": {
         "ENVIRONMENT": "development"
       },
       "android": {
         "distribution": "internal",
-        "withoutCredentials": true
+        "withoutCredentials": true,
+        "buildType": "apk"
       },
       "ios": {
         "simulator": true
@@ -35,18 +33,26 @@
     },
     "staging": {
       "extends": "base",
+      "channel": "preview",
       "env": {
         "ENVIRONMENT": "staging"
       },
-      "distribution": "internal",
       "android": {
+        "distribution": "internal",
         "buildType": "apk"
+      },
+      "ios": {
+        "distribution": "internal"
       }
     },
     "production": {
       "extends": "base",
+      "channel": "production",
       "env": {
         "ENVIRONMENT": "production"
+      },
+      "android": {
+        "buildType": "app-bundle"
       }
     }
   }

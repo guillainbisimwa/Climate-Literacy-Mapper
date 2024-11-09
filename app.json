@@ -2,8 +2,8 @@
   "expo": {
     "name": "Climate-Literacy-Mapper",
     "slug": "climate-literacy-mapper",
-    "version": "1.4.0",
-    "runtimeVersion": "1.0.0",
+    "version": "1.5.0",
+    "runtimeVersion": "1.5.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "scheme": "clm",
@@ -34,7 +34,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.laobowa.mbura",
-      "versionCode": 4
+      "versionCode": 5
     },
     "web": {
       "bundler": "metro",
@@ -63,7 +63,10 @@
       }
     },
     "updates": {
-      "url": "https://u.expo.dev/23cb8246-3c86-4f0b-ae08-6d6ff30f355d"
+      "url": "https://u.expo.dev/23cb8246-3c86-4f0b-ae08-6d6ff30f355d",
+      "requestHeaders": {
+        "expo-channel-name": "staging"
+      }
     }
   }
 }
