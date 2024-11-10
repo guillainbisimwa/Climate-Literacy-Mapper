@@ -8,7 +8,7 @@
     "icon": "./assets/images/logo.png",
     "scheme": "clm",
     "userInterfaceStyle": "automatic",
-    "owner": "guillain",
+    "owner": "wezalab",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -35,7 +35,10 @@
       },
       "package": "com.laobowa.mbura",
       "versionCode": 7,
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -60,13 +63,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "23cb8246-3c86-4f0b-ae08-6d6ff30f355d"
-      }
-    },
-    "updates": {
-      "url": "https://u.expo.dev/23cb8246-3c86-4f0b-ae08-6d6ff30f355d",
-      "requestHeaders": {
-        "expo-channel-name": "staging"
+        "projectId": "db290c8a-0c01-4ffa-a70c-509d956d479f"
       }
     }
   }
