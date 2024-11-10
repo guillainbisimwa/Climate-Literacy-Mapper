@@ -2,8 +2,8 @@
   "expo": {
     "name": "Climate-Literacy-Mapper",
     "slug": "climate-literacy-mapper",
-    "version": "1.7.0",
-    "runtimeVersion": "1.7.0",
+    "version": "1.8.0",
+    "runtimeVersion": "1.8.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "scheme": "clm",
@@ -34,7 +34,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.laobowa.mbura",
-      "versionCode": 7,
+      "versionCode": 8,
       "userInterfaceStyle": "automatic",
       "permissions": [
         "android.permission.RECORD_AUDIO"

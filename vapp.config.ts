@@ -5,6 +5,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...config,
     slug: "climate-literacy-mapper" ?? '',
     name: "Climate-Literacy-Mapper" ?? '',
+    // version:"",
+    // android.versionCode:"",
+
     ios: {
       ...config.ios,
       bundleIdentifier: "com.laobowa.mbura",
