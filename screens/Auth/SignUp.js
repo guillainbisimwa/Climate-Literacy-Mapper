@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, KeyboardAvoidingView, ScrollView, StyleSheet, TextInput, Pressable, Alert } from 'react-native'
+import { View, KeyboardAvoidingView, ScrollView, StyleSheet, TextInput, Pressable, Alert, Image } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Container, { Toast } from 'toastify-react-native';
 import { COLORS, FONTS } from '@/constants';
@@ -121,7 +121,7 @@ const SignUp = ({ navigation }) => {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
 
                 <View style={styles.loginIcon}>
-                    <SvgIcon icon={'signup'} width={300} height={300} />
+                    <Image source={require('../../assets/images/il2.png')} style={{height:300, width:300}}/>
                 </View>
                 <View style={styles.container}>
                     <View style={styles.loginLblCon}>

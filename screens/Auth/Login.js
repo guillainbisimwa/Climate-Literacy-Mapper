@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
     View, KeyboardAvoidingView, ScrollView, StyleSheet,
     TextInput, Pressable, TouchableOpacity,
-    Alert
+    Alert,
+    Image
 } from 'react-native'
 import { Button, } from 'react-native-paper';
 import PhoneInput from 'react-native-international-phone-number';
@@ -118,7 +119,8 @@ const Login = ({ navigation }) => {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
 
                 <View style={styles.loginIcon}>
-                    <SvgIcon icon={'login'} width={300} height={300} />
+                    {/* <SvgIcon icon={'login'} width={300} height={300} /> */}
+                    <Image source={require('../../assets/images/logo.png')} style={{height:300, width:300}}/>
                 </View>
                 <View style={styles.container}>
                     <View style={styles.loginLblCon}>
