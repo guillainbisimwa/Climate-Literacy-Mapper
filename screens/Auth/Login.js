@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import {
-    View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet,
-    TextInput, Pressable, TouchableOpacity, ScrollViewBase, Keyboard,
+    View, KeyboardAvoidingView, ScrollView, StyleSheet,
+    TextInput, Pressable, TouchableOpacity,
     Alert
 } from 'react-native'
 import { Button, } from 'react-native-paper';
-// import PhoneInput from 'react-native-phone-number-input';
+import PhoneInput from 'react-native-international-phone-number';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Container, { Toast } from 'toastify-react-native';
 import { COLORS, FONTS } from '@/constants';
-import { Block, Input, Text } from "@/components"
+import {  Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
 import NetInfo from "@react-native-community/netinfo";
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,27 +19,22 @@ import { loginUser } from '@/redux/userSlice';
 
 const Login = ({ navigation }) => {
     const dispatch = useDispatch();
-    const phoneInput = useRef(null);
 
     const { error, isLoading, success, user } = useSelector((state) => state.user);
 
+    const [phone, setPhone] = useState("");
+    const [country, setCounty] = useState(null);
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState(false);
-    const [formattedValue, setFormattedValue] = useState("");
-    const [value, setValue] = useState("");
-    const [valid, setValid] = useState(false);
-    const [listenerError, setListenerError] = useState(false);
-
 
     // Use useEffect or any other method to handle the success state and display the alert
     useEffect(() => {
         checkLoginStatus();
-        if (error && !success && listenerError) {
+        if (error && !success) {
             console.log("====>", error);
             // Toast.warn("Verifier votre internet!", 'top');
 
             Toast.error("An error has occurred", 'top');
-            setValid(false);
             setPasswordError(true)
 
         }
@@ -72,8 +67,9 @@ const Login = ({ navigation }) => {
     };
 
     const handleSubmit = async () => {
-        // Alert.alert("No Internet connection", "Please check your Internet connection and try again.");
-
+        const newPhone = `${country?.callingCode}${phone}`.replaceAll(" ","");
+        console.log(newPhone, password);
+      
         try {
             // Check internet connections
             // Keyboard.dismiss();
@@ -83,16 +79,10 @@ const Login = ({ navigation }) => {
                 Alert.alert("No Internet connection", "Please check your Internet connection and try again.");
                 return;
             }
-            if (!password || !formattedValue) {
-                // Alert.alert("Attention", "Veuillez completer tous les champs et réessayer.");
+            if (!password || !newPhone) {
                 Toast.error('Complete all fields, please', 'top');
                 setPasswordError(true);
             } else {
-                if (!valid) {
-                    //setValid(false);
-                    Toast.error('Incorrect phone number', 'top')
-                    return
-                }
 
                 if (password.length < 3 || password.length > 20) {
                     setPasswordError(true);
@@ -103,7 +93,7 @@ const Login = ({ navigation }) => {
                 }
 
                 // Handle login functionality
-                dispatch(loginUser({ mobile: formattedValue, password }))
+                dispatch(loginUser({ mobile: newPhone, password }))
                     .then((result) => {
                         if (loginUser.fulfilled.match(result)) {
                             // Handle successful login
@@ -142,43 +132,15 @@ const Login = ({ navigation }) => {
 
                     <View style={styles.formCon}>
                         <View style={styles.textBoxCon}>
-                            <View style={styles.at}>
-                                <SvgIcon icon={'phone'} width={10} height={10} />
-                            </View>
-                            <View style={styles.textCon}>
-                                {/* <PhoneInput
-                                    ref={phoneInput}
-                                    // defaultValue={value}
-                                    defaultCode="CD"
-                                    layout="first"
-                                    onChangeText={(text) => {
-                                        const checkValid = phoneInput.current?.isValidNumber(text);
-                                        setValid(checkValid ? checkValid : false);
-                                        setValue(text);
-                                        // setLoad(false)
-                                    }}
-                                    onChangeFormattedText={(text) => {
-                                        setFormattedValue(text);
-                                    }}
-                                    textContainerStyle={{
-                                        backgroundColor: COLORS.white
-                                    }}
-                                    containerStyle={{
-                                        // borderColor: valid ? COLORS.darkgreen : "transparent",
-                                        // borderWidth: 2,
-                                        width: '100%',
-                                        borderBottomColor: COLORS.darkgray,
-                                        borderWidth: 1,
-                                        borderTopWidth: 0,
-                                        borderLeftWidth: 0,
-                                        borderRightWidth: 0,
-                                        color: COLORS.black,
-                                        fontSize: 16,
-                                    }}
 
-                                /> */}
+                            <PhoneInput
+                                value={phone}
+                                onChangePhoneNumber={setPhone}
+                                selectedCountry={country}
+                                onChangeSelectedCountry={setCounty}
+                                defaultCountry='KE'
+                            />
 
-                            </View>
                         </View>
 
                         <View style={[styles.textBoxCon, { marginTop: 30 }]}>
