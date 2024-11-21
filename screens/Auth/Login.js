@@ -40,11 +40,6 @@ const Login = ({ navigation }) => {
         }
     }, [success, error]);
 
-    const hasErrorKey = (obj) => {
-        return obj && typeof obj === 'object' && 'error' in obj;
-    }
-
-
     const checkLoginStatus = async () => {
         try {
             const value = await AsyncStorage.getItem('user');

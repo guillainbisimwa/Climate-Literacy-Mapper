@@ -1,22 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, SafeAreaView, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, Pressable, TouchableOpacity, ScrollViewBase, Alert } from 'react-native'
+import { View, KeyboardAvoidingView, ScrollView, StyleSheet, TextInput, Pressable, Alert } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from '@react-navigation/native';
 import Container, { Toast } from 'toastify-react-native';
 import { COLORS, FONTS } from '@/constants';
-import { Block, Input, Text } from "@/components"
+import {  Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
-// import PhoneInput from 'react-native-phone-number-input';
+import PhoneInput from 'react-native-international-phone-number';
 import { useDispatch, useSelector } from 'react-redux';
 import NetInfo from "@react-native-community/netinfo";
 import { Button } from 'react-native-paper';
 import { loginUser, signUpUser } from '@/redux/userSlice';
-
-
-// const hasErrorKey = (obj) => {
-//     return obj && typeof obj === 'object' && 'error' in obj;
-// }
-
 
 
 const SignUp = ({ navigation }) => {
@@ -24,14 +17,12 @@ const SignUp = ({ navigation }) => {
     const dispatch = useDispatch();
     const phoneInput = useRef(null);
 
-    const { user, errorSignUp, isLoadingSignUp, successSignUp, error, isLoading } = useSelector((state) => state.user);
-
+    const { user, isLoadingSignUp} = useSelector((state) => state.user);
+    const [phone, setPhone] = useState("");
+    const [country, setCounty] = useState(null);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState(false);
-    const [formattedValue, setFormattedValue] = useState("");
-    const [value, setValue] = useState("");
-    const [valid, setValid] = useState(false);
     const [role, setRole] = useState('user');
 
 
@@ -54,6 +45,9 @@ const SignUp = ({ navigation }) => {
 
     const handleSubmit = async () => {
         try {
+            const newPhone = `${country?.callingCode}${phone}`.replaceAll(" ","");
+            // console.log(newPhone, password);
+          
             // Check internet connections
             // Keyboard.dismiss();
             const netInfo = await NetInfo.fetch();
@@ -62,28 +56,22 @@ const SignUp = ({ navigation }) => {
                 Alert.alert("No Internet connection", "Please check your Internet connection and try again.");
                 return;
             }
-            if (!password || !formattedValue || !fullName) {
+            if (!password || !newPhone || !fullName) {
                 // Alert.alert("Attention", "Veuillez completer tous les champs et réessayer.");
                 Toast.error('Complete all fields, please', 'top');
-                setPasswordError(true);
+                
             } else {
-                if (!valid) {
-                    //setValid(false);
-                    Toast.error('Incorrect phone number', 'top')
-                    return
-                }
+               
                 if (password !== confirmPassword) {
-                    setPasswordError(true);
-                    Toast.error("Password doesn't match", 'top')
+                    
+                    Toast.error("Passwords don't match", 'top')
                     return
                 }
 
                 if (password.length < 3 || password.length > 20) {
-                    setPasswordError(true);
+                    
                     Toast.error('Invalid password', 'top')
                     return
-                } else {
-                    setPasswordError(false);
                 }
 
                 // Handle login functionality
@@ -92,7 +80,7 @@ const SignUp = ({ navigation }) => {
                         name: fullName,
                         email: "",
                         password,
-                        mobile: formattedValue,
+                        mobile: newPhone,
                         role,
                         cover_url: '',
                         profile_pic: '',
@@ -102,7 +90,7 @@ const SignUp = ({ navigation }) => {
                         if (signUpUser.fulfilled.match(result)) {
                             // Handle successful sign up
                             console.log('Sign up Successful:', result.payload);
-                            dispatch(loginUser({ mobile: formattedValue, password }))
+                            dispatch(loginUser({ mobile: newPhone, password }))
 
                         } else if (signUpUser.rejected.match(result)) {
                             // Handle rejected sign up
@@ -141,42 +129,14 @@ const SignUp = ({ navigation }) => {
                     </View>
                     <View style={styles.formCon}>
                         <View style={styles.textBoxCon}>
-                            <View style={styles.at}>
-                                <SvgIcon icon={'phone'} width={20} height={20} />
-                            </View>
-                            <View style={styles.textCon}>
-                                {/* <PhoneInput
-                                    ref={phoneInput}
-                                    // defaultValue={value}
-                                    defaultCode="KE"
-                                    layout="first"
-                                    onChangeText={(text) => {
-                                        const checkValid = phoneInput.current?.isValidNumber(text);
-                                        setValid(checkValid ? checkValid : false);
-                                        setValue(text);
-                                        // setLoad(false)
-                                    }}
-                                    onChangeFormattedText={(text) => {
-                                        setFormattedValue(text);
-                                    }}
-                                    textContainerStyle={{
-                                        backgroundColor: COLORS.white
-                                    }}
-                                    containerStyle={{
-                                        // borderColor: valid ? COLORS.darkgreen : "transparent",
-                                        // borderWidth: 2,
-                                        width: '100%',
-                                        borderBottomColor: COLORS.darkgray,
-                                        borderWidth: 1,
-                                        borderTopWidth: 0,
-                                        borderLeftWidth: 0,
-                                        borderRightWidth: 0,
-                                        color: COLORS.black,
-                                        fontSize: 16,
-                                    }}
-
-                                /> */}
-                            </View>
+                            <PhoneInput
+                                value={phone}
+                                onChangePhoneNumber={setPhone}
+                                selectedCountry={country}
+                                onChangeSelectedCountry={setCounty}
+                                defaultCountry='KE'
+                            />
+                            
                         </View>
 
                         <View style={[styles.textBoxCon, { marginTop: 30 }]}>
