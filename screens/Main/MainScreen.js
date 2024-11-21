@@ -8,8 +8,8 @@ import { Animated, ImageBackground, TouchableOpacity, Image, ScrollView, StyleSh
 import { PieChart } from "react-native-gifted-charts";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { PageIndicator } from 'react-native-page-indicator';
-import SelectDropdown from 'react-native-select-dropdown';
+// import { PageIndicator } from 'react-native-page-indicator';
+// import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { fetchTribeByName, fetchTribes, findTribeByBelongsId } from "@/redux/tribeSlice";
 import Container, { Toast } from "toastify-react-native";
@@ -840,7 +840,7 @@ const MainScreen = ({ navigation }) => {
 
                     <Block >
                         <View style={styles.pageIndicator}>
-                            <PageIndicator variant="train" count={pages.length} current={Animated.divide(scrollX, width)} />
+                            {/* <PageIndicator variant="train" count={pages.length} current={Animated.divide(scrollX, width)} /> */}
                         </View>
 
                         <Animated.ScrollView
@@ -861,13 +861,9 @@ const MainScreen = ({ navigation }) => {
                                             <>
                                                 {/* <Text bold h3>Please select your tribe</Text> */}
                                                 <Block style={styles.selectDropdown}>
-                                                    <SelectDropdown
+                                                    {/* <SelectDropdown
                                                         search
-                                                        /**
-                                                        * function callback when the search input text 
-                                                        * changes, this will automatically disable the 
-                                                        * dropdown's internal search to be implemented manually outside the component
-                                                        */
+                                                        
 
                                                         // onChangeSearchInputText={(val)=>{
                                                         //     console.log("val", val);
@@ -906,7 +902,7 @@ const MainScreen = ({ navigation }) => {
                                                         }}
                                                         showsVerticalScrollIndicator={false}
                                                         dropdownStyle={styles.dropdownMenuStyle}
-                                                    />
+                                                    /> */}
                                                 </Block>
 
                                                 {

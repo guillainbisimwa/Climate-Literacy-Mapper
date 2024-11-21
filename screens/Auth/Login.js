@@ -5,7 +5,7 @@ import {
     Alert
 } from 'react-native'
 import { Button, } from 'react-native-paper';
-import PhoneInput from 'react-native-phone-number-input';
+// import PhoneInput from 'react-native-phone-number-input';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Container, { Toast } from 'toastify-react-native';
@@ -146,7 +146,7 @@ const Login = ({ navigation }) => {
                                 <SvgIcon icon={'phone'} width={10} height={10} />
                             </View>
                             <View style={styles.textCon}>
-                                <PhoneInput
+                                {/* <PhoneInput
                                     ref={phoneInput}
                                     // defaultValue={value}
                                     defaultCode="CD"
@@ -176,7 +176,7 @@ const Login = ({ navigation }) => {
                                         fontSize: 16,
                                     }}
 
-                                />
+                                /> */}
 
                             </View>
                         </View>

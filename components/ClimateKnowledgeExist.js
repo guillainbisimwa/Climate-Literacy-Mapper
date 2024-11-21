@@ -6,7 +6,6 @@ import Text from './Text';
 import Location from "./Location";
 import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
-import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator, Button, Divider, Icon, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";

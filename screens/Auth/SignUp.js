@@ -6,7 +6,7 @@ import Container, { Toast } from 'toastify-react-native';
 import { COLORS, FONTS } from '@/constants';
 import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
-import PhoneInput from 'react-native-phone-number-input';
+// import PhoneInput from 'react-native-phone-number-input';
 import { useDispatch, useSelector } from 'react-redux';
 import NetInfo from "@react-native-community/netinfo";
 import { Button } from 'react-native-paper';
@@ -145,7 +145,7 @@ const SignUp = ({ navigation }) => {
                                 <SvgIcon icon={'phone'} width={20} height={20} />
                             </View>
                             <View style={styles.textCon}>
-                                <PhoneInput
+                                {/* <PhoneInput
                                     ref={phoneInput}
                                     // defaultValue={value}
                                     defaultCode="KE"
@@ -175,7 +175,7 @@ const SignUp = ({ navigation }) => {
                                         fontSize: 16,
                                     }}
 
-                                />
+                                /> */}
                             </View>
                         </View>
 

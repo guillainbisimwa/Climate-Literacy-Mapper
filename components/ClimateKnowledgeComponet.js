@@ -5,7 +5,7 @@ import Block from './Block';
 import Text from './Text';
 import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
-import SelectDropdown from "react-native-select-dropdown";
+// import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator, Button, Divider, Icon, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";
@@ -555,18 +555,9 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                 <Block row>
                     {!foundTribe && <Block style={styles.selectDropdown}>
 
-                        <SelectDropdown
+                        {/* <SelectDropdown
                             search
-                            /**
-                            * function callback when the search input text 
-                            * changes, this will automatically disable the 
-                            * dropdown's internal search to be implemented manually outside the component
-                            */
-
-                            // onChangeSearchInputText={(val)=>{
-                            //     console.log("val", val);
-                            //     return val
-                            // }}
+                            
                             searchPlaceHolder="Type: 'Other' If your tribe doesn't exist "
 
                             data={tribes}
@@ -608,7 +599,7 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                             }}
                             showsVerticalScrollIndicator={false}
                             dropdownStyle={styles.dropdownMenuStyle}
-                        />
+                        /> */}
 
                     </Block>}
 

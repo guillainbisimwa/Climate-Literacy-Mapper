@@ -5,7 +5,7 @@ import axios from "axios";
 import { COLORS, FONTS } from '@/constants';
 import { Block, Input, Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
+// import OTPInputView from '@twotalltotems/react-native-otp-input';
 
 
 const EnterOtp = ({ navigation }) => {
@@ -52,7 +52,7 @@ const EnterOtp = ({ navigation }) => {
               </Text>
             </View>
             <View style={styles.formCon}>
-              <OTPInputView
+              {/* <OTPInputView
                 pinCount={4}
                 autoFocusOnLoad
                 style={{ width: '80%', height: 70 }}
@@ -65,7 +65,7 @@ const EnterOtp = ({ navigation }) => {
                 
                 codeInputHighlightStyle={{ borderColor: "#03DAC6" }}
                
-              />
+              /> */}
               <Pressable>
                 <Text style={styles.registerLbl}>Resend OTP</Text>
               </Pressable>

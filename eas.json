@@ -8,10 +8,10 @@
       "developmentClient": true,
       "distribution": "internal",
       "android": {
-        "image": "latest"
+        "image": "sdk-51"
       },
       "ios": {
-        "image": "latest"
+        "image": "sdk-51"
       }
     },
     "development-simulator": {
@@ -23,21 +23,33 @@
     "preview": {
       "distribution": "internal",
       "channel": "preview",
+      
       "android": {
-        "image": "latest"
+        "image": "sdk-51"
       },
       "ios": {
-        "image": "latest"
+        "image": "sdk-51"
       }
     },
     "production": {
       "channel": "production",
       "autoIncrement": true,
       "android": {
-        "image": "latest"
+        "image": "sdk-51"
       },
       "ios": {
-        "image": "latest"
+        "image": "sdk-51"
+      },
+      "env": {
+        "EXPO_PUBLIC_ENV":"production",
+        "EXPO_PUBLIC_API_URL": "https://example.com",
+
+        "EXPO_PUBLIC_SLUG": "climate-literacy-mapper",
+        "EXPO_PUBLIC_NAME": "Climate-Literacy-Mapper",
+        "EXPO_PUBLIC_PROJECT_ID": "db290c8a-0c01-4ffa-a70c-509d956d479f",
+        "EXPO_PUBLIC_IOS_BUNDLE_IDENTIFIER": "com.laobowa.mbura",
+        "EXPO_PUBLIC_IOS_ANDROID_PACKAGE": "com.laobowa.mbura",
+        "EXPO_OFFLINE2": "1"
       }
     }
   },
