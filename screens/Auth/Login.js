@@ -35,7 +35,7 @@ const Login = ({ navigation }) => {
             console.log("====>", error);
             // Toast.warn("Verifier votre internet!", 'top');
 
-            Toast.error("An error has occurred", 'top');
+            Toast.error(`Error:${error?.msg} ` , 'top');
             setPasswordError(true)
 
         }
