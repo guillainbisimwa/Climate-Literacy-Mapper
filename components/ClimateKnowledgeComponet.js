@@ -6,6 +6,11 @@ import Text from './Text';
 import { COLORS, imagesConstants, SIZES } from "../constants";
 import { LinearGradient } from "react-native-svg";
 // import SelectDropdown from "react-native-select-dropdown";
+// import {Picker} from '@react-native-picker/picker';
+// import {SelectDropdown, DropdownData} from "expo-select-dropdown";
+import DropDownPicker from 'react-native-dropdown-picker';
+
+
 import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator, Button, Divider, Icon, List, MD3Colors, ProgressBar, SegmentedButtons, TextInput } from "react-native-paper";
 import Proof from "./Proof";
@@ -28,6 +33,14 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
     const [loadPic, setLoadPic] = useState(false);
     const [ans, setAns] = useState(null);
     const [foundTribe, setFoundTribe] = useState(null);
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([
+        { label: 'English', value: 'en' },
+        { label: 'Deutsch', value: 'de' },
+        { label: 'French', value: 'fr' },
+    ]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -554,6 +567,23 @@ const ClimateKnowledgeComponet = ({ userId, onShowImages, onShowMap }) => {
                 {!foundTribe && <Text bold h3>Please select your tribe</Text>}
                 <Block row>
                     {!foundTribe && <Block style={styles.selectDropdown}>
+                        <DropDownPicker
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                        />
+                        {/* <SelectDropdown  
+		      data={tribes}  
+              placeholder={"Select option"}  
+              selected={selectedTribe}  
+              setSelected={setSelectedTribe}  
+              searchOptions={{cursorColor: "#007bff"}}  
+              searchBoxStyles={{borderColor: "#007bff"}}  
+              dropdownStyles={{borderColor: "#007bff"}}  
+          />  */}
 
                         {/* <SelectDropdown
                             search
@@ -713,7 +743,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         paddingHorizontal: 8,
-        borderColor: COLORS.darkgray
+        borderColor: COLORS.darkgray,
+        zIndex: 1
     },
     dropdownButtonStyle: {
         // width: 200,
