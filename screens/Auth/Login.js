@@ -11,7 +11,7 @@ import PhoneInput from 'react-native-international-phone-number';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Container, { Toast } from 'toastify-react-native';
 import { COLORS, FONTS } from '@/constants';
-import {  Text } from "@/components"
+import { Text } from "@/components"
 import SvgIcon from '../../assets/icons/SvgIcon';
 import NetInfo from "@react-native-community/netinfo";
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,7 +35,7 @@ const Login = ({ navigation }) => {
             console.log("====>", error);
             // Toast.warn("Verifier votre internet!", 'top');
 
-            Toast.error(`Error:${error?.msg} ` , 'top');
+            Toast.error(`Error:${error?.msg} `, 'top');
             setPasswordError(true)
 
         }
@@ -63,9 +63,9 @@ const Login = ({ navigation }) => {
     };
 
     const handleSubmit = async () => {
-        const newPhone = `${country?.callingCode}${phone}`.replaceAll(" ","");
+        const newPhone = `${country?.callingCode}${phone}`.replaceAll(" ", "");
         console.log(newPhone, password);
-      
+
         try {
             // Check internet connections
             // Keyboard.dismiss();
@@ -120,7 +120,7 @@ const Login = ({ navigation }) => {
 
                 <View style={styles.loginIcon}>
                     {/* <SvgIcon icon={'login'} width={300} height={300} /> */}
-                    <Image source={require('../../assets/images/logo.png')} style={{height:300, width:300}}/>
+                    <Image source={require('../../assets/images/logo.png')} style={{ height: 300, width: 300 }} />
                 </View>
                 <View style={styles.container}>
                     <View style={styles.loginLblCon}>
