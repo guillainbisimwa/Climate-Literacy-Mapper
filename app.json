@@ -8,6 +8,7 @@
     "icon": "./assets/images/logo.png",
     "scheme": "clm",
     "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "owner": "wezalab",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -37,7 +38,7 @@
       "versionCode": 8,
       "userInterfaceStyle": "automatic",
       "permissions": [
-        "android.permission.RECORD_AUDIO"
+        "RECORD_AUDIO"
       ]
     },
     "web": {
@@ -65,6 +66,12 @@
       "eas": {
         "projectId": "db290c8a-0c01-4ffa-a70c-509d956d479f"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/db290c8a-0c01-4ffa-a70c-509d956d479f"
+    },
+    "developmentClient": {
+      "enabled": true
     }
   }
 }
