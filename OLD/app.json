@@ -1,0 +1,74 @@
+{
+  "expo": {
+    "name": "Climate-Literacy-Mapper",
+    "slug": "climate-literacy-mapper",
+    "version": "1.8.0",
+    "runtimeVersion": "1.8.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/logo.png",
+    "scheme": "clm",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "owner": "wezalab",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.laobowa.mbura",
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": [
+              "CA92.1"
+            ]
+          }
+        ]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.laobowa.mbura",
+      "versionCode": 8,
+      "userInterfaceStyle": "automatic",
+      "permissions": [
+        "RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/logo.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "db290c8a-0c01-4ffa-a70c-509d956d479f"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/db290c8a-0c01-4ffa-a70c-509d956d479f"
+    }
+  }
+}
