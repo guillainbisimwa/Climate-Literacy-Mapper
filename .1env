@@ -1,0 +1,17 @@
+EXPO_PUBLIC_ENV=test
+EXPO_PUBLIC_API_URL=https://test.example.com
+
+# EXPO
+EXPO_PUBLIC_SLUG=climate-literacy-mapper
+EXPO_PUBLIC_NAME="DEV - Climate-Literacy-Mapper"
+EXPO_PUBLIC_PROJECT_ID=23cb8246-3c86-4f0b-ae08-6d6ff30f355d
+
+# IOS
+EXPO_PUBLIC_IOS_BUNDLE_IDENTIFIER=com.laobowa.mbura
+
+# ANDROID
+EXPO_PUBLIC_IOS_ANDROID_PACKAGE=com.laobowa.mbura
+
+APP_ENV=production
+JAVA_VERSION=17
+PLATFORM=android

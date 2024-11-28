@@ -1,7 +1,15 @@
-// Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config');
-
-/** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname);
 
-module.exports = config;
+module.exports = {
+  ...config,
+  serializer: {
+    ...config.serializer,
+    isThirdPartyModule: (module) => {
+      if (/(^|[/\\])node_modules[/\\]/.test(module.path)) {
+        return !module.path.match(/[/\\](expo-router[/\\]entry|expo[/\\]AppEntry)/);
+      }
+      return false;
+    },
+  },
+};
