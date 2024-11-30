@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {
     View, KeyboardAvoidingView, ScrollView, StyleSheet,
     TextInput, Pressable, TouchableOpacity,
-    Alert,Text,
+    Alert,
     Image
 } from 'react-native'
 import { Button, } from 'react-native-paper';
 import PhoneInput from 'react-native-international-phone-number';
+import Text from "../components/Text"
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Container, { Toast } from 'toastify-react-native';
@@ -17,13 +18,14 @@ import NetInfo from "@react-native-community/netinfo";
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/userSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 
 const Login = ({ navigation }) => {
     const dispatch = useDispatch();
 
     const { error, isLoading, success, user } = useSelector((state) => state.user);
+    const router = useRouter(); // Initialize the router
 
     const [phone, setPhone] = useState("");
     const [country, setCounty] = useState(null);
@@ -49,10 +51,7 @@ const Login = ({ navigation }) => {
             console.log("value login", value);
 
             if (value !== null) {
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'MainStack' }],
-                });
+                router.push('/Main');
             } else {
                 //Toast.error("An error has occurred!!1", 'top')
                 //console.log("error", error);
@@ -176,8 +175,8 @@ const Login = ({ navigation }) => {
                     </View>
 
                     <View style={styles.loginCon}>
-                        <Button style={styles.LoginBtn} disabled={isLoading} mode="contained" loading={isLoading}
-                            // onPress={() => handleSubmit()}
+                        <Button buttonColor="#cb8151" style={styles.LoginBtn} disabled={isLoading} mode="contained" loading={isLoading}
+                            onPress={() => handleSubmit()}
                             >
                             <Text style={styles.loginBtnLbl}>Login</Text>
                         </Button>

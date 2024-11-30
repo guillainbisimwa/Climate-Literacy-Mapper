@@ -11,12 +11,14 @@ import NetInfo from "@react-native-community/netinfo";
 import { Button } from 'react-native-paper';
 import { loginUser, signUpUser } from '@/redux/userSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 const SignUp = ({ navigation }) => {
     const [fullName, setFullName] = useState("");
     const dispatch = useDispatch();
     const phoneInput = useRef(null);
+    const router = useRouter(); // Initialize the router
+
 
     const { user, isLoadingSignUp} = useSelector((state) => state.user);
     const [phone, setPhone] = useState("");
@@ -31,14 +33,9 @@ const SignUp = ({ navigation }) => {
         const value = await AsyncStorage.getItem('userToken');
         console.log(value, "VALUE SIGNUP", user);
         if (value !== null) {
-            navigation.navigate("MainStack")
-            // navigation.reset({
-            //     index: 0,
-            //     routes: [{ name: 'MainStack' }],
-            //   });
+            router.push('/Main');
         }
     }
-
 
     useEffect(() => {
         getData();
@@ -214,7 +211,7 @@ const SignUp = ({ navigation }) => {
                     </View>
 
                     <View style={styles.loginCon}>
-                        <Button style={styles.LoginBtn} disabled={isLoadingSignUp} mode="contained" loading={isLoadingSignUp}
+                        <Button buttonColor="#cb8151" style={styles.LoginBtn} disabled={isLoadingSignUp} mode="contained" loading={isLoadingSignUp}
                             onPress={() => handleSubmit()}>
                             <Text style={styles.loginBtnLbl}>Create your account</Text>
                         </Button>

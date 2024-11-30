@@ -17,17 +17,28 @@ export default function Home() {
   const dispatch = useDispatch();
   const isInstalled = useSelector((state) => state.app.isInstalled);
   const isSignedIn = useSelector((state) => state.auth.user);
-  console.log("========", isSignedIn);
+  
+  console.log("========?", isSignedIn);
 
   const statusBarHeight = StatusBar.currentHeight || (Platform.OS === 'ios' ? 20 : 0);
 
 
   useEffect(() => {
-   //  AsyncStorage.clear();
+   // clearAll()
     checkLoginStatus();
     setTimeout(() => setLoading(false), 2000);
     checkInstallationStatus();
   }, []);
+
+  clearAll = async () => {
+    try {
+      await AsyncStorage.clear()
+    } catch(e) {
+      // clear error
+    }
+  
+    console.log('Done.')
+  }
 
   const checkLoginStatus = async () => {
     try {
