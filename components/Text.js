@@ -77,7 +77,7 @@ const Typography = (props) => {
   ];
 
   return (
-    <Text style={textStyles} {...otherProps}>
+    <Text style={[textStyles, { fontFamily: 'SpaceMono' }]} {...otherProps}>
       {children}
     </Text>
   );
