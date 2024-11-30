@@ -42,6 +42,7 @@ export const IntroScreen = () => {
 
   return (
     <View style={styles.container}>
+          <StatusBar barStyle="dark-content" />
       <Animated.View style={[styles.slider, { backgroundColor }]}>
         <Ticker scrollX={scrollX} />
         <Animated.ScrollView

@@ -4,7 +4,7 @@ import ForgotPassword from "./ForgotPassword"
 import ResetPassword from "./ResetPassword"
 import SignUp from "./SignUp"
 
-export {
+export default {
     Login,
     EnterOtp,
     ForgotPassword,

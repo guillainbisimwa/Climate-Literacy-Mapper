@@ -6,9 +6,6 @@ import { MainScreen, ProfileScreen } from "../screens/Main/";
 import { Login, EnterOtp, ForgotPassword, ResetPassword, SignUp } from "../screens/Auth";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { CommonActions } from '@react-navigation/native';
-import { Text, BottomNavigation } from 'react-native-paper';
-import { COLORS } from '@/constants';
 import {CustomTab} from '../components'
 
 const Tab = createBottomTabNavigator();
