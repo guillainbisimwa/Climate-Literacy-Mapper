@@ -10,6 +10,7 @@ import { store } from '../redux/Store';
 import { PaperProvider, DefaultTheme  } from 'react-native-paper';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { StatusBar } from 'expo-status-bar';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -62,12 +63,13 @@ function RootLayoutNav() {
     <Provider store={store}>
        {/* theme={colorScheme === 'dark' ? DarkTheme : theme} */}
       <PaperProvider >
+     
       <Stack>
         {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
          {/* <Stack.Screen name="(Auth2)" options={{ headerShown: false }} />  */}
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="Login" options={{ title: 'Login' }} />
-        <Stack.Screen name="SignUp" options={{ title: 'SignUp' }} />
+        <Stack.Screen name="Login"  options={{ headerShown: false }}/>
+        <Stack.Screen name="SignUp" options={{ headerShown: false }} />
         <Stack.Screen name="Auth" options={{ title: 'Auth' }} />
 
       </Stack>

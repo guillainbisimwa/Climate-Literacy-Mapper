@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { View, KeyboardAvoidingView, ScrollView, StyleSheet, TextInput, Pressable, Alert, Image } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Container, { Toast } from 'toastify-react-native';
-import { COLORS, FONTS } from '@/constants';
+import { COLORS, FONTS } from '../constants';
 import Text from "../components/Text"
 import SvgIcon from '../assets/icons/SvgIcon';
 import PhoneInput from 'react-native-international-phone-number';
@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import NetInfo from "@react-native-community/netinfo";
 import { Button } from 'react-native-paper';
 import { loginUser, signUpUser } from '@/redux/userSlice';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Link } from 'expo-router';
 
 const SignUp = ({ navigation }) => {
     const [fullName, setFullName] = useState("");
@@ -141,7 +142,8 @@ const SignUp = ({ navigation }) => {
 
                         <View style={[styles.textBoxCon, { marginTop: 30 }]}>
                             <View style={styles.at}>
-                                <SvgIcon icon={'user'} width={20} height={20} />
+                                {/* <SvgIcon icon={'user'} width={20} height={20} /> */}
+                                <AntDesign name="user" size={20} color={COLORS.black} />
                             </View>
                             <View style={styles.textCon}>
                                 <TextInput
@@ -155,7 +157,7 @@ const SignUp = ({ navigation }) => {
 
                         <View style={[styles.textBoxCon, { marginTop: 30 }]}>
                             <View style={styles.at}>
-                                <SvgIcon icon={'lock'} width={20} height={20} />
+                                <AntDesign name="lock" size={20} color={COLORS.black} />
                             </View>
                             <View style={[styles.passCon]}>
                                 <View style={styles.textCon}>
@@ -168,7 +170,7 @@ const SignUp = ({ navigation }) => {
                                     />
                                 </View>
                                 <View style={styles.show}>
-                                    <SvgIcon icon={'show'} width={20} height={20} />
+                                    <AntDesign name="eye" size={20} color={COLORS.black} />
                                 </View>
                             </View>
                         </View>
@@ -176,7 +178,7 @@ const SignUp = ({ navigation }) => {
 
                         <View style={[styles.textBoxCon, { marginTop: 30 }]}>
                             <View style={styles.at}>
-                                <SvgIcon icon={'lock'} width={20} height={20} />
+                                <AntDesign name="lock" size={20} color={COLORS.black} />
                             </View>
                             <View style={[styles.passCon]}>
                                 <View style={styles.textCon}>
@@ -189,7 +191,7 @@ const SignUp = ({ navigation }) => {
                                     />
                                 </View>
                                 <View style={styles.show}>
-                                    <SvgIcon icon={'show'} width={20} height={20} />
+                                    <AntDesign name="eye" size={20} color={COLORS.black} />
                                 </View>
                             </View>
                         </View>
@@ -223,7 +225,9 @@ const SignUp = ({ navigation }) => {
                         <Text style={styles.registerNew}>Joined us before? </Text>
                         <Pressable onPress={() => navigation.navigate("Login")}
                         >
+                              <Link href="/Login">
                             <Text style={styles.registerLbl}>Login</Text>
+                            </Link>
                         </Pressable>
                     </View>
                 </View>

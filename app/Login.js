@@ -17,6 +17,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/userSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Link } from 'expo-router';
 
 
 const Login = ({ navigation }) => {
@@ -115,6 +116,7 @@ const Login = ({ navigation }) => {
 
     return (
         <KeyboardAvoidingView behavior="position" style={styles.mainCon}>
+
             <Container position="top" style={{ width: '100%' }} duration={6000} />
 
             <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -203,7 +205,9 @@ const Login = ({ navigation }) => {
                         <Pressable 
                         //</View>onPress={() => navigation.navigate("SignUp")}
                         >
+                            <Link href="/SignUp">
                             <Text style={styles.registerLbl}>Register</Text>
+                            </Link>
                         </Pressable>
                     </View>
                 </View>
