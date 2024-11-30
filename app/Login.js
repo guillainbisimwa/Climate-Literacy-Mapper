@@ -51,7 +51,7 @@ const Login = ({ navigation }) => {
             console.log("value login", value);
 
             if (value !== null) {
-                router.push('/Main');
+                router.push('/MainScreen');
             } else {
                 //Toast.error("An error has occurred!!1", 'top')
                 //console.log("error", error);

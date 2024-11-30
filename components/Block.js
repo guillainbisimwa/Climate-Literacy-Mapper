@@ -27,11 +27,12 @@ const Block = ({
 
   const handleMargins = () => {
     if (typeof margin === 'number') {
+      const intMargin = Math.round(margin);
       return {
-        marginTop: margin,
-        marginRight: margin,
-        marginBottom: margin,
-        marginLeft: margin,
+        marginTop: intMargin,
+        marginRight: intMargin,
+        marginBottom: intMargin,
+        marginLeft: intMargin,
       };
     }
 
@@ -39,32 +40,33 @@ const Block = ({
       const marginSize = Object.keys(margin).length;
       switch (marginSize) {
         case 1:
+          const intMargin1 = Math.round(margin[0]);
           return {
-            marginTop: margin[0],
-            marginRight: margin[0],
-            marginBottom: margin[0],
-            marginLeft: margin[0],
+            marginTop: intMargin1,
+            marginRight: intMargin1,
+            marginBottom: intMargin1,
+            marginLeft: intMargin1,
           };
         case 2:
           return {
-            marginTop: margin[0],
-            marginRight: margin[1],
-            marginBottom: margin[0],
-            marginLeft: margin[1],
+            marginTop: Math.round(margin[0]),
+            marginRight: Math.round(margin[1]),
+            marginBottom: Math.round(margin[0]),
+            marginLeft: Math.round(margin[1]),
           };
         case 3:
           return {
-            marginTop: margin[0],
-            marginRight: margin[1],
-            marginBottom: margin[2],
-            marginLeft: margin[1],
+            marginTop: Math.round(margin[0]),
+            marginRight: Math.round(margin[1]),
+            marginBottom: Math.round(margin[2]),
+            marginLeft: Math.round(margin[1]),
           };
         default:
           return {
-            marginTop: margin[0],
-            marginRight: margin[1],
-            marginBottom: margin[2],
-            marginLeft: margin[3],
+            marginTop: Math.round(margin[0]),
+            marginRight: Math.round(margin[1]),
+            marginBottom: Math.round(margin[2]),
+            marginLeft: Math.round(margin[3]),
           };
       }
     }
@@ -72,11 +74,12 @@ const Block = ({
 
   const handlePaddings = () => {
     if (typeof padding === 'number') {
+      const intPadding = Math.round(padding);
       return {
-        paddingTop: padding,
-        paddingRight: padding,
-        paddingBottom: padding,
-        paddingLeft: padding,
+        paddingTop: intPadding,
+        paddingRight: intPadding,
+        paddingBottom: intPadding,
+        paddingLeft: intPadding,
       };
     }
 
@@ -84,32 +87,33 @@ const Block = ({
       const paddingSize = Object.keys(padding).length;
       switch (paddingSize) {
         case 1:
+          const intPadding1 = Math.round(padding[0]);
           return {
-            paddingTop: padding[0],
-            paddingRight: padding[0],
-            paddingBottom: padding[0],
-            paddingLeft: padding[0],
+            paddingTop: intPadding1,
+            paddingRight: intPadding1,
+            paddingBottom: intPadding1,
+            paddingLeft: intPadding1,
           };
         case 2:
           return {
-            paddingTop: padding[0],
-            paddingRight: padding[1],
-            paddingBottom: padding[0],
-            paddingLeft: padding[1],
+            paddingTop: Math.round(padding[0]),
+            paddingRight: Math.round(padding[1]),
+            paddingBottom: Math.round(padding[0]),
+            paddingLeft: Math.round(padding[1]),
           };
         case 3:
           return {
-            paddingTop: padding[0],
-            paddingRight: padding[1],
-            paddingBottom: padding[2],
-            paddingLeft: padding[1],
+            paddingTop: Math.round(padding[0]),
+            paddingRight: Math.round(padding[1]),
+            paddingBottom: Math.round(padding[2]),
+            paddingLeft: Math.round(padding[1]),
           };
         default:
           return {
-            paddingTop: padding[0],
-            paddingRight: padding[1],
-            paddingBottom: padding[2],
-            paddingLeft: padding[3],
+            paddingTop: Math.round(padding[0]),
+            paddingRight: Math.round(padding[1]),
+            paddingBottom: Math.round(padding[2]),
+            paddingLeft: Math.round(padding[3]),
           };
       }
     }
@@ -202,3 +206,4 @@ export const styles = StyleSheet.create({
 });
 
 export default Block;
+// export { default as Block } from './Block';

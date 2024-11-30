@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "@/constants";
 import { Menu, TextInput } from "react-native-paper";
 
-const Loaction = ({ foundTribe }) => {
+const Location = ({ foundTribe }) => {
     const [visibleMenu, setVisibleMenu] = useState(true);
     const [typeLocation, setTypeLocation] = useState(0);
     const [lat, setLat] = useState(null);
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Loaction;
+export default Location;

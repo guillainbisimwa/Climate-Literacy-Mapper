@@ -33,7 +33,7 @@ const SignUp = ({ navigation }) => {
         const value = await AsyncStorage.getItem('userToken');
         console.log(value, "VALUE SIGNUP", user);
         if (value !== null) {
-            router.push('/Main');
+            router.push('/MainScreen');
         }
     }
 

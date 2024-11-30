@@ -11,6 +11,7 @@ import Main from './Main';
 import Auth from './Auth';
 import Login from './Login';
 import { Platform, StatusBar } from 'react-native';
+import MainScreen from './MainScreen';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -76,7 +77,7 @@ export default function Home() {
     {isInstalled ? (
       isSignedIn ? (
         
-        <Main />
+        <MainScreen />
       ) : (
         <Login />
       )

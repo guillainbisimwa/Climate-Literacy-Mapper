@@ -71,7 +71,7 @@ function RootLayoutNav() {
         <Stack.Screen name="Login"  options={{ headerShown: false }}/>
         <Stack.Screen name="SignUp" options={{ headerShown: false }} />
         <Stack.Screen name="Auth" options={{ title: 'Auth' }} />
-
+        <Stack.Screen name="MainScreen" options={{ title: 'MainScreen' }} />
       </Stack>
     </PaperProvider>
     </Provider>
