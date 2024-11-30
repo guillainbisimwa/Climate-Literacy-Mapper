@@ -124,3 +124,13 @@ watchman watch-del-all && rm -f podfile.lock && rm -rf node_modules && yarn && y
         "expo-channel-name": "staging"
       }
     }
+
+       {
+     "expo": {
+       "doctor": {
+         "reactNativeDirectoryCheck": {
+           "listUnknownPackages": false
+         }
+       }
+     }
+   }

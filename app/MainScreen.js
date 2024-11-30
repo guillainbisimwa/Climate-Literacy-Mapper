@@ -40,6 +40,7 @@ const MainScreen = ({ navigation }) => {
     const pages = ['Page 1', 'Page 2', 'Page 3'];
     const [ans, setAns] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
+    const [currentUserName, setCurrentUserName] = useState("");
 
     console.log("*********currentTribe tribeListBelongs---------", currentUser);
 
@@ -89,16 +90,17 @@ const MainScreen = ({ navigation }) => {
                 dispatch(fetchTribes());
 
                 const value = await AsyncStorage.getItem('user');
+
                 if (value) {
                     const userLocal = JSON.parse(value);
                     console.log("userId:", userLocal.user.user.userId);
                     setCurrentUser(userLocal.user.user.userId)
+                    setCurrentUserName(userLocal?.user?.user?.name)
 
                     dispatch(findTribeByBelongsId({ id: userLocal.user.user.userId })).then((result) => {
                         if (findTribeByBelongsId.fulfilled.match(result)) {
                             // Handle successful login
                             console.log('Successful:', result.payload);
-
 
                         } else if (findTribeByBelongsId.rejected.match(result)) {
                             // Handle rejected login
@@ -703,7 +705,7 @@ const MainScreen = ({ navigation }) => {
                 <Block paddingBottom={60} padding={30} middle row space="between" color={COLORS.primary}>
                     <Block>
                         <Text white >Climate Literacy Mapper</Text>
-                        <Text numberOfLines={1} bold h2 white >Hi, {user?.user?.name}</Text>
+                        <Text numberOfLines={1} bold h2 white >Hi, {currentUserName}</Text>
                     </Block>
                     <Avatar.Icon size={54} icon="account-circle" />
                 </Block>
