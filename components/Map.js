@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native'; // Slider for adjusting circle radius
-import MapView, { Circle } from 'react-native-maps';
-import Slider from '@react-native-community/slider';
+// import MapView, { Circle } from 'react-native-maps';
+// import Slider from '@react-native-community/slider';
 import Block from './Block';
 
 const Map = () => {
@@ -31,7 +31,7 @@ const Map = () => {
 
   return (
     <View style={styles.container}>
-      <MapView
+      {/* <MapView
         style={styles.map}
         initialRegion={{
           latitude: -1.2921, // Centered in Africa (Kenya as an example)
@@ -50,7 +50,7 @@ const Map = () => {
             fillColor="rgba(150,0,0,0.4)" // Circle fill color (semi-transparent green)
           />
         )}
-      </MapView>
+      </MapView> */}
 
       {/* Display selected location's coordinates and radius */}
       {/* {circle && (
@@ -67,13 +67,13 @@ const Map = () => {
           <Text>Adjust Radius:</Text>
           <Text>{(radius / 1000).toFixed(2)} km</Text>
         </Block>
-        <Slider
+        {/* <Slider
           minimumValue={80000} // Minimum radius (50 km)
           maximumValue={800000} // Maximum radius (500 km)
           step={1000} // Increment of 10 km
           value={radius}
           onValueChange={handleRadiusChange}
-        />
+        /> */}
 
       </View>
     </View>

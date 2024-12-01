@@ -16,7 +16,12 @@
       "environment": "preview"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "channel": "production",
+      "env": {
+        "APP_VARIANT": "production",
+        "NODE_ENV":"production"
+      }
     }
   },
   "submit": {
